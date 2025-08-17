@@ -27,7 +27,16 @@ const config = {
         UpgradeForExpScene,
         InventoryScene,
         ShopScene
-    ]
+    ],
+    plugins: {
+        scene: [
+            {
+                key: 'rexVirtualJoystick',
+                plugin: rexvirtualjoystickplugin,
+                mapping: 'rexVirtualJoystick'
+            }
+        ]
+    }
 }
 
 const game = new Phaser.Game(config)

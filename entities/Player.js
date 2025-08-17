@@ -1,3 +1,5 @@
+import { playerSkills } from "../utils/upgradesManager.js";
+
 export default class Player {
     constructor(scene, x, y) {
         this.scene = scene;
@@ -6,45 +8,91 @@ export default class Player {
         this.sprite = scene.physics.add.sprite(x, y, 'player_idle');
         this.shadow = scene.add.sprite(this.sprite.x, this.sprite.y + 10, 'shadow').setScale(0.3).setAlpha(0.3);
         this.shadow.setDepth(-1);
-        this.stepParticles = scene.add.particles(0, 0, 'flares', {
+        this.sprite.setCollideWorldBounds(true);
+
+        //fire aurs spell
+        this.fireAuraParticles = scene.add.particles(this.sprite.x, this.sprite.y, 'flares', {
             frame: 'red',
-            speed: { min: 100, max: 260 },
-            scale: { start: 0.1, end: 0.3 },
-            alpha: { start: 0.6, end: 0 },
-            lifespan: 200,
-            frequency: 50, // частота появления
-            tint: [0xff0033,],
-            follow: this.sprite, // следят за игроком
-            followOffset: { x: 0, y: 0 }, // смещение вниз (как бы от ног)
+            lifespan: 500,
+            speed: { min: 200, max: 350 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.8, end: 1 },
+            alpha: { start: 0.1, end: 0 },
+
+            frequency: 11, // частота появления
+            tint: [0xff6633, 0xff3322, 0xdd5522],
             blendMode: 'DIFFERENCE'
         }).setDepth(-1);
-        this.sprite.setCollideWorldBounds(true);
+        this.fireAuraParticles.stop()
+
+        this.fireAuraCircle = this.scene.add.graphics();
+        this.scene.tweens.add({
+            targets: this.fireAuraCircle,
+            alpha: { from: 0.05, to: 0.3 },
+            duration: 800, // скорость появления/затухания
+            yoyo: true,    // обратно
+            repeat: -1     // бесконечно
+        });
+
+
+
+        this.stepParticles = scene.add.particles(0, 0, 'flares', {
+            frame: 'blue',
+            speed: 10,
+            // speed: { min: 100, max: 260 },
+            scale: { start: 0.1, end: 0.1 },
+            alpha: { start: 0.6, end: 0 },
+            lifespan: 2500,
+            frequency: 100, // частота появления
+            tint: [0x000033, 0x000045],
+            follow: this.sprite, // следят за игроком
+            followOffset: { x: 0, y: 16 }, // смещение вниз (как бы от ног)
+            blendMode: 'DIFFERENCE'
+        }).setDepth(-1);
+
 
         // Камера следует за игроком
         scene.cameras.main.startFollow(this.sprite);
 
         // Клавиши
         this.cursors = scene.input.keyboard.createCursorKeys();
-
+        this.wasd = scene.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D
+        });
         // Текущее направление для оптимизации (чтобы не перезапускать анимацию каждый тик)
         this.currentAnim = null;
+
+        this.joystick = scene.rexVirtualJoystick.add(scene, {
+            x: 400,
+            y: 600,
+            radius: 60,
+            base: scene.add.circle(0, 0, 60, 0x888888),
+            thumb: scene.add.circle(0, 0, 30, 0xcccccc),
+        });
+        this.cursorKeys = this.joystick.createCursorKeys();
     }
 
     update() {
+
+
         const speed = 250;
 
         let moveX = 0;
         let moveY = 0;
 
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.wasd.left.isDown || this.cursorKeys.left.isDown) {
+
             moveX = -1;
-        } else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown || this.wasd.right.isDown || this.cursorKeys.right.isDown) {
             moveX = 1;
         }
 
-        if (this.cursors.up.isDown) {
+        if (this.cursors.up.isDown || this.wasd.up.isDown || this.cursorKeys.up.isDown) {
             moveY = -1;
-        } else if (this.cursors.down.isDown) {
+        } else if (this.cursors.down.isDown || this.wasd.down.isDown || this.cursorKeys.down.isDown) {
             moveY = 1;
         }
 
@@ -55,18 +103,25 @@ export default class Player {
             moveY /= len;
         }
 
-        this.sprite.setVelocity(moveX * speed, moveY * speed);
-        this.shadow.setPosition(this.sprite.x, this.sprite.y + 20);
+        // 🎵 Логика звука ходьбы
+        if (moveX !== 0 || moveY !== 0) {
+            // игрок движется
+            if (!this.scene.playerMoveSfx.isPlaying) {
+                this.scene.playerMoveSfx.play({ loop: true, volume: Phaser.Math.FloatBetween(0.07, 0.1) });
+            }
+            this.stepParticles.start()
 
-        this.stepParticles.on = false; // отключено
-        // в update particles
-        if (this.sprite.body.velocity.x !== 0 || this.sprite.body.velocity.y !== 0) {
-            this.stepParticles.on = true;
         } else {
-            this.stepParticles.on = false;
+            // игрок стоит
+            if (this.scene.playerMoveSfx.isPlaying) {
+                this.scene.playerMoveSfx.stop();
+            }
+            this.stepParticles.stop()
+
         }
 
-
+        this.sprite.setVelocity(moveX * speed, moveY * speed);
+        this.shadow.setPosition(this.sprite.x, this.sprite.y + 20);
 
 
 
@@ -93,6 +148,21 @@ export default class Player {
             this.sprite.play(newAnim, true);
             this.currentAnim = newAnim;
         }
+
+        //fire aura
+        if (playerSkills.fireAura.level > 1) {
+            this.fireAuraParticles.start()
+            this.fireAuraParticles.setPosition(this.sprite.x, this.sprite.y);
+            this.fireAuraParticles.setParticleLifespan(playerSkills.fireAura.radius * 3.5)
+
+
+            this.fireAuraCircle.clear();
+            this.fireAuraCircle.lineStyle(3, 0xff9900, 0.3); // толщина 2, оранжевый, прозрачность 0.8
+
+            this.fireAuraCircle.strokeCircle(0, 0, playerSkills.fireAura.radius); // радиус 80
+            this.fireAuraCircle.setPosition(this.scene.cameras.main.worldView.centerX, this.scene.cameras.main.worldView.centerY);
+            this.fireAuraCircle.setDepth(5); // чтобы было под игроком
+        }
     }
 
     attackTextureOnce() {
@@ -100,6 +170,7 @@ export default class Player {
         // this.sprite.setTexture("player_attack");
         // this.scene.time.delayedCall(100, () => this.sprite.setTexture("player_idle"));
     }
+
 
     get x() { return this.sprite.x; }
     get y() { return this.sprite.y; }

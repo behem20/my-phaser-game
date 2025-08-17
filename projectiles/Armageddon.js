@@ -1,24 +1,31 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
+import { addDamage } from "../utils/damageStats.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 // Армагеддон — уничтожает всех врагов
-export function shootArmageddon(scene, enemiesGroup) {
+export function shootArmageddon(scene, enemiesGroup,) {
+
+
+
+    
     const damage = playerSkills.armageddon.damage; // или используем playerSkills.armageddon.damage, если хочешь масштабируемость
 
     enemiesGroup.getChildren().forEach(enemy => {
         if (!enemy.active) return;
-
-        // Наносим огромный урон (или просто убиваем)
-        damageEnemy(scene, enemy, damage, getHUD());
-
+        const distance = Phaser.Math.Distance.Between(scene.player.x, scene.player.y, enemy.x, enemy.y);
+        if (distance <= 550) {
+            
+            damageEnemy(scene, enemy, damage, getHUD());
+            addDamage("Armageddon", damage);
+        }
         // Визуальный эффект (вспышка, тряска, звук)
-        scene.tweens.add({
-            targets: enemy,
-            alpha: 0,
-            duration: 300,
-            ease: 'Cubic.easeOut',
-        });
+        // scene.tweens.add({
+        //     targets: enemy,
+        //     alpha: 0,
+        //     duration: 300,
+        //     ease: 'Cubic.easeOut',
+        // });
     });
 
     // Камера трясётся от силы скилла

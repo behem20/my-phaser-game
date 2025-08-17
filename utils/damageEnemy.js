@@ -7,7 +7,7 @@ import { playEnemyDeathEffect } from "./EnemyDeathEffect.js";
 export function damageEnemy(scene, enemy, damage = 1, hud,) {
 
     if (!enemy.active) return;
-    
+    // scene.enemyHitSfx.play()
 
     if (scene.time.now - scene.lastShootSoundTime > 100) {
         scene.lastShootSoundTime = scene.time.now;
@@ -19,13 +19,13 @@ export function damageEnemy(scene, enemy, damage = 1, hud,) {
     enemy.hp -= hitDamage;
     playDamageEffect(enemy, scene, hitDamage);
     if (enemy.hp <= 0) {
-        scene.coins.spawnForKill(enemy.x, enemy.y)
-        scene.items.ArmorsScrollsSpawn(enemy.x, enemy.y)
+        scene.coins.spawnForKill(enemy.x, enemy.y, scene)
+        // scene.items.ArmorsScrollsSpawn(enemy.x, enemy.y)
 
         playEnemyDeathEffect(scene, enemy)
-
-        if (enemy.hpBar) enemy.hpBar.destroy();
-        hud.addExp()
+        
+        // if (enemy.hpBar) enemy.hpBar.destroy();
+         hud.addExp()
         hud.addScore(); // или передай hud сюда
     }
 }

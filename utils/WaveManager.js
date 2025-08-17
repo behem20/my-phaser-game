@@ -31,14 +31,13 @@ export default class WaveManager {
             this.scene.events.emit('spawnEnemy', group.type);
             spawned++;
 
+             console.log('new wave ', this.currentWaveIndex,this.scene.hud.elapsedTime);
             const t = this.scene.time.addEvent({
                 delay: group.delayBetweenEnemies,
                 callback: () => {
                     if (spawned < group.count) {
                         this.scene.events.emit('spawnEnemy', group.type);
                         spawned++;
-                        
-                        
                     }
                 },
                 repeat: group.count - 1

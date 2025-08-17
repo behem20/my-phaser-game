@@ -10,8 +10,8 @@ export class Satellites {
             runChildUpdate: false
         });
 
-        this.radius = 250;             // расстояние от героя
-        this.speed = 0.03;            // скорость вращения (радианы на тик)
+        this.radius = 200;             // расстояние от героя
+        this.speed = 0.02;            // скорость вращения (радианы на тик)
         this.count = 0;               // количество активных спутников
         this.rotationOffset = 0;      // текущий угол смещения
     }
@@ -41,6 +41,7 @@ export class Satellites {
                 });
 
                 if (!sat) continue;
+                sat.setSize(60,60)
                 sat.setActive(true).setVisible(true);
                 sat.body.setAllowGravity(false);
                 sat.setDepth(5);

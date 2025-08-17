@@ -1,9 +1,13 @@
+import { setLanguage, t } from "../LanguageManager.js";
+
 export default class MenuScene extends Phaser.Scene {
     constructor() {
         super("MenuScene");
     }
 
     preload() {
+        this.load.json('lang_ru', '../game/assets/lang/ru.json');
+
 
 
         this.load.image('bgPhotoMenu', './game/assets/images/menu/worldWhite.png')
@@ -18,12 +22,19 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('wood', './game/assets/images/menu/wood.png')
         this.load.image('hero', './game/assets/images/menu/heroMenu.png')
 
+        this.load.image('settings', './game/assets/images/menu/settings.png')
+
+        this.load.image('soundOn', './game/assets/images/menu/soundOn.png')
+        this.load.image('soundOff', './game/assets/images/menu/soundOff.png')
+
+
         this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.wav');
         this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.wav');
 
     }
 
     create() {
+        setLanguage(this, 'ru');
         this.input.mouse.disableContextMenu();
         this.onTapSfx = this.sound.add('onTapSound', { volume: 0.1 });
         this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
@@ -152,21 +163,24 @@ export default class MenuScene extends Phaser.Scene {
         if (!this.registry.has('currentLevel')) this.registry.set('currentLevel', 0);
         let level = this.registry.get('currentLevel');
 
-        const levelText = this.add.text(550, 205, `level: ${level}`, {
+        const levelText = this.add.text(550, 205, `${t('game.level')} ${level}`, {
             fontSize: "24px",
-            fill: "#1fa"
+            fill: "rgba(0, 0, 0, 1)"
         })
         const titleText = this.add.text(120, 200, "Magic Survival Clone", {
             fontSize: "32px",
             fill: "#fff"
         });
 
-        const startBtn = this.add.text(180, 400, "Start Game", {
-            fontSize: "48px",
-            fill: "#0f0",
+
+        const startBtn = this.add.text(180, 400, t('ui.start'), {
+            fontSize: '48px',
+            fill: '#0f0',
             backgroundColor: "#333",
             padding: { x: 20, y: 10 }
         }).setInteractive();
+
+
         startBtn.on('pointerover', () => { this.onHoverSfx.play(); startBtn.setTint(0x44ff44) })
         startBtn.on('pointerout', () => { startBtn.clearTint(0x333333) })
 
@@ -217,6 +231,7 @@ export default class MenuScene extends Phaser.Scene {
             button.on('pointerout', () => button.clearTint());
             this.switchLevelButtonGroup.add(button)
         })
+        //shop
         const shopButton = this.add.sprite(40, 400, "shop").setInteractive()
         shopButton.on('pointerdown', () => {
             this.onTapSfx.play();
@@ -225,7 +240,7 @@ export default class MenuScene extends Phaser.Scene {
         shopButton.on('pointerover', () => { this.onHoverSfx.play(); shopButton.setTint(0x44ff44) }
         );
         shopButton.on('pointerout', () => shopButton.clearTint());
-
+        //magics
         const magicsButton = this.add.sprite(40, 500, "magics").setInteractive()
         magicsButton.on('pointerdown', () => {
             this.onTapSfx.play();
@@ -233,6 +248,40 @@ export default class MenuScene extends Phaser.Scene {
         })
         magicsButton.on('pointerover', () => { this.onHoverSfx.play(); magicsButton.setTint(0x44ff44) });
         magicsButton.on('pointerout', () => magicsButton.clearTint());
+        //settings
+        const settingsButton = this.add.sprite(40, 320, "settings").setInteractive()
+        settingsButton.on('pointerdown', () => {
+            this.onTapSfx.play();
+            const bgFill = this.add.rectangle(0, 0, 800, 800, 0x000000, 0.9)
+                .setOrigin(0)
+                .setInteractive()
+                .setDepth(0);
+            const closeButton = this.add.rectangle(640, 120, 60, 60, 0x000000, 0.9)
+                .setOrigin(0)
+                .setInteractive()
+                .setDepth(2);
+            closeButton.on('pointerdown', () => {
+                this.onTapSfx.play();
+                bgFill.destroy() // закрываем сцену по клику на фон
+                closeButton.destroy()
+                toggleSoundButton.destroy()
+            });
+            const toggleSoundButton = this.add.sprite(400, 400, this.sound.mute ? 'soundOn' : 'soundOff')
+                .setInteractive()
+                .setScale(4)
+            toggleSoundButton.on('pointerdown', () => {
+                this.onTapSfx.play();
+                toggleSoundButton.setTexture(!this.sound.mute ? 'soundOn' : 'soundOff')
+
+                this.sound.mute = !this.sound.mute;
+                console.log('1');
+
+            })
+        });
+
+        settingsButton.on('pointerover', () => { this.onHoverSfx.play(); settingsButton.setTint(0x44ff44) }
+        );
+        settingsButton.on('pointerout', () => settingsButton.clearTint());
 
         const heroButton = this.add.sprite(650, 540, 'hero').setInteractive()
         //hero in menu open inventory
@@ -248,7 +297,7 @@ export default class MenuScene extends Phaser.Scene {
             this.onTapSfx.play();
             this.scene.start(data.scene);
         })
-        woodButton.on('pointerover', () => {this.onHoverSfx.play();woodButton.setTint(0x44ff44)}
+        woodButton.on('pointerover', () => { this.onHoverSfx.play(); woodButton.setTint(0x44ff44) }
         );
         woodButton.on('pointerout', () => woodButton.clearTint());
     }

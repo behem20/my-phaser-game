@@ -1,50 +1,62 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
+import { addDamage } from "../utils/damageStats.js";
+import { flashScreen } from "../utils/FlashScreen.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 // Каст града (hail) с интервалом
-export function shootHail(scene, player, enemiesGroup, count = 5, interval = 100) {
-    const hailRadius = 45;
+export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50) {
+    const hailRadius = 105;
     const damage = playerSkills.hail?.damage || 20;
 
+    flashScreen(scene, 0x15ccff, 0.1, count*interval)
     for (let i = 0; i < count; i++) {
         scene.time.delayedCall(i * interval, () => {
-            const x = Phaser.Math.Between(player.x - 400, player.x + 400);
-            const y = Phaser.Math.Between(player.y - 400, player.y + 400);
+            scene.hailShootSfx.play()
+            const x = Phaser.Math.Between(player.x - 280, player.x + 280);
+            const y = Phaser.Math.Between(player.y - 280, player.y + 280);
 
-            const hailSprite = scene.add.sprite(x, y, "hail");
+            const hailSprite = scene.add.sprite(x, y, "hailStartAnims");
+
+
             hailSprite.setOrigin(0.5);
-            hailSprite.setDepth(10);
+            hailSprite.setDepth(3);
             hailSprite.setAlpha(0.8);
-            hailSprite.setScale(1.3); // при необходимости
+            hailSprite.setScale(Phaser.Math.FloatBetween(1.5, 2.8))
+            // при необходимости
 
-            // Урон по врагам
-            enemiesGroup.getChildren().forEach(enemy => {
-                if (!enemy.active) return;
+            hailSprite.play('hailStartAnim')
+            // scene.enemyHitSfx.play()
 
-                const distance = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
-                if (distance <= hailRadius) {
-                    console.log('hit hail');
+            hailSprite.once('animationcomplete-hailStartAnim', () => {
+                hailSprite.play('hailActiveAnim');
 
-                    damageEnemy(scene, enemy, damage, getHUD());
 
-                    scene.tweens.add({
-                        targets: enemy,
-                        alpha: 0.3,
-                        yoyo: true,
-                        repeat: 2,
-                        duration: 100,
-                    });
-                }
-            });
+
+                // Урон по врагам
+                enemiesGroup.getChildren().forEach(enemy => {
+                    if (!enemy.active) return;
+                    const distance = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
+                    if (distance <= hailRadius) {
+                        damageEnemy(scene, enemy, damage, getHUD());
+                        addDamage("hail", damage);
+                    }
+                });
+                hailSprite.once('animationcomplete-hailActiveAnim', () => {
+                    hailSprite.destroy();
+                });
+            })
 
             // Удаление визуала
-            scene.time.delayedCall(500, () => {
-                hailSprite.destroy();
-            });
+            // scene.time.delayedCall(500, () => {
+            //     hailSprite.play('hailEndingAnim');
+            //     hailSprite.once('animationcomplete-hailEndingAnim', () => {
+            //         hailSprite.destroy();
+            //     });
+            //     hailSprite.destroy();
+            // });
 
-            // (опционально) звук
-            scene.hailSfx?.play?.();
+
         });
     }
 }

@@ -1,4 +1,5 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
+import { addDamage } from "../utils/damageStats.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
@@ -27,6 +28,7 @@ export function shootMeteor(scene, player, enemiesGroup, count) {
                 console.log('hit');
 
                 damageEnemy(scene, enemy, damage, getHUD());
+                addDamage("meteor", damage);
 
                 // эффект попадания (можно убрать)
                 scene.tweens.add({

@@ -1,3 +1,5 @@
+
+import { setLanguage, t } from "../LanguageManager.js";
 export default class CompleteLevelScene extends Phaser.Scene {
     constructor() {
         super('CompleteLevelScene')
@@ -14,20 +16,17 @@ export default class CompleteLevelScene extends Phaser.Scene {
             .setOrigin(0)
             .setScrollFactor(0);
 
-        this.add.text(this.cameras.main.centerX, 180, "WIN", {
+        this.add.text(this.cameras.main.centerX, 180, t('messages.levelCompleted'), {
             fontSize: "48px",
             fill: "#fff"
         }).setOrigin(0.5);
 
-        this.add.text(this.cameras.main.centerX, 240, `Score: ${score}`, {
+        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${score}`, {
             fontSize: "28px",
             fill: "#fff"
         }).setOrigin(0.5);
 
-        this.add.text(this.cameras.main.centerX, 300, `Level ${this.registry.get('currentLevel')} completed`, {
-            fontSize: "28px",
-            fill: "#fff"
-        }).setOrigin(0.5);
+
 
         // const restartBtn = this.add.text(this.cameras.main.centerX, 320, "Restart", {
         //     fontSize: "24px",
@@ -42,7 +41,7 @@ export default class CompleteLevelScene extends Phaser.Scene {
         //     this.scene.start("GameScene");     // Запустить заново
         // });
 
-        const menuBtn = this.add.text(this.cameras.main.centerX, 370, "Continue", {
+        const menuBtn = this.add.text(this.cameras.main.centerX, 370, t('ui.continue'), {
             fontSize: "24px",
             fill: "#0f0",
             backgroundColor: "#333",
@@ -56,7 +55,7 @@ export default class CompleteLevelScene extends Phaser.Scene {
             this.scene.start("MenuScene");     // Перейти в меню
         });
 
-        const infoBtn = this.add.text(this.cameras.main.centerX, 440, "Info", {
+        const infoBtn = this.add.text(this.cameras.main.centerX, 440, t('ui.info'), {
             fontSize: "24px",
             fill: "#0f0",
             backgroundColor: "#333",

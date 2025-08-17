@@ -1,6 +1,7 @@
 import levels from "../levelsConfigs.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
+import { setLanguage, t } from "../LanguageManager.js";
 
 export default class UpgradeForExpScene extends Phaser.Scene {
     constructor() {
@@ -15,7 +16,12 @@ export default class UpgradeForExpScene extends Phaser.Scene {
 
     create() {
         const hud = getHUD()
-        this.cameras.main.setBackgroundColor("#000000");
+        // this.cameras.main.setBackgroundColor("#000000");
+        this.bgOverlay = this.add.graphics()
+            .fillStyle(0x000000, 0.5) // 0.5 = прозрачность
+            .fillRect(0, 0, this.scale.width, this.scale.height)
+            .setScrollFactor(0) // фиксируем к экрану
+            .setDepth(-10);     // позади всего
 
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
@@ -24,6 +30,9 @@ export default class UpgradeForExpScene extends Phaser.Scene {
         const cardHeight = 250;
         const spacing = 240;
 
+        const stepSound = this.gameScene.sound.get("playerMoveSound");//steps sound off
+        if (stepSound) { stepSound.stop(); }
+        
         this.onTapSfx = this.sound.add('onTapSound', { volume: 0.1 });
 
         this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
@@ -44,7 +53,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
             if (upgrade.level >= levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills) {
                 card.fillColor = 0x32222
                 // Название
-                this.add.text(x, y - 100, upgrade.name, {
+                this.add.text(x, y - 100, t(upgrade.name), {
                     fontSize: "20px",
                     color: "#fff"
                 }).setOrigin(0.5);
@@ -57,19 +66,19 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                     color: "#ccc"
                 }).setOrigin(0.5);
                 // Описание
-                this.add.text(x, y + 60, upgrade.description, {
+                this.add.text(x, y + 60, t(upgrade.description), {
                     fontSize: "14px",
                     color: "#aaa",
                     wordWrap: { width: cardWidth - 20 }
                 }).setOrigin(0.5);
             } else {
                 // Название
-                this.add.text(x, y - 100, upgrade.name, {
+                this.add.text(x, y - 100, t(upgrade.name), {
                     fontSize: "20px",
                     color: "#fff"
                 }).setOrigin(0.5);
                 //Уровень
-                this.add.text(x, y + 30, `Level: ${upgrade.level}`, {
+                this.add.text(x, y + 30, upgrade.level !== 1 ? `${t('game.level')} ${upgrade.level}` : t('messages.getNewSkill'), {
                     fontSize: "16px",
                     color: "#ccc"
                 }).setOrigin(0.5);
@@ -77,7 +86,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 this.add.image(x, y - 40, upgrade.icon).setScale(1.5);
 
                 // Описание
-                this.add.text(x, y + 60, upgrade.description, {
+                this.add.text(x, y + 60, t(upgrade.description), {
                     fontSize: "14px",
                     color: "#aaa",
                     wordWrap: { width: cardWidth - 20 }
@@ -85,7 +94,8 @@ export default class UpgradeForExpScene extends Phaser.Scene {
 
                 // Клик
                 card.on("pointerdown", () => {
-                    console.log(upgrade.name);
+
+                    playerSkills.upgradePointsCount++;
                     this.onTapSfx.play();
                     this.onSelect(upgrade);
                     this.scene.stop();
@@ -105,14 +115,21 @@ export default class UpgradeForExpScene extends Phaser.Scene {
             }
 
         });
-        this.backText = this.add.text(centerX, centerY + 230, `back`, {
+        this.chooseSkillText = this.add.text(centerX, centerY - 210, t(`messages.chooseSkill`), {
+            fontSize: "42px",
+            color: "rgba(255, 116, 24, 1)"
+        }).setOrigin(0.5)
+        this.levelText = this.add.text(centerX, centerY - 280, `${t(`game.level`)} ${levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount}`, {
+            fontSize: "24px",
+            color: "rgba(255, 0, 0, 1)"
+        }).setOrigin(0.5)
+        this.backText = this.add.text(centerX, centerY + 230, t(`ui.back`), {
             fontSize: "16px",
             color: "#f60"
         }).setOrigin(0.5).setInteractive()
         this.backText.on('pointerdown', () => {
 
             this.onTapSfx.play();
-
             hud.clearExp()
             this.scene.stop();
             this.scene.resume("GameScene");

@@ -1,4 +1,5 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
+import { addDamage } from "../utils/damageStats.js";
 import { getClosestEnemies } from "../utils/getClosestEnemies.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
@@ -6,19 +7,7 @@ import { playerSkills } from "../utils/upgradesManager.js";
 export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 1, hud) {
 
 
-    scene.anims.create({
-        key: 'fireAnim',
-        frames: scene.anims.generateFrameNumbers('fireAnims', { start: 0, end: 7 }),
-        frameRate: 24,
-        repeat: -1
-    });
-
-    scene.anims.create({
-        key: 'fireExplosionAnim',
-        frames: scene.anims.generateFrameNumbers('fireExplosionAnims', { start: 0, end: 10 }),
-        frameRate: 24,
-        repeat: 0
-    });
+   
 
 
 
@@ -57,19 +46,20 @@ export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 
         scene.time.delayedCall(2000, () => {
             if (fire.active) {
                 fire.destroy()
+                fire.trail.destroy()
             }
         });
     })
     player.attackTextureOnce();
+    
 }
 
 export function handleFireHit(scene, fire, enemy, hud) {
     if (!enemy.active) return;
-
     scene.fireShootCollisionSfx.play();
 
     const fireExpl = scene.add.sprite(fire.x, fire.y, 'fireExplosionAnims')
-    const randomScale = Phaser.Math.FloatBetween(2, 2.5);
+    const randomScale = Phaser.Math.FloatBetween(1.1, 2.1);
     fireExpl.setScale(randomScale)
     fireExpl.play('fireExplosionAnim')
     fireExpl.on("animationcomplete", () => {
@@ -80,7 +70,7 @@ export function handleFireHit(scene, fire, enemy, hud) {
     scene.time.delayedCall(300, () => {
         fire.trail.destroy();
     });
-    const explosionRadius = 100;
+    const explosionRadius = 150;
 
     // Визуал взрыва
     // const explosion = scene.add.circle(fire.x, fire.y, explosionRadius, 0xffffff, 0.3)
@@ -94,8 +84,13 @@ export function handleFireHit(scene, fire, enemy, hud) {
         const distance = Phaser.Math.Distance.Between(fire.x, fire.y, otherEnemy.x, otherEnemy.y);
         if (distance <= explosionRadius) {
             damageEnemy(scene, otherEnemy, playerSkills.fire.damage, getHUD())
+
+            addDamage("fire", playerSkills.fire.damage);
         }
     });
 
+
+    
     fire.destroy();
+    fire.trail.destroy()
 }

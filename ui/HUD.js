@@ -14,17 +14,17 @@ export default class HUD {
 
         const style = { fontSize: "20px", fill: "#fff" };
         // this.scoreText = scene.add.text(10, 10, "", style).setScrollFactor(0).setDepth(13);
-        this.livesText = scene.add.text(10, 40, "", style).setScrollFactor(0).setDepth(13);
+        // this.livesText = scene.add.text(10, 40, "", style).setScrollFactor(0).setDepth(13);
+        this.headBGRect = scene.add.rectangle(0, 0, 800, 40, 0x000000, 0.6).setScrollFactor(0).setOrigin(0, 0).setDepth(11)
+        this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(255, 255, 255, 1)" }).setScrollFactor(0).setDepth(13);
+        this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
 
-        this.coinsText = scene.add.text(30, 10, "", { fontSize: "20px", fill: "#3fd" }).setScrollFactor(0).setDepth(13);
-        this.coinsImage = scene.add.image(20, 20, 'coin').setScrollFactor(0).setDepth(13);
-
-        this.timeText = scene.add.text(400, 20, "", style).setScrollFactor(0).setDepth(13).setOrigin(0.5);;
-        this.debugText = scene.add.text(10, 130, "", style).setScrollFactor(0).setDepth(13);
+        this.timeText = scene.add.text(400, 23, "", style).setScrollFactor(0).setDepth(13).setOrigin(0.5);;
+        this.debugText = scene.add.text(10, 40, "", { fontSize: "10px", fill: "#fff" }).setScrollFactor(0).setDepth(13);
         this.expProgressBarBg = scene.add.graphics();
         this.expProgressBarFill = scene.add.graphics().setDepth(13);
-        this.expProgressBarBg.fillStyle(0x115577, 1).setDepth(12);
-        this.expProgressBarBg.fillRect(0, 0, 800, 5).setScrollFactor(0);
+        this.expProgressBarBg.fillStyle(0x000000, 0.8).setDepth(12);              //0x115577
+        this.expProgressBarBg.fillRect(0, 0, 800, 10).setScrollFactor(0);
         this.updateExpProgress();
 
 
@@ -52,6 +52,19 @@ export default class HUD {
     addScore(amount = 1) {
         this.score += amount;
         this.updateScore();
+    }
+    addLives(amount = 1) {
+        if (this.lives > 9) {
+            return;
+        } else if (this.lives + amount > 9) {
+            this.lives = 10;
+            this.updateLives()
+        } else {
+            this.lives += amount;
+            this.updateLives()
+        }
+
+
     }
     updateLives() {
         // this.livesText.setText("Lives: " + this.lives);
@@ -84,59 +97,40 @@ export default class HUD {
         this.exp = 0;
         this.updateExpProgress()
     }
-   
-    // updateExpProgress() {
-    //     this.expProgressBarFill.clear()
-    //     const progress = Phaser.Math.Clamp(this.exp
-    //         / (levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade
-    //             * levels[this.scene.registry.get('currentLevel')].levelConfigs.upgradeLevel),
-    //         0, 1);
 
 
-    //     // ВСПЫШКА: сначала заливаем белым
-    //     this.expProgressBarFill.clear();
-    //     this.expProgressBarFill.fillStyle(0xffffff, 1); // белый вспышка
-    //     this.expProgressBarFill.fillRect(0, 0, 800 * progress, 5).setScrollFactor(0);
-
-    //     //Через 100 мс возвращаем основной стиль
-    //     this.scene.time.delayedCall(50, () => {
-    //         this.expProgressBarFill.clear();
-    //         this.expProgressBarFill.fillStyle(0xff3477, 1); // основной розовый
-    //         this.expProgressBarFill.fillRect(0, 0, 800 * progress, 5).setScrollFactor(0);
-    //     });
-    // }
 
     updateExpProgress() {
-    const progress = Phaser.Math.Clamp(
-        this.exp / (
-            levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
-            levels[this.scene.registry.get('currentLevel')].levelConfigs.upgradeLevel
-        ),
-        0,
-        1
-    );
+        const progress = Phaser.Math.Clamp(
+            this.exp / (
+                levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
+                levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
+            ),
+            0,
+            1
+        );
 
-    const width = 800 * progress;
+        const width = 800 * progress;
 
-    // Основной бар
-    this.expProgressBarFill.clear();
-    this.expProgressBarFill.fillStyle(0xff3477, 1);
-    this.expProgressBarFill.fillRect(0, 0, width, 5).setScrollFactor(0);
+        // Основной бар
+        this.expProgressBarFill.clear();
+        this.expProgressBarFill.fillStyle(0x00A2E8, 1); //0xff3477
+        this.expProgressBarFill.fillRect(0, 0, width, 10).setScrollFactor(0);
 
-    // Эффект бегущей полосы
-    const glow = this.scene.add.graphics().setScrollFactor(0).setDepth(100);
-    glow.fillStyle(0xff8800, 0.8);
-    glow.fillRect(0, 0, 30, 5); // ширина полоски 20 пикселей
+        // Эффект бегущей полосы
+        const glow = this.scene.add.graphics().setScrollFactor(0).setDepth(100);
+        glow.fillStyle(0xffffff, 0.8);
+        glow.fillRect(0, 0, 30, 10); // ширина полоски 20 пикселей
 
-    glow.x = 0;
-    glow.y = 0;
+        glow.x = 0;
+        glow.y = 0;
 
-    this.scene.tweens.add({
-        targets: glow,
-        x: width - 20,
-        duration: 300,
-        ease: 'Cubic.easeOut',
-        onComplete: () => glow.destroy()
-    });
-}
+        this.scene.tweens.add({
+            targets: glow,
+            x: width - 30,
+            duration: 300,
+            ease: 'Cubic.easeOut',
+            onComplete: () => glow.destroy()
+        });
+    }
 }   

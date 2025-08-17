@@ -1,13 +1,7 @@
 export function shootTornado(scene, player, tornadoGroup, level) {
 
 
-    scene.anims.create({
-        key: 'tornadoAnims',
-        frames: scene.anims.generateFrameNumbers('tornadoAnims', { start: 0, end: 5 }),
-        frameRate: 24,
-        repeat: -1
-    });
-
+   
     for (let i = 0; i < level; i++) {
         const tornado = tornadoGroup.get(player.x, player.y, "tornadoAnims");
 
@@ -21,13 +15,25 @@ export function shootTornado(scene, player, tornadoGroup, level) {
 
 
         if (!tornado) return;
-        resetTornado(tornado, player.x + Phaser.Math.Between(-220, 220), player.y + Phaser.Math.Between(-220, 220), scene)
+        resetTornado(tornado, player.x + Phaser.Math.Between(-410, 400), player.y + Phaser.Math.Between(-410, 420), scene)
         // scene.lightShootSfx.play();
         tornado.setActive(true).setVisible(true);
         tornado.body.setAllowGravity(false);
         tornado.body.setCollideWorldBounds(true);
         tornado.body.setBounce(1); // пусть отскакивает от границ
         tornado.body.setCircle(tornado.width / 2);
+        tornado.particles = scene.add.particles(0, 0, 'flares', {
+            frame: 'blue',
+            lifespan: 200,
+            speed: 300,
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.7, end: 0 },
+            alpha: { start: 0.8, end: 0 },
+
+            tint: [0xff0000, 0x993300],
+            blendMode: 'SCREEN',
+            follow: tornado
+        });
 
         scene.physics.velocityFromRotation(
             Phaser.Math.FloatBetween(0, Math.PI * 2), // случайный угол
@@ -47,7 +53,10 @@ export function shootTornado(scene, player, tornadoGroup, level) {
             }
         });
         scene.time.delayedCall(4000, () => {
-            if (tornado.active) tornado.disableBody(true, true);
+            if (tornado.active) {
+                tornado.disableBody(true, true);
+                tornado.particles.destroy()
+            }
             directionTimer.remove();
         });
     }
@@ -60,19 +69,8 @@ function resetTornado(tornado, x, y, scene) {
     tornado.body.setCollideWorldBounds(true);
     tornado.body.setBounce(1);
     tornado.body.setCircle(tornado.width / 2);
-    tornado.setScale(1.5)
-    scene.add.particles(0, 0, 'flares', {
-        frame: 'blue',
-        lifespan: 200,
-        speed: 300,
-        angle: { min: 0, max: 360 },
-        scale: { start: 0.7, end: 0 },
-        alpha: { start: 0.8, end: 0 },
+    tornado.setScale(1)
 
-        tint: [0x00ffff, 0x0099ff],
-        blendMode: 'SCREEN',
-        follow: tornado
-    });
 
     // Задать стартовую скорость
     const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);

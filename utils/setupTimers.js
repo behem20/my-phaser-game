@@ -5,12 +5,20 @@ export function setupTimers(scene) {
 
     // Монеты
     scene.spawnCoinsTimer = scene.time.addEvent({
-        delay: 100,
-        callback: () => scene.coins.spawnRandomly(100, 200),
+        delay: 400,
+        callback: () => scene.coins.spawnRandomly(500, 2000, scene),
         callbackScope: scene,
         loop: true
     });
-    
+
+    //healthpacks
+    scene.spawnHealthPacksTimer = scene.time.addEvent({
+        delay: 20000,
+        callback: () => scene.healthPack.spawnRandomly(100, 500, scene),
+        callbackScope: scene,
+        loop: true
+    });
+
     // время
     scene.gameTimer = scene.time.addEvent({
         delay: 1000,

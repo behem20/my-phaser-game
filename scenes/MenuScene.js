@@ -6,7 +6,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.json('lang_ru', '../game/assets/lang/ru.json');
+        this.load.json('lang_ru', 'game/assets/lang/ru.json');
 
 
 

@@ -3,9 +3,9 @@ export function playLevelStartEffect(scene, player) {
     // scene.levelUpSfx.play();
     //text
     scene.levelStartSfx.play()
-    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150, 'START', {
-        fontSize: "104px",
-        fill: "rgba(0, 17, 253, 1)",
+    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150, 'пробуй Машь...', {
+        fontSize: "74px",
+        fill: "rgba(253, 0, 169, 1)",
         // backgroundColor: "#333",
         padding: { x: 10, y: 5 }
     }).setScrollFactor(0).setOrigin(0.5)

@@ -7,7 +7,8 @@ import {
     handleTornadoHit,
     handleSatelliteHit,
     handleMeteorHit,
-    handleHealthPackCollect
+    handleHealthPackCollect,
+    handleHailHit
 } from "../src/handlers/collisionHandlers.js";
 
 import { handleFireHit } from "../projectiles/Fire.js";
@@ -38,44 +39,15 @@ export function setupCollisions(scene) {
 
     //tornado
     scene.physics.add.overlap(scene.tornadoGroup, enemiesGroup, (tornadoObj, enemy) => {
-        const now = scene.time.now;
-        if (!tornadoObj.nextDamageTime || now > tornadoObj.nextDamageTime) {
-            handleTornadoHit(scene, tornadoObj, enemy);
-
-            tornadoObj.nextDamageTime = now + playerSkills.tornado.damageDelay;
-        }
+        handleTornadoHit(scene, tornadoObj, enemy);
     });
-    //tonado
-    scene.physics.add.overlap(scene.tornadoGroup, enemiesGroup, (tornadoObj, enemy) => {
-        const now = scene.time.now;
-
-        // Если у торнадо ещё нет словаря таймеров — создаём
-        if (!tornadoObj.damageTimers) {
-            tornadoObj.damageTimers = new Map();
-        }
-
-        const nextHitTime = tornadoObj.damageTimers.get(enemy) || 0;
-
-        if (now > nextHitTime) {
-            handleTornadoHit(scene, tornadoObj, enemy);
-
-            // Запоминаем время следующего удара именно для этого врага
-            tornadoObj.damageTimers.set(enemy, now + playerSkills.tornado.damageDelay);
-        }
-    });
-
 
     // satellite
     scene.physics.add.overlap(
         scene.satellites.getGroup(),
         enemiesGroup,
         (sat, enemy) => {
-            const now = scene.time.now;
-            if (!enemy.nextSatelliteHitTime || now > enemy.nextSatelliteHitTime) {
-                handleSatelliteHit(scene, sat, enemy);
-
-                enemy.nextSatelliteHitTime = now + playerSkills.satellite.delayDamage;
-            }
+            handleSatelliteHit(scene, sat, enemy);
         }
     );
     // meteor
@@ -92,11 +64,10 @@ export function setupCollisions(scene) {
         scene.hailShots,
         enemiesGroup,
         (hail, enemy) => {
-            handleMeteorHit(scene, hail, enemy);
+            handleHailHit(scene, hail, enemy);
 
         }
     );
-
 
     // Враг касается игрока
     scene.physics.add.overlap(player, enemiesGroup, (player, enemy) => {

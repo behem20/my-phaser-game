@@ -28,7 +28,7 @@ export default class Player {
         this.fireAuraCircle = this.scene.add.graphics();
         this.scene.tweens.add({
             targets: this.fireAuraCircle,
-            alpha: { from: 0.05, to: 0.3 },
+            alpha: { from: 0.3, to: 0.7 },
             duration: 800, // скорость появления/затухания
             yoyo: true,    // обратно
             repeat: -1     // бесконечно
@@ -37,18 +37,19 @@ export default class Player {
 
 
         this.stepParticles = scene.add.particles(0, 0, 'flares', {
-            frame: 'blue',
+            frame: 'yellow',
             speed: 10,
             // speed: { min: 100, max: 260 },
-            scale: { start: 0.1, end: 0.1 },
+            scale: { start: 0.25, end: 0.1 },
             alpha: { start: 0.6, end: 0 },
             lifespan: 2500,
             frequency: 100, // частота появления
-            tint: [0x000033, 0x000045],
+            tint: [0xff33ff, 0xff8800],
             follow: this.sprite, // следят за игроком
             followOffset: { x: 0, y: 16 }, // смещение вниз (как бы от ног)
-            blendMode: 'DIFFERENCE'
+            blendMode: 'ADD'
         }).setDepth(-1);
+       
 
 
         // Камера следует за игроком
@@ -68,9 +69,9 @@ export default class Player {
         this.joystick = scene.rexVirtualJoystick.add(scene, {
             x: 400,
             y: 600,
-            radius: 60,
-            base: scene.add.circle(0, 0, 60, 0x888888),
-            thumb: scene.add.circle(0, 0, 30, 0xcccccc),
+            radius: 120,
+            base: scene.add.circle(0, 0, 80, 0x888888).setAlpha(0.5),
+            thumb: scene.add.circle(0, 0, 40, 0xcccccc).setAlpha(0.5),
         });
         this.cursorKeys = this.joystick.createCursorKeys();
     }
@@ -157,7 +158,7 @@ export default class Player {
 
 
             this.fireAuraCircle.clear();
-            this.fireAuraCircle.lineStyle(3, 0xff9900, 0.3); // толщина 2, оранжевый, прозрачность 0.8
+            this.fireAuraCircle.lineStyle(5, 0xff9900, 0.3); // толщина 2, оранжевый, прозрачность 0.8
 
             this.fireAuraCircle.strokeCircle(0, 0, playerSkills.fireAura.radius); // радиус 80
             this.fireAuraCircle.setPosition(this.scene.cameras.main.worldView.centerX, this.scene.cameras.main.worldView.centerY);

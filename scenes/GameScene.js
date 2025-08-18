@@ -46,6 +46,11 @@ export default class GameScene extends Phaser.Scene {
             'https://labs.phaser.io/assets/particles/flares.png', // картинка
             'https://labs.phaser.io/assets/particles/flares.json' // описание спрайтов
         );
+        this.load.atlas(
+            'inv-flares', // имя (можно любое, но обычно flares)
+            'game/assets/images/inv-flares.png', // картинка
+            'https://labs.phaser.io/assets/particles/flares.json' // описание спрайтов
+        );
 
         this.load.image("pictureMagic", "game/assets/images/lvlUpPictures/pictureMagic.png")
         this.load.image("pictureTornado", "game/assets/images/lvlUpPictures/pictureTornado.png")
@@ -246,7 +251,7 @@ export default class GameScene extends Phaser.Scene {
             rate: Phaser.Math.FloatBetween(0.9, 1.1)
         })
         this.HPCollectSoundSfx = this.sound.add('playerCollectHP', {
-            volume: Phaser.Math.FloatBetween(0.1, 1),
+            volume: Phaser.Math.FloatBetween(0.9, 1),
             rate: Phaser.Math.FloatBetween(0.9, 1.1)
         })
         this.playerMoveSfx = this.sound.add('playerMoveSound', { volume: 1 })

@@ -19,7 +19,7 @@ export default class HUD {
         this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(255, 255, 255, 1)" }).setScrollFactor(0).setDepth(13);
         this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
 
-        this.timeText = scene.add.text(400, 23, "", style).setScrollFactor(0).setDepth(13).setOrigin(0.5);;
+        this.timeText = scene.add.text(400, 23, "", { fontSize: "20px", fill: "#ffffffff" }).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
         this.debugText = scene.add.text(10, 40, "", { fontSize: "10px", fill: "#fff" }).setScrollFactor(0).setDepth(13);
         this.expProgressBarBg = scene.add.graphics();
         this.expProgressBarFill = scene.add.graphics().setDepth(13);
@@ -84,6 +84,18 @@ export default class HUD {
         this.coins += amount;
 
         this.updateCoins();
+    }
+    tintCoins() {
+        this.scene.tweens.add({
+            targets: this.coinsText,
+            // alpha: { from: 1, to: 0 },
+            scale: { from: 1, to: 1.2 },
+            duration: 150,
+            ease: 'Cubic.easeOut',
+            onComplete: () => {
+this.coinsText.setScale(1)
+            }
+        });
     }
     updateExp() {
 

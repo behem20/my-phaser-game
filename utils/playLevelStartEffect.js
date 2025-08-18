@@ -1,11 +1,13 @@
+import { t } from "../LanguageManager.js";
+
 export function playLevelStartEffect(scene, player) {
     // 🔊 звук
     // scene.levelUpSfx.play();
     //text
     scene.levelStartSfx.play()
-    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150, 'пробуй Машь...', {
-        fontSize: "74px",
-        fill: "rgba(253, 0, 169, 1)",
+    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150, t('game.goal'), {
+        fontSize: "56px",
+        fill: "rgba(255, 0, 0, 1)",
         // backgroundColor: "#333",
         padding: { x: 10, y: 5 }
     }).setScrollFactor(0).setOrigin(0.5)

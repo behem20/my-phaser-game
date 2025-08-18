@@ -1,18 +1,15 @@
-export function shootTornado(scene, player, tornadoGroup, level) {
+import { getModifiedCooldown } from "../utils/cooldownUtils.js";
+import { playerSkills } from "../utils/upgradesManager.js";
 
-
-   
-    for (let i = 0; i < level; i++) {
+export function shootTornado(scene, player, tornadoGroup, count) {
+    for (let i = 0; i < count; i++) {
         const tornado = tornadoGroup.get(player.x, player.y, "tornadoAnims");
-
 
         if (scene.time.now - scene.lastTornadoSoundTime > 1050) {
             scene.lastTornadoSoundTime = scene.time.now;
             scene.tornadoStartSoundSfx.play()
         }
-
         tornado.play('tornadoAnims')
-
 
         if (!tornado) return;
         resetTornado(tornado, player.x + Phaser.Math.Between(-410, 400), player.y + Phaser.Math.Between(-410, 420), scene)
@@ -52,7 +49,7 @@ export function shootTornado(scene, player, tornadoGroup, level) {
                 scene.physics.velocityFromRotation(newAngle, 120, tornado.body.velocity);
             }
         });
-        scene.time.delayedCall(4000, () => {
+        scene.time.delayedCall(getModifiedCooldown(playerSkills.tornado.duration), () => {
             if (tornado.active) {
                 tornado.disableBody(true, true);
                 tornado.particles.destroy()

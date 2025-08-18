@@ -32,7 +32,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
 
         const stepSound = this.gameScene.sound.get("playerMoveSound");//steps sound off
         if (stepSound) { stepSound.stop(); }
-        
+
         this.onTapSfx = this.sound.add('onTapSound', { volume: 0.1 });
 
         this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
@@ -50,8 +50,9 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 .setStrokeStyle(2, 0xff6600)
                 .setInteractive();
 
-            if (upgrade.level >= levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills) {
+            if (upgrade.level >= levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills - 1) {
                 card.fillColor = 0x32222
+                card.setStrokeStyle(5, 0xff6600)
                 // Название
                 this.add.text(x, y - 100, t(upgrade.name), {
                     fontSize: "20px",
@@ -61,7 +62,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 // Картинка
                 this.add.image(x, y - 40, upgrade.icon).setScale(1.5);
                 // Уровень
-                this.add.text(x, y + 30, `Level: MAX`, {
+                this.add.text(x, y + 30, `${t('game.level')}: ${t('game.max')}`, {
                     fontSize: "16px",
                     color: "#ccc"
                 }).setOrigin(0.5);
@@ -71,6 +72,26 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                     color: "#aaa",
                     wordWrap: { width: cardWidth - 20 }
                 }).setOrigin(0.5);
+                card.on("pointerdown", () => {
+
+                    playerSkills.upgradePointsCount++;
+                    this.onTapSfx.play();
+                    this.onSelect(upgrade);
+                    this.scene.stop();
+                    this.scene.resume("GameScene");
+
+                });
+                card.on('pointerover', () => {
+
+                    card.setStrokeStyle(5, 0xff0000);
+                    this.onHoverSfx.play();
+                })
+                card.on('pointerout', () => {
+
+                    card.setStrokeStyle(5, 0xff6600);
+
+                    this.onHoverSfx.play();
+                })
             } else {
                 // Название
                 this.add.text(x, y - 100, t(upgrade.name), {

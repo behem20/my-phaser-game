@@ -1,4 +1,5 @@
 
+import { formatTime } from "./formatTime.js";
 import { playerSkills } from "./upgradesManager.js";
 
 export function setupTimers(scene) {
@@ -24,7 +25,7 @@ export function setupTimers(scene) {
         delay: 1000,
         callback: () => {
             scene.hud.elapsedTime++;
-            scene.hud.timeText.setText(+ scene.hud.elapsedTime)
+            scene.hud.timeText.setText(formatTime(scene.hud.elapsedTime))
             if (scene.hud.elapsedTime >= scene.hud.levelDuration) {
                 playerSkills.resetSkills()
                 scene.hud.onLevelComplete(scene.hud.score)

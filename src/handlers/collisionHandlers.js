@@ -1,4 +1,5 @@
 import levels from "../../levelsConfigs.js";
+import { applyDamageWithCooldown } from "../../utils/applyDamageWithCooldown.js";
 import { randomTintFill } from "../../utils/damageEffect.js";
 import { damageEnemy } from "../../utils/damageEnemy.js";
 import { addDamage } from "../../utils/damageStats.js";
@@ -16,25 +17,29 @@ export function handleMagicHit(scene, magic, enemy) {
     });
     magic.destroy();
 
-    damageEnemy(scene, enemy, playerSkills.magic.damage||35, getHUD())
-    addDamage("magic", playerSkills.magic.damage||35);
+    damageEnemy(scene, enemy, playerSkills.magic.damage || 35, getHUD())
+    addDamage("magic", playerSkills.magic.damage || 35);
 }
 
 export function handleLightHit(scene, light, enemy) {
     if (!enemy.active) return;
-    damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
+    applyDamageWithCooldown(scene, 'light', enemy, 10, 500)
+    // damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
     addDamage("light", playerSkills.light.damage);
 }
 export function handleTornadoHit(scene, tornado, enemy) {
     if (!enemy.active) return;
-    damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
+    // damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
+
+    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 300)
     addDamage("tornado", playerSkills.tornado.damage);
 }
 
 
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
-    damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
+    // damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
+    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 700)
     addDamage("satellite", playerSkills.satellite.damage);
 
 }
@@ -98,6 +103,7 @@ export function handleCoinCollect(scene, player, coin) {
     const amount = levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmount;
     scene.registry.set('coinsCount', scene.registry.get('coinsCount') + amount)
     scene.hud.addCoins(amount);
+     scene.hud.tintCoins();
     scene.hud.addExp()
 
     const targetX = scene.hud.coinsText.x;
@@ -123,23 +129,23 @@ export function handleCoinCollect(scene, player, coin) {
     });
 }
 export function handleHealthPackCollect(scene, player, hp) {
-hp.disableBody(1,0);
+    hp.disableBody(1, 0);
     scene.HPCollectSoundSfx.play()
-    scene.hud.addLives()
-    
+    scene.hud.addLives(6)
+
     scene.tweens.add({
-    targets: scene.hpMark.border,
-    alpha: 0.2,     // полупрозрачное мигание
-    yoyo: true,     // вернётся к исходной альфе
-    duration: 300,  // миллисекунды
-    repeat: 0
-});
+        targets: scene.hpMark.border,
+        alpha: 0.2,     // полупрозрачное мигание
+        yoyo: true,     // вернётся к исходной альфе
+        duration: 300,  // миллисекунды
+        repeat: 0
+    });
 
     hp.setScale(1.2)
     scene.time.delayedCall(100, () => {
         // hp.clearTint();
-        
-        hp.disableBody(1,1)
+
+        hp.disableBody(1, 1)
     });
 }
 

@@ -34,7 +34,7 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, targetCount 
                 // });
                 magic.trail = scene.add.particles(0, 0, 'flares', {
                     frame: 'yellow',
-                    lifespan: 400,
+                    lifespan: 200,
                     speed: { min: 10, max: 80 },
                     angle: { min: 0, max: 360 },
                     scale: { start: 0.35, end: 0.1 },

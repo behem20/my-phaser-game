@@ -6,7 +6,7 @@ export function setupTimers(scene) {
 
     // Монеты
     scene.spawnCoinsTimer = scene.time.addEvent({
-        delay: 400,
+        delay: 1400,
         callback: () => scene.coins.spawnRandomly(500, 2000, scene),
         callbackScope: scene,
         loop: true
@@ -19,6 +19,13 @@ export function setupTimers(scene) {
         callbackScope: scene,
         loop: true
     });
+     //chests
+    scene.spawnChestsTimer = scene.time.addEvent({
+        delay: 30000,
+        callback: () => scene.chests.spawnChest(350, 400, scene),
+        callbackScope: scene,
+        loop: true
+    });
 
     // время
     scene.gameTimer = scene.time.addEvent({
@@ -27,8 +34,9 @@ export function setupTimers(scene) {
             scene.hud.elapsedTime++;
             scene.hud.timeText.setText(formatTime(scene.hud.elapsedTime))
             if (scene.hud.elapsedTime >= scene.hud.levelDuration) {
-                playerSkills.resetSkills()
-                scene.hud.onLevelComplete(scene.hud.score)
+                // playerSkills.resetSkills()
+                // resetLevels()
+                scene.hud.onLevelComplete(scene,scene.hud.coins)
             }
         },
         loop: true

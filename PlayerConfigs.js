@@ -1,21 +1,26 @@
-  const playerInitCfgs =
+const originalPlayerInitCfgs =
 {
-    damageBonus: 1,
-    hpBonus: 0,
-    maxHPBonus: 0,
-    cooldownReductionBonus: 0,
-    magicsExplosionRadiusBonus: 0,
-    magicsScaleBonus: 0,
-    magicsDurationBonus: 0,
-    magicsDamageIntervalBonus: 0,
-    magicsEffectRadiusBonus: 1,
-    coinsMagnetRadiusBonus: 1,
-    magicsCountBonus: 0,
-    rotationSpeedBonus: 0,
-    amountOfHPRestoredBonus: 0,
-    moveSpeedBonus: 0,
-    criticalStrikeChanceBonus: 0,
-    criticalDamageMultiplierBonus: 0,
+  damageBonus: 1,
+  hpBonus: 0,
+  maxHPBonus: 0,
+  cooldownReductionBonus: 0,
+  magicsExplosionRadiusBonus: 0,
+  magicsScaleBonus: 0,
+  magicsDurationBonus: 1,
+  magicsDamageIntervalBonus: 0,
+  magicsEffectRadiusBonus: 1,
+  coinsMagnetRadiusBonus: 1,
+  magicsCountBonus: 0,
+  rotationSpeedBonus: 0,
+  amountOfHPRestoredBonus: 0,
+  moveSpeedBonus: 1,
+  criticalStrikeChanceBonus: 0,
+  criticalDamageMultiplierBonus: 0,
+  lightningCountBonus: 0,
+  fireDamageBonus: 1
 }
 
-export default playerInitCfgs;
+
+
+
+export default originalPlayerInitCfgs;

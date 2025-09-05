@@ -1,15 +1,33 @@
+
 import { getModifiedCooldown } from "../utils/cooldownUtils.js";
+import { flashIcon } from "../utils/flashIcon.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
-export function shootTornado(scene, player, tornadoGroup, count) {
+export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLevel) {
+    const level = spellLevel-1;
+    
+
     for (let i = 0; i < count; i++) {
-        const tornado = tornadoGroup.get(player.x, player.y, "tornadoAnims");
+
+        flashIcon(scene, iconID)
+        let tornadoAnim = ''
+        function getTornadoAnim() {
+            if (Math.random() > 0.5) {
+                tornadoAnim = "tornadoAnims"
+            }
+            else {
+                tornadoAnim = "tornadoAnims_2"
+            }
+        }
+        getTornadoAnim()
+        tornadoAnim = 'tornadoAnims_2'
+        const tornado = tornadoGroup.get(player.x, player.y, tornadoAnim);
 
         if (scene.time.now - scene.lastTornadoSoundTime > 1050) {
             scene.lastTornadoSoundTime = scene.time.now;
             scene.tornadoStartSoundSfx.play()
         }
-        tornado.play('tornadoAnims')
+        tornado.play(tornadoAnim)
 
         if (!tornado) return;
         resetTornado(tornado, player.x + Phaser.Math.Between(-410, 400), player.y + Phaser.Math.Between(-410, 420), scene)
@@ -19,18 +37,50 @@ export function shootTornado(scene, player, tornadoGroup, count) {
         tornado.body.setCollideWorldBounds(true);
         tornado.body.setBounce(1); // пусть отскакивает от границ
         tornado.body.setCircle(tornado.width / 2);
-        tornado.particles = scene.add.particles(0, 0, 'flares', {
-            frame: 'blue',
-            lifespan: 200,
-            speed: 300,
-            angle: { min: 0, max: 360 },
-            scale: { start: 0.7, end: 0 },
-            alpha: { start: 0.8, end: 0 },
+        if (level < 3) {
+            tornado.particles = scene.add.particles(0, 0, 'flares', {
+                frame: 'blue',
+                lifespan: 30 * level,
+                speed: 300,
+                angle: { min: 0, max: 360 },
+                scale: { start: 0.1, end: 0.7 },
+                alpha: { start: 0.8, end: 0 },
+                tint: [0x0000ff, 0x119955],
+                // tint: [0x00ff00, 0x993300], // on max level
+                blendMode: 'ADD',
+                follow: tornado
+            });
+        } else if (level < 7) {
+            {
+                tornado.particles = scene.add.particles(0, 0, 'flares', {
+                    frame: 'blue',
+                    lifespan: 30 * level,
+                    speed: 300,
+                    angle: { min: 0, max: 360 },
+                    scale: { start: 0.1, end: 0.7 },
+                    alpha: { start: 0.8, end: 0 },
+                    tint: [0x6600ff, 0xee9955],
+                    // tint: [0x00ff00, 0x993300], // on max level
+                    blendMode: 'ADD',
+                    follow: tornado
+                });
+            }
 
-            tint: [0xff0000, 0x993300],
-            blendMode: 'SCREEN',
-            follow: tornado
-        });
+        } else {
+            tornado.particles = scene.add.particles(0, 0, 'flares', {
+                frame: 'blue',
+                lifespan: 35 * level,
+                speed: 350,
+                angle: { min: 0, max: 360 },
+                scale: { start: 0.2, end: 0.8 },
+                alpha: { start: 0.8, end: 0 },
+                tint: [0xff00ff, 0xff0000],
+                // tint: [0x00ff00, 0x993300], // on max level
+                blendMode: 'ADD',
+                follow: tornado
+            });
+        }
+
 
         scene.physics.velocityFromRotation(
             Phaser.Math.FloatBetween(0, Math.PI * 2), // случайный угол
@@ -49,7 +99,7 @@ export function shootTornado(scene, player, tornadoGroup, count) {
                 scene.physics.velocityFromRotation(newAngle, 120, tornado.body.velocity);
             }
         });
-        scene.time.delayedCall(getModifiedCooldown(playerSkills.tornado.duration), () => {
+        scene.time.delayedCall(playerSkills.tornado.duration * scene.playerInitCfgs.magicsDurationBonus, () => {
             if (tornado.active) {
                 tornado.disableBody(true, true);
                 tornado.particles.destroy()

@@ -1,9 +1,10 @@
+
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class Player {
     constructor(scene, x, y) {
         this.scene = scene;
-
+        this.gAura = 0
         // Создаем физический спрайт
         this.sprite = scene.physics.add.sprite(x, y, 'player_idle');
         this.shadow = scene.add.sprite(this.sprite.x, this.sprite.y + 10, 'shadow').setScale(0.3).setAlpha(0.3);
@@ -49,7 +50,7 @@ export default class Player {
             followOffset: { x: 0, y: 16 }, // смещение вниз (как бы от ног)
             blendMode: 'ADD'
         }).setDepth(-1);
-       
+
 
 
         // Камера следует за игроком
@@ -79,7 +80,7 @@ export default class Player {
     update() {
 
 
-        const speed = 250;
+        const speed = this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed * this.scene.playerInitCfgs.moveSpeedBonus;
 
         let moveX = 0;
         let moveY = 0;
@@ -117,6 +118,7 @@ export default class Player {
             if (this.scene.playerMoveSfx.isPlaying) {
                 this.scene.playerMoveSfx.stop();
             }
+            this.gAura++;
             this.stepParticles.stop()
 
         }

@@ -1,7 +1,6 @@
 
 import { getHUD } from "./hudManager.js";
-import playerInitCfgs from "../PlayerConfigs.js";
-import levels from "../levelsConfigs.js";
+
 
 export default class PlayerHPMark {
     constructor(scene, player) {
@@ -26,7 +25,7 @@ export default class PlayerHPMark {
     update() {
         const hud = getHUD();
         const hp = hud.lives;
-        const max = levels[this.scene.registry.get("currentLevel")].playerConfigs.maxHP;
+        const max = this.scene.levels[this.scene.registry.get("currentLevel")].playerConfigs.maxHP;
 
         // if (hp >= max) {
         //     this.hpBarBg.setVisible(false);

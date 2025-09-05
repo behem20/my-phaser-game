@@ -16,13 +16,14 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     // 🔥 Подсветка врага
 
     enemy.sprite.setTintFill(randomTintFill('#a70000', '#460303ff'));
-
+    const textX = enemy.x+Phaser.Math.Between(-20,20)
+    const textY = enemy.y+Phaser.Math.Between(-20,20)
     // 🔥 Отобразить число урона
     if (damage > 0) {
-        const dmgText = scene.add.text(enemy.x, enemy.y - 40, `-${damage}`, {
-            fontSize: '24px',
+        const dmgText = scene.add.text(textX, textY - 40, `-${damage}`, {
+            fontSize: Math.random()>0.5?'24px':'30px',
             fontFamily: 'Arial',
-            color: '#a70000ff',
+            color: Math.random()>0.5?'#a70000ff':'#f82f50ff',
             stroke: '#000000',
             strokeThickness: 3
         }).setOrigin(0.5).setDepth(100);

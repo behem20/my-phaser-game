@@ -1,4 +1,4 @@
-import levels from "../levelsConfigs.js";
+
 import { getHUD } from "./hudManager.js";
 import { playerSkills } from "./upgradesManager.js";
 import { setLanguage, t } from "../LanguageManager.js";
@@ -10,6 +10,8 @@ export function setupPause(scene) {
 }
 
 export function togglePause(scene) {
+    
+
     scene.isPaused = !scene.isPaused;
 
     if (scene.isPaused) {
@@ -18,6 +20,9 @@ export function togglePause(scene) {
         scene.physics.world.pause();
         if (scene.shootMagicTimer) {
             scene.shootMagicTimer.paused = true;
+        }
+        if (scene.shootFakeMagicTimer) {
+            scene.shootFakeMagicTimer.paused = true;
         }
         if (scene.shootFireTimer) {
             scene.shootFireTimer.paused = true;
@@ -48,7 +53,7 @@ export function togglePause(scene) {
         scene.waveManager.stopAll()
         scene.spawnCoinsTimer.paused = true;
         scene.hud.pause();
-        scene.sound.volume = 0.01;
+        // scene.sound.volume = 0.01;
 
         scene.pauseOverlay = scene.add.rectangle(
             0, 0,
@@ -75,8 +80,14 @@ export function togglePause(scene) {
                 backgroundColor: '#222',
                 padding: { x: 10, y: 5 }
             }
-        ).setOrigin(0.5).setScrollFactor(0).setInteractive();
-
+        ).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(33);
+        scene.resumeButton.on('pointerover', () => {
+            scene.resumeButton.setScale(1.1)
+            scene.onHoverSfx.play()
+        })
+        scene.resumeButton.on('pointerout', () => {
+            scene.resumeButton.setScale(1)
+        })
         scene.resumeButton.on('pointerdown', () => { scene.onTapSfx.play(); togglePause(scene) });
 
         scene.toMenuButton = scene.add.text(
@@ -90,18 +101,77 @@ export function togglePause(scene) {
                 padding: { x: 10, y: 5 }
             }
         ).setOrigin(0.5).setScrollFactor(0).setInteractive();
+        scene.toMenuButton.on('pointerover', () => {
+            scene.toMenuButton.setScale(1.1)
+            scene.onHoverSfx.play()
 
+        })
+        scene.toMenuButton.on('pointerout', () => {
+            scene.toMenuButton.setScale(1)
+        })
         scene.toMenuButton.on('pointerdown', () => {
             scene.onTapSfx.play();
-            levels[scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel = 1
-            playerSkills.resetSkills()
-            scene.scene.start("MenuScene");
+            // scene.levels[scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel = 1
+            // playerSkills.resetSkills()
+            // resetLevels()
+
+
+            scene.confirmBox = scene.add.rectangle(200, 300, 400, 400, 0x000000).setScrollFactor(0).setOrigin(0).setDepth(100).setInteractive()
+            scene.questionText = scene.add.text(300, 350, 'leave?', { fontSize: '48px', fill: '#fff' }).setScrollFactor(0).setDepth(101)
+            scene.confirmYes = scene.add.text(300, 600, 'yes', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(101)
+            scene.confirmYes.on('pointerdown', () => {
+                scene.hud.minusLives(10)
+                scene.scene.launch("GameOverScene", { scene: scene, score: scene.hud.score })
+            })
+            scene.confirmYes.on('pointerover', () => {
+                scene.onHoverSfx.play()
+
+                scene.confirmYes.setScale(1.1)
+            })
+            scene.confirmYes.on('pointerout', () => {
+
+                scene.confirmYes.setScale(1)
+            })
+
+            scene.confirmNot = scene.add.text(450, 600, 'no', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(101)
+            scene.confirmNot.on('pointerdown', () => {
+                scene.confirmBox.destroy()
+                scene.questionText.destroy()
+                scene.confirmYes.destroy()
+                scene.confirmNot.destroy()
+            })
+            scene.confirmNot.on('pointerover', () => {
+                scene.onHoverSfx.play()
+                scene.confirmNot.setScale(1.1)
+            })
+            scene.confirmNot.on('pointerout', () => {
+
+                scene.confirmNot.setScale(1)
+            })
+
+            // scene.scene.start("MenuScene");
         });
 
         //settings
-        const settingsButton = scene.add.sprite(770, 33, "settings").setInteractive().setScrollFactor(0)
+        scene.settingsButton = scene.add.text(
+            scene.cameras.main.centerX,
+            scene.cameras.main.centerY + 140, t('ui.options'),
+            {
+                fontSize: '32px',
+                fill: '#0f0',
+                backgroundColor: '#222',
+                padding: { x: 10, y: 5 }
+            }
+        ).setInteractive().setScrollFactor(0).setOrigin(0.5)
+        scene.settingsButton.on('pointerover', () => {
+            scene.settingsButton.setScale(1.1)
+            scene.onHoverSfx.play()
 
-        settingsButton.on('pointerdown', () => {
+        })
+        scene.settingsButton.on('pointerout', () => {
+            scene.settingsButton.setScale(1)
+        })
+        scene.settingsButton.on('pointerdown', () => {
             scene.onTapSfx.play();
             const bgFill = scene.add.rectangle(0, 0, 800, 800, 0x550000, 1)
                 .setOrigin(0)
@@ -129,7 +199,7 @@ export function togglePause(scene) {
                 toggleSoundButton.setTexture(!scene.sound.mute ? 'soundOn' : 'soundOff')
 
                 scene.sound.mute = !scene.sound.mute;
-                console.log('1');
+               
 
             })
         });
@@ -139,6 +209,9 @@ export function togglePause(scene) {
         scene.physics.world.resume();
         if (scene.shootMagicTimer) {
             scene.shootMagicTimer.paused = false;
+        }
+        if (scene.shootFakeMagicTimer) {
+            scene.shootFakeMagicTimer.paused = false;
         }
         if (scene.shootFireTimer) {
             scene.shootFireTimer.paused = false;
@@ -174,5 +247,6 @@ export function togglePause(scene) {
         scene.pauseText.destroy();
         scene.resumeButton.destroy();
         scene.toMenuButton.destroy();
+        scene.settingsButton.destroy()
     }
 }

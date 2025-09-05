@@ -1,10 +1,10 @@
 import CompleteLevelScene from './scenes/CompleteLevelScene.js'
 import GameOverScene from './scenes/GameOverScene.js'
 import GameScene from './scenes/GameScene.js'
-import InventoryScene from './scenes/InventoryScene.js'
+import InChestScene from './scenes/InChestScene.js'
 import MenuScene from './scenes/MenuScene.js'
 import MusicScene from './scenes/MusicScene.js'
-import ShopScene from './scenes/ShopScene.js'
+import MetaUpgradesScene from './scenes/MetaUpgradesScene.js'
 import UpgradeForExpScene from './scenes/UpgradeForExpScene.js'
 
 const config = {
@@ -25,8 +25,8 @@ const config = {
         CompleteLevelScene,
         MusicScene,
         UpgradeForExpScene,
-        InventoryScene,
-        ShopScene
+        InChestScene,
+        MetaUpgradesScene
     ],
     plugins: {
         scene: [

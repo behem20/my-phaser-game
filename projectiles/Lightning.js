@@ -1,23 +1,22 @@
+
+import { applyDamageWithCooldown } from "../utils/applyDamageWithCooldown.js";
 import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
+import { flashIcon } from "../utils/flashIcon.js";
 import { flashScreen } from "../utils/FlashScreen.js";
 import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
-export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1) {
-
-
-
+export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1,iconID) {
     const lightningKeys = ['lightning1', 'lightning2', 'lightning3', 'lightning4', 'lightning5'];
-
-
-    const enemies = getClosestEnemiesInRadius(player.gameObject, enemiesGroup.getChildren(), targetCount);
+    const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
+    const enemies = getClosestEnemiesInRadius(player.gameObject, enemiesGroup.getChildren(), finalCount);
 
     if (enemies.length === 0) return;
-    flashScreen(scene,0x99ccff,0.08)
+    flashIcon(scene, iconID)
+    flashScreen(scene, 0x99ccff, 0.1)
     scene.lightningShootSfx.play();
-
 
     enemies.forEach(enemy => {
         // scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.9, 1.1));
@@ -28,14 +27,15 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
         lightning.body.allowGravity = false;
 
         if (!enemy.active) return;
-        damageEnemy(scene, enemy, playerSkills.lightning.damage, getHUD())
-        addDamage("lightning", playerSkills.lightning.damage);
+        applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10)
+        // damageEnemy(scene, enemy, playerSkills.lightning.damage, getHUD())
+        // addDamage("lightning", playerSkills.lightning.damage);
         scene.tweens.add({
             targets: lightning,
-            alpha: 0.5,
+            alpha: 0,
             yoyo: true,        // вернуться обратно к alpha=1
             repeat: 1,         // сколько раз повторить (1 = один цикл туда-обратно)
-            duration: 50,      // скорость мигания
+            duration: 70,      // скорость мигания
             onComplete: () => {
                 lightning.destroy(); // удаляем после анимации
             }

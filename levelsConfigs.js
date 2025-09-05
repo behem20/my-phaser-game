@@ -1,59 +1,68 @@
-const levels = [
+const originalLevels = [
+    //0
     {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 75,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 55,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 280,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 2630,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 20,
         },
         levelConfigs: {
             levelDuration: 300,
-            backGround: 'background_5',
+            backGround: 'background_1',
             expToUpgrade: 10,
             coefficientToUpgradeLevel: 1.3,
             MaxUpgradeLevelSkills: 8,
             dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 0.5,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-
+                        // { type: 'boss', count: 1, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 1000, delayBetweenEnemies: 1000 },
                     ]
                 },
 
                 {
                     groups: [
-                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
 
 
@@ -104,11 +113,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
                         { type: 'normal', count: 10, delayBetweenEnemies: 450 },
@@ -162,14 +167,14 @@ const levels = [
                 {
                     groups: [
 
-                        { type: 'tank', count: 20, delayBetweenEnemies: 150 }
+                        { type: 'tank', count: 10, delayBetweenEnemies: 150 }
                     ]
                 },
                 {
                     groups: [//15
                         { type: 'fast', count: 10, delayBetweenEnemies: 30 },
                         { type: 'normal', count: 10, delayBetweenEnemies: 150 },
-                        { type: 'tank', count: 15, delayBetweenEnemies: 10 },
+                        { type: 'tank', count: 10, delayBetweenEnemies: 10 },
                     ]
                 },
                 {
@@ -203,11 +208,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
 
@@ -234,11 +235,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
                         { type: 'fast', count: 50, delayBetweenEnemies: 5 }
@@ -262,11 +259,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
 
                 {
                     groups: [
@@ -402,25 +395,25 @@ const levels = [
                 },
                 {
                     groups: [
-                        { type: 'fast', count: 100, delayBetweenEnemies: 1 },
+                        { type: 'fast', count: 100, delayBetweenEnemies:32 },
 
                     ]
                 },
                 {
                     groups: [
-                        { type: 'tank', count: 200, delayBetweenEnemies: 1 },//240sec
+                        { type: 'tank', count: 100, delayBetweenEnemies: 14 },//240sec
 
                     ]
                 },
                 {
                     groups: [
-                        { type: 'tank', count: 200, delayBetweenEnemies: 1 },
+                        { type: 'tank', count: 1300, delayBetweenEnemies: 23 },
 
                     ]
                 },
                 {
                     groups: [
-                        { type: 'tank', count: 200, delayBetweenEnemies: 1 },
+                        { type: 'tank', count: 140, delayBetweenEnemies: 20 },
 
                     ]
                 },
@@ -483,48 +476,56 @@ const levels = [
             ]
         }
     },
+    //1
     {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 105,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 75,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 370,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 4000,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 30,
         },
         levelConfigs: {
             levelDuration: 300,
-            backGround: 'background_5',
+            backGround: 'background_2',
             expToUpgrade: 10,
-            coefficientToUpgradeLevel: 1.3,
+            coefficientToUpgradeLevel: 1.4,
             MaxUpgradeLevelSkills: 8,
-            dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            dropCoinsAmount: 3,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 0.6,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
@@ -892,25 +893,29 @@ const levels = [
                 },
                 {
                     groups: [
-                        { type: 'tank', count: 200, delayBetweenEnemies: 1 },//240sec
+                        { type: 'tank', count: 100, delayBetweenEnemies: 30 },//240sec
+                        { type: 'boss', count: 20, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'tank', count: 150, delayBetweenEnemies: 30 },//240sec
+                        { type: 'boss', count: 20, delayBetweenEnemies: 10 },
+                        { type: 'fast', count: 100, delayBetweenEnemies: 25 },
 
                     ]
                 },
                 {
                     groups: [
                         { type: 'tank', count: 200, delayBetweenEnemies: 1 },
+                        { type: 'boss', count: 35, delayBetweenEnemies: 10 },
 
                     ]
                 },
                 {
                     groups: [
-                        { type: 'tank', count: 200, delayBetweenEnemies: 1 },
-
-                    ]
-                },
-                {
-                    groups: [
-                        { type: 'boss', count: 25, delayBetweenEnemies: 10 },
+                        { type: 'boss', count: 45, delayBetweenEnemies: 10 },
 
                     ]
                 },
@@ -967,61 +972,70 @@ const levels = [
             ]
         }
     },
+    //2
     {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 145,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 105,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 520,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 5850,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 40,
         },
         levelConfigs: {
             levelDuration: 300,
-            backGround: 'background_5',
+            backGround: 'background_3',
             expToUpgrade: 10,
-            coefficientToUpgradeLevel: 1.3,
+            coefficientToUpgradeLevel: 1.5,
             MaxUpgradeLevelSkills: 8,
-            dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            dropCoinsAmount: 5,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 0.7,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
                     ]
                 },
 
                 {
                     groups: [
-                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
 
 
@@ -1450,63 +1464,71 @@ const levels = [
 
             ]
         }
-
     },
+    //3
     {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 180,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 130,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 710,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 7650,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 50,
         },
         levelConfigs: {
             levelDuration: 300,
-            backGround: 'background_5',
+            backGround: 'background_4',
             expToUpgrade: 10,
-            coefficientToUpgradeLevel: 1.3,
+            coefficientToUpgradeLevel: 1.6,
             MaxUpgradeLevelSkills: 8,
-            dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            dropCoinsAmount: 7,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 0.8,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
                     ]
                 },
 
                 {
                     groups: [
-                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
 
 
@@ -1936,31 +1958,36 @@ const levels = [
             ]
         }
     },
+    //4
     {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 220,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 160,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 880,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 9100,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 60,
@@ -1969,28 +1996,509 @@ const levels = [
             levelDuration: 300,
             backGround: 'background_5',
             expToUpgrade: 10,
-            coefficientToUpgradeLevel: 1.3,
+            coefficientToUpgradeLevel: 1.7,
             MaxUpgradeLevelSkills: 8,
-            dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            dropCoinsAmount: 9,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 0.9,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
                     ]
                 },
 
                 {
                     groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
                         { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
+
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                
+                {
+                    groups: [
+                        { type: 'normal', count: 10, delayBetweenEnemies: 450 },
+
+                    ]
+                },
+                {
+                    groups: [//5
+
+                        { type: 'normal', count: 10, delayBetweenEnemies: 200 },
+                    ]
+                },
+                {
+                    groups: [
+                        // { type: 'tank', count: 5, delayBetweenEnemies: 600 },
+                        { type: 'normal', count: 20, delayBetweenEnemies: 200 },
+                        { type: 'fast', count: 5, delayBetweenEnemies: 30 },
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 }
+                    ]
+                },
+
+                {
+                    groups: [//10
+
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'fast', count: 15, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'normal', count: 15, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'tank', count: 20, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [//15
+                        { type: 'fast', count: 10, delayBetweenEnemies: 30 },
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 },
+                        { type: 'tank', count: 15, delayBetweenEnemies: 10 },
+                    ]
+                },
+                {
+                    groups: [
+
+                        { type: 'normal', count: 15, delayBetweenEnemies: 150 }
+                    ]
+                },
+                {
+                    groups: [
+                        // { type: 'fast', count: 10, delayBetweenEnemies: 30 },
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 },
+                        { type: 'tank', count: 10, delayBetweenEnemies: 10 },
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 30 },
+                        { type: 'normal', count: 10, delayBetweenEnemies: 150 },
+                        // { type: 'tank', count: 30, delayBetweenEnemies: 10 },
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 30, delayBetweenEnemies: 10 },
+                        // { type: 'tank', count: 30, delayBetweenEnemies: 10 },
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                
+                {
+                    groups: [
+
+                        { type: 'normal', count: 10, delayBetweenEnemies: 10 },
+                        // { type: 'tank', count: 30, delayBetweenEnemies: 10 },
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 20, delayBetweenEnemies: 200 },
+                        { type: 'normal', count: 30, delayBetweenEnemies: 150 },
+                        // { type: 'tank', count: 100, delayBetweenEnemies: 150 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 3, delayBetweenEnemies: 555 } //120 
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                
+                {
+                    groups: [
+                        { type: 'fast', count: 50, delayBetweenEnemies: 5 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 50, delayBetweenEnemies: 300 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'tank', count: 30, delayBetweenEnemies: 5 }
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+               
+
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 100, delayBetweenEnemies: 1 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 1 },//160 sec
+                        { type: 'fast', count: 50, delayBetweenEnemies: 1 }
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 450 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 10, delayBetweenEnemies: 10 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 10, delayBetweenEnemies: 10 }
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 50, delayBetweenEnemies: 10 },
+                        { type: 'tank', count: 50, delayBetweenEnemies: 1 }
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 50, delayBetweenEnemies: 10 },
+                        { type: 'tank', count: 10, delayBetweenEnemies: 1 }
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 4, delayBetweenEnemies: 10 },
+                        { type: 'tank', count: 4, delayBetweenEnemies: 1 }
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 10 },//200 sec
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 10, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 20, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'fast', count: 100, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'tank', count: 150, delayBetweenEnemies: 10 },//240sec
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'tank', count: 160, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'tank', count: 170, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 25, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 50, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 60, delayBetweenEnemies: 10 },//280
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 70, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+                {
+                    groups: [
+                        { type: 'boss', count: 80, delayBetweenEnemies: 10 },
+
+                    ]
+                },
+                {
+                    groups: [
+
+                    ]
+                },
+
+            ]
+        }
+    },
+    //5
+    {
+        enemiesConfigs: {
+            normalType: {
+                hp: 270,
+                texture: 'enemy_normal_1',
+                animation: 'enemy_normal_1',
+                speed: 50,
+                radius: 24
+            },
+            fastType: {
+                hp: 200,
+                texture: 'enemyFast_1',
+                animation: 'enemy_fast_1',
+                speed: 150,
+                radius: 12
+            },
+            tankType: {
+                hp: 1100,
+                texture: 'enemy_tank_1',
+                animation: 'enemy_tank_1',
+                speed: 70,
+                radius: 32
+            },
+            bossType: {
+                hp: 11000,
+                texture: 'enemy_boss_1',
+                animation: 'enemy_boss_1',
+                speed: 50,
+                radius: 120
+            },
+            coefficientStartEnemiesHP: 30,
+            enemiesProcentHPIncreasePer10sec: 70,
+        },
+        levelConfigs: {
+            levelDuration: 300,
+            backGround: 'background_6',
+            expToUpgrade: 10,
+            coefficientToUpgradeLevel: 1.8,
+            MaxUpgradeLevelSkills: 8,
+            dropCoinsAmount: 11,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 1,
+        }, playerConfigs: {
+            dmg: 1,
+            hp: 10,
+            maxHP: 10,
+            baseCastInterval: 10000,
+            speed: 250,
+        },
+        wavesConfigs: {
+            delayBetweenWaves: 5000,
+            waves: [
+                {
+                    groups: [
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                    ]
+                },
+
+                {
+                    groups: [
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
 
 
@@ -2420,61 +2928,70 @@ const levels = [
             ]
         }
     },
-    {
+    // 6
+   {
         enemiesConfigs: {
             normalType: {
-                hp: 45,
+                hp: 100,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,
+                radius: 24
             },
             fastType: {
-                hp: 30,
+                hp: 140,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
                 speed: 150,
+                radius: 12
             },
             tankType: {
-                hp: 160,
+                hp: 720,
                 texture: 'enemy_tank_1',
                 animation: 'enemy_tank_1',
                 speed: 70,
+                radius: 32
             },
             bossType: {
-                hp: 1550,
+                hp: 7000,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 50,
+                radius: 120
             },
             coefficientStartEnemiesHP: 30,
             enemiesProcentHPIncreasePer10sec: 70,
         },
         levelConfigs: {
-            levelDuration: 300,
-            backGround: 'background_5',
+            levelDuration: 1200,
+            backGround: 'background_7',
             expToUpgrade: 10,
-            coefficientToUpgradeLevel: 1.3,
+            coefficientToUpgradeLevel: 1.8,
             MaxUpgradeLevelSkills: 8,
-            dropCoinsAmount: 1,
-            levelUpPointsCount: 1
+            dropCoinsAmount: 6,
+            levelUpPointsCount: 1,
+            addExpAmountPerKillAmount: 1,
+            addGoldAndGemsCoefficient: 1,
         }, playerConfigs: {
-            dmg: 10,
+            dmg: 1,
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
+            speed: 250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
                     ]
                 },
 
                 {
                     groups: [
-                        { type: 'normal', count: 5, delayBetweenEnemies: 500 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 300 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 300 },
 
 
@@ -2525,11 +3042,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
                         { type: 'normal', count: 10, delayBetweenEnemies: 450 },
@@ -2624,11 +3137,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
 
@@ -2655,11 +3164,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
                 {
                     groups: [
                         { type: 'fast', count: 50, delayBetweenEnemies: 5 }
@@ -2683,11 +3188,7 @@ const levels = [
 
                     ]
                 },
-                {
-                    groups: [
-
-                    ]
-                },
+                
 
                 {
                     groups: [
@@ -2906,5 +3407,5 @@ const levels = [
     },
 
 ]
+export default originalLevels
 
-export default levels;

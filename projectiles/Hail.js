@@ -1,15 +1,17 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
+import { flashIcon } from "../utils/flashIcon.js";
 import { flashScreen } from "../utils/FlashScreen.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 // Каст града (hail) с интервалом
-export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50) {
+export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50, iconID) {
     const hailRadius = 105;
     const damage = playerSkills.hail?.damage || 20;
 
-    flashScreen(scene, 0x15ccff, 0.1, count*interval)
+    flashScreen(scene, 0x15ccff, 0.1, count * interval)
+    flashIcon(scene, iconID)
     for (let i = 0; i < count; i++) {
         scene.time.delayedCall(i * interval, () => {
             scene.hailShootSfx.play()

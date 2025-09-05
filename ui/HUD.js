@@ -1,4 +1,4 @@
-import levels from "../levelsConfigs.js";
+
 
 export default class HUD {
     constructor(scene, levelDuration, onLevelComplete) {
@@ -69,8 +69,8 @@ export default class HUD {
     updateLives() {
         // this.livesText.setText("Lives: " + this.lives);
     }
-    minusLives() {
-        this.lives -= 1;
+    minusLives(amount = 1) {
+        this.lives -= amount;
         this.updateLives();
     }
     updateCoins() {
@@ -93,15 +93,17 @@ export default class HUD {
             duration: 150,
             ease: 'Cubic.easeOut',
             onComplete: () => {
-this.coinsText.setScale(1)
+                this.coinsText.setScale(1)
             }
         });
     }
     updateExp() {
 
     }
-    addExp() {
-        this.exp++;
+    addExp(amount = 1) {
+
+
+        this.exp += amount;
         this.updateExpProgress()
 
     }
@@ -115,8 +117,8 @@ this.coinsText.setScale(1)
     updateExpProgress() {
         const progress = Phaser.Math.Clamp(
             this.exp / (
-                levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
-                levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
+                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
+                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
             ),
             0,
             1

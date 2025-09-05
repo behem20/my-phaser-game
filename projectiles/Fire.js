@@ -1,36 +1,87 @@
 import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
+import { flashIcon } from "../utils/flashIcon.js";
 import { getClosestEnemies } from "../utils/getClosestEnemies.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
-export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 1, hud) {
+export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 1, iconID, spellLevel) {
 
-
-   
-
-
-
+    const level = spellLevel - 1
     const enemies = getClosestEnemies(player.gameObject, enemiesGroup.getChildren(), targetCount);
     if (enemies.length === 0) return;
-
+    flashIcon(scene, iconID)
     enemies.forEach(enemy => {
         scene.fireShootSfx.play();
-        const fire = fireGroup.create(player.x, player.y, "fireAnims");
+        let fire = '';
+
+        if (level > 6) {
+            fire = fireGroup.create(player.x, player.y, "fireAnims_2");
+        } else {
+            fire = fireGroup.create(player.x, player.y, "fireAnims");
+        }
 
 
-        fire.trail = scene.add.particles(0, 0, 'flares', {
-            frame: 'yellow',
-            lifespan: 200,
-            speed: 20,
-            scale: { start: 0.2, end: 0 },
-            alpha: { start: 1, end: 0 },
-            tint: [0xffffff, 0xff11ff],
-            blendMode: 'ADD',
-            follow: fire,
-        });
+        const randomScale = Phaser.Math.FloatBetween(0.7, 1.3);
+        const randomBigScale =Phaser.Math.FloatBetween(1.3, 1.6);
+        fire.setScale(randomScale);
+        if (level < 4) {
 
-        fire.play('fireAnim')
+            fire.trail = scene.add.particles(0, 0, 'flares', {
+                frame: 'yellow',
+                lifespan: 35 * level,
+                speed: 20,
+                scale: { start: 0.2, end: 0 },
+                alpha: { start: 1, end: 0 },
+                tint: [0xffffff, 0xff11ff],
+                blendMode: 'ADD',
+                follow: fire,
+            });
+        } else if (level < 7) {
+            fire.trail = scene.add.particles(0, 0, 'red-flares', {
+                frame: 'yellow',
+                lifespan: 30 * level,
+                speed: 20,
+                scale: { start: 0.2, end: 0 },
+                alpha: { start: 1, end: 0 },
+                tint: [0xffffff, 0xff11ff],
+                blendMode: 'ADD',
+                follow: fire,
+            });
+
+        } else {
+            fire.trail = scene.add.particles(0, 0, 'red-flares', {
+                frame: 'red',
+                lifespan: 50 * level,
+                speed: 20,
+
+                scale: { start: 0.2, end: 0 },
+                alpha: { start: 1, end: 0 },
+                tint: [, 0xff11ff, 0xffffff],
+                // blendMode: 'ADD',
+                follow: fire,
+            });
+            // fire.trail = scene.add.particles(0, 0, 'flares', {
+            //     frame: 'white',
+            //     lifespan: 50 * level,
+            //     speed: 335,
+            //     angle: { min: 0, max: 360 },
+            //     scale: { start: 0.2, end: 0 },
+            //     alpha: { start: 1, end: 0 },
+            //     tint: [0x11ff00, 0x1111ff],
+            //     blendMode: 'ADD',
+            //     follow: fire,
+            // });
+
+        }
+
+        if (level > 6) {
+            fire.play('fireAnim_2')
+            fire.setScale(randomBigScale)
+        } else {
+            fire.play('fireAnim')
+        }
+        // fire.play('fireAnim')
         fire.body.allowGravity = false;
 
 
@@ -39,8 +90,7 @@ export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 
         // fire.setAngle(90  + Phaser.Math.DegToRad(-90));
         fire.setOrigin(0.5, 0.5)
         fire.setRotation(angle - 1.496);
-        const randomScale = Phaser.Math.FloatBetween(0.7, 1.3);
-        fire.setScale(randomScale);
+
         // fire.setTint(0xff4507); 
         scene.physics.velocityFromRotation(angle, speed, fire.body.velocity);
         scene.time.delayedCall(2000, () => {
@@ -51,7 +101,7 @@ export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 
         });
     })
     player.attackTextureOnce();
-    
+
 }
 
 export function handleFireHit(scene, fire, enemy, hud) {
@@ -83,14 +133,14 @@ export function handleFireHit(scene, fire, enemy, hud) {
         if (!otherEnemy.active) return;
         const distance = Phaser.Math.Distance.Between(fire.x, fire.y, otherEnemy.x, otherEnemy.y);
         if (distance <= explosionRadius) {
-            damageEnemy(scene, otherEnemy, playerSkills.fire.damage, getHUD())
+            damageEnemy(scene, otherEnemy, playerSkills.fire.finalDamage(scene), getHUD())
 
-            addDamage("fire", playerSkills.fire.damage);
+            addDamage("fire", playerSkills.fire.finalDamage(scene));
         }
     });
 
 
-    
+
     fire.destroy();
     fire.trail.destroy()
 }

@@ -1,4 +1,4 @@
-import playerInitCfgs from "../PlayerConfigs.js";
+
 
 export default class CoinSpawner {
     constructor(scene, player, enemy) {
@@ -21,7 +21,9 @@ export default class CoinSpawner {
 
 
         coin.setOrigin(0.5, 0.5);
-        const pickupRadius = coin.width *   playerInitCfgs.coinsMagnetRadiusBonus;
+        
+        
+        const pickupRadius = coin.width *   scene.playerInitCfgs.coinsMagnetRadiusBonus;
         coin.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
 
         coin.setDepth(-2)
@@ -54,7 +56,7 @@ export default class CoinSpawner {
         else {
             const coin = this.group.create(enemyX, enemyY, "coins_anim");
             coin.setOrigin(0.5, 0.5);
-            const pickupRadius = coin.width *  playerInitCfgs.coinsMagnetRadiusBonus;
+            const pickupRadius = coin.width *  scene.playerInitCfgs.coinsMagnetRadiusBonus;
             coin.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
 
             coin.play('coins_anim')

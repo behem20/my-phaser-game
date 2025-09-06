@@ -10,7 +10,7 @@ export function playLevelStartEffect(scene, player) {
         fill: "rgba(255, 0, 0, 1)",
         // backgroundColor: "#333",
         padding: { x: 10, y: 5 }
-    }).setScrollFactor(0).setOrigin(0.5)
+    }).setScrollFactor(0).setOrigin(0.5).setDepth(2000)
     scene.tweens.add({
         targets: levelStartText,
         alpha: { from: 1, to: 0 },

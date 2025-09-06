@@ -1,5 +1,7 @@
 
 import { setLanguage, t } from "../LanguageManager.js";
+import { playerSkills } from "../utils/upgradesManager.js";
+
 export default class CompleteLevelScene extends Phaser.Scene {
     constructor() {
         super('CompleteLevelScene')
@@ -8,11 +10,26 @@ export default class CompleteLevelScene extends Phaser.Scene {
 
     }
     create(data) {
-        const { score = 0 } = data;
+        data.scene.playerMoveSfx.stop()
+
+        const completedList = this.registry.get('completedLevelsList')
+        completedList[this.registry.get('currentLevel')] = 1
+        this.registry.set('completedLevelsList', completedList)
+        
+
+        const { coins = 0 } = data; //score = enemy killed count
+        // const goldAmount = Math.trunc(score * 0.1 * data.scene.levels[data.scene.registry.get('currentLevel')].levelConfigs.addGoldAndGemsCoefficient);
+        // const gemAmount = Math.trunc(score * 0.03 * data.scene.levels[data.scene.registry.get('currentLevel')].levelConfigs.addGoldAndGemsCoefficient);
+        const goldAmount = Math.trunc(coins);
+
+        const gemAmount = Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
+
 
         this.onTapSfx = this.sound.add('onTapSound', { volume: 0.1 });
+        this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
+
         // Полупрозрачный фон
-        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.3)
+        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.9)
             .setOrigin(0)
             .setScrollFactor(0);
 
@@ -21,43 +38,57 @@ export default class CompleteLevelScene extends Phaser.Scene {
             fill: "#fff"
         }).setOrigin(0.5);
 
-        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${score}`, {
+        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${coins}`, {
             fontSize: "28px",
-            fill: "#fff"
+            fill: "#ff9a03ff"
         }).setOrigin(0.5);
 
 
-
-        // const restartBtn = this.add.text(this.cameras.main.centerX, 320, "Restart", {
-        //     fontSize: "24px",
-        //     fill: "#0f0",
-        //     backgroundColor: "#333",
-        //     padding: { x: 10, y: 5 }
-        // }).setInteractive().setOrigin(0.5);
-
-        // restartBtn.on("pointerdown", () => {
-        //     this.scene.stop();                  // Закрыть GameOver
-        //     this.scene.stop("GameScene");      // Сбросить GameScene
-        //     this.scene.start("GameScene");     // Запустить заново
-        // });
-
-        const menuBtn = this.add.text(this.cameras.main.centerX, 370, t('ui.continue'), {
+        const goldTextBg = this.add.rectangle(this.cameras.main.centerX - 180, this.cameras.main.centerY - 120, 150, 210, 0xffbb00, 0.05).setOrigin(0).setStrokeStyle(2, 0xeecc00);
+        const goldText = this.add.text(goldTextBg.x + goldTextBg.width / 2,
+            goldTextBg.y + goldTextBg.height * 0.8, goldAmount, {
             fontSize: "24px",
-            fill: "#0f0",
+            fill: "rgba(238, 194, 0, 1)"
+        }).setOrigin(0.5);
+        const goldIcon = this.add.image(goldTextBg.x + goldTextBg.width / 2,
+            goldTextBg.y + goldTextBg.height / 4, 'gold').setScale(0.35).setOrigin(0.5)
+
+        const gemsTextBg = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY - 120, 150, 210, 0x00bbff, 0.05).setOrigin(0).setStrokeStyle(2, 0x337799);
+        const gemsText = this.add.text(gemsTextBg.x + gemsTextBg.width / 2, gemsTextBg.y + gemsTextBg.height * 0.8, gemAmount, {
+            fontSize: "24px",
+            fill: "rgba(92, 192, 209, 1)"
+        }).setOrigin(0.5);
+        const gemsIcon = this.add.image(gemsTextBg.x + gemsTextBg.width / 2, gemsTextBg.y + gemsTextBg.height / 4, 'gem').setScale(0.35).setOrigin(0.5)
+
+
+
+        const menuBtn = this.add.text(this.cameras.main.centerX, 570, t('ui.continue'), {
+            fontSize: "24px",
+            fill: "rgba(255, 38, 0, 1)",
             backgroundColor: "#333",
             padding: { x: 10, y: 5 }
         }).setInteractive().setOrigin(0.5);
 
         menuBtn.on("pointerdown", () => {
+            this.registry.set('goldCount', this.registry.get('goldCount') + goldAmount)
+            this.registry.set('gemCount', this.registry.get('gemCount') + gemAmount)
             this.onTapSfx.play();
+
             this.scene.stop();                  // Закрыть GameOver
             this.scene.stop("GameScene");      // Закрыть игру
             this.scene.start("MenuScene");     // Перейти в меню
         });
+        menuBtn.on("pointerover", () => {
+            this.onHoverSfx.play()
+            menuBtn.setScale(1.1)
+        });
+        menuBtn.on("pointerout", () => {
+            menuBtn.setScale(1)
+        });
 
-        const infoBtn = this.add.text(this.cameras.main.centerX, 440, t('ui.info'), {
+        const infoBtn = this.add.text(this.cameras.main.centerX, 640, t('ui.info'), {
             fontSize: "24px",
-            fill: "#0f0",
+            fill: "rgba(255, 38, 0, 1)",
             backgroundColor: "#333",
             padding: { x: 10, y: 5 }
         }).setInteractive().setOrigin(0.5);
@@ -68,6 +99,14 @@ export default class CompleteLevelScene extends Phaser.Scene {
             // this.scene.stop("GameScene");      // Сбросить GameScene
             // this.scene.start("GameScene");     // Запустить заново
         });
+        infoBtn.on("pointerover", () => {
+            this.onHoverSfx.play()
+            infoBtn.setScale(1.1)
+        });
+        infoBtn.on("pointerout", () => {
+
+            infoBtn.setScale(1)
+        });
 
         let toggle = false;
         this.time.addEvent({
@@ -75,10 +114,10 @@ export default class CompleteLevelScene extends Phaser.Scene {
             callback: () => {
                 toggle = !toggle;
                 menuBtn.setStyle({
-                    backgroundColor: toggle ? '#333' : '#331',
+                    backgroundColor: toggle ? '#3333332d' : 'rgba(51, 51, 17, 0.14)',
                 });
                 infoBtn.setStyle({
-                    backgroundColor: toggle ? '#333' : '#331',
+                    backgroundColor: toggle ? '#33333325' : 'rgba(51, 51, 17, 0.12)',
                 });
 
             },
@@ -86,7 +125,10 @@ export default class CompleteLevelScene extends Phaser.Scene {
             loop: true
         });
 
-        this.registry.set('currentLevel', this.registry.get('currentLevel') + 1)
+
+        // playerSkills.resetSkills()
+
+        // this.registry.set('currentLevel', this.registry.get('currentLevel') + 1)
     }
     update() {
 

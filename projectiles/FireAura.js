@@ -1,13 +1,10 @@
-import { damageEnemy } from "../utils/damageEnemy.js";
-import { addDamage } from "../utils/damageStats.js";
+import { applyDamageWithCooldown } from "../utils/applyDamageWithCooldown.js";
 import { getAllClosestEnemiesInRadius } from "../utils/getAllClosestEnemiesInRadius copy.js";
-import { getHUD } from "../utils/hudManager.js";
-import { playerSkills } from "../utils/upgradesManager.js";
 
-export function shootFireAura(scene, player, enemiesGroup, fireAuraGroup, radius) {
-   
+export function shootFireAura(scene, player, enemiesGroup, fireAuraGroup, radius, ) {
+
     const enemies = getAllClosestEnemiesInRadius(player.gameObject, enemiesGroup.getChildren(), radius);
-
+    
     // scene.lightShootSfx.play();
 
     enemies.forEach(enemy => {
@@ -16,8 +13,9 @@ export function shootFireAura(scene, player, enemiesGroup, fireAuraGroup, radius
         if (!scene.fireAuraSfx.isPlaying) {
             scene.fireAuraSfx.play();
         }
-        damageEnemy(scene, enemy, playerSkills.fireAura.damage, getHUD())
-        addDamage("fireAura", playerSkills.fireAura.damage);
+        applyDamageWithCooldown(scene, 'fireAura', enemy, 10, 300)
+        // damageEnemy(scene, enemy, playerSkills.fireAura.damage, getHUD())
+        // addDamage("fireAura", playerSkills.fireAura.damage);
 
         const fx = scene.add.sprite(enemy.x, enemy.y, 'fireAuraAnims').setDepth(10);
         fx.play('fireAuraAnim');

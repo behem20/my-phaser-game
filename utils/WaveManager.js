@@ -1,10 +1,10 @@
-import levels from "../levelsConfigs.js";
+
 
 export default class WaveManager {
     constructor(scene, levelIndex) {
         this.scene = scene;
-        this.waves = levels[levelIndex].wavesConfigs.waves;
-        this.delayBetweenWaves = levels[levelIndex].wavesConfigs.delayBetweenWaves;
+        this.waves = scene.levels[levelIndex].wavesConfigs.waves;
+        this.delayBetweenWaves = scene.levels[levelIndex].wavesConfigs.delayBetweenWaves;
 
         this.currentWaveIndex = 0;
         this.enemySpawnTimers = [];  // массив таймеров для групп врагов

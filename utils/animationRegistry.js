@@ -2,8 +2,20 @@
 export function loadAllAnimations(scene) {
     const animations = [
         {   //coins
-            key: 'coins_anim',
-            frames: scene.anims.generateFrameNumbers('coins_sheet', { start: 0, end: 3 }),
+            key: 'coins_bot_anim',
+            frames: scene.anims.generateFrameNumbers('coins_bot_sheet', { start: 0, end: 3 }),
+            frameRate: 2,
+            repeat: -1
+        },
+         {   //coins
+            key: 'coins_mid_anim',
+            frames: scene.anims.generateFrameNumbers('coins_mid_sheet', { start: 0, end: 3 }),
+            frameRate: 2,
+            repeat: -1
+        },
+         {   //coins
+            key: 'coins_top_anim',
+            frames: scene.anims.generateFrameNumbers('coins_top_sheet', { start: 0, end: 3 }),
             frameRate: 2,
             repeat: -1
         },
@@ -58,6 +70,12 @@ export function loadAllAnimations(scene) {
             frameRate: 24,
             repeat: -1
         },
+        {   //fire
+            key: 'fireAnim_2',
+            frames: scene.anims.generateFrameNumbers('fireAnims_2', { start: 0, end: 7 }),
+            frameRate: 24,
+            repeat: -1
+        },
         {
             key: 'fireExplosionAnim',
             frames: scene.anims.generateFrameNumbers('fireExplosionAnims', { start: 0, end: 10 }),
@@ -75,6 +93,12 @@ export function loadAllAnimations(scene) {
         {   //tornado
             key: 'tornadoAnims',
             frames: scene.anims.generateFrameNumbers('tornadoAnims', { start: 0, end: 5 }),
+            frameRate: 24,
+            repeat: -1
+        },
+        {   //tornado_2
+            key: 'tornadoAnims_2',
+            frames: scene.anims.generateFrameNumbers('tornadoAnims_2', { start: 0, end: 5 }),
             frameRate: 24,
             repeat: -1
         },

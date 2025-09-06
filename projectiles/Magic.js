@@ -1,10 +1,23 @@
+import SkillsUI from "../ui/skillsUI.js";
+import { flashIcon } from "../utils/flashIcon.js";
 import { getClosestEnemies } from "../utils/getClosestEnemies.js";
 
-export function shootMagic(scene, player, enemiesGroup, magicGroup, targetCount = 1, count) {
+export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targetCount = 1, iconID, level) {
+
+
     const enemies = getClosestEnemies(player.gameObject, enemiesGroup.getChildren(), targetCount);
 
 
     if (enemies.length === 0) return;
+
+    if (scene.shootMagicTimer) {//flash icon
+        // console.log(iconID);
+        
+        flashIcon(scene, iconID)
+    }
+
+
+
 
     for (let i = 0; i < count; i++) {
 
@@ -18,33 +31,55 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, targetCount 
                 const offsetY = Phaser.Math.Between(-15, 15);
                 const magic = magicGroup.create(offsetX + player.x, offsetY + player.y, "magic");
 
-                //start particles
-                // magic.trail = scene.add.particles(0, 0, 'flares', {
-                //     frame: 'yellow', // можно поменять на 'white', 'yellow', и т.д.
-                //     lifespan: 400,
-                //     speed: { min: 10, max: 80 },
-                //     angle: { min: 0, max: 360 },
-                //     scale: { start: 0.35, end: 0.1 },
-                //     alpha: { start: 1, end: 1 },
-                //     frequency: 10,
-                //     rotate: 150,
-                //     tint: [0x0000ff, 0xff00ff],
-                //     blendMode: 'ADD',
-                //     follow: magic
-                // });
-                magic.trail = scene.add.particles(0, 0, 'flares', {
-                    frame: 'yellow',
-                    lifespan: 200,
-                    speed: { min: 10, max: 80 },
-                    angle: { min: 0, max: 360 },
-                    scale: { start: 0.35, end: 0.1 },
-                    alpha: { start: 1, end: 0 },
-                    frequency: 10,
-                    rotate: 150,
-                    tint: [0x0000ff, 0xff00ff],
-                    blendMode: 'ADD',
-                    follow: magic
-                });
+
+                if (level <= 4) {
+                    magic.trail = scene.add.particles(0, 0, 'flares', {
+                        frame: 'yellow',
+                        lifespan: 200,
+                        speed: { min: 10, max: 80 },
+                        angle: { min: 0, max: 360 },
+                        scale: { start: 0.35, end: 0.1 },
+                        alpha: { start: 1, end: 0 },
+                        frequency: 10,
+                        rotate: 150,
+                        tint: [0x0000ff, 0xff00ff],
+                        blendMode: 'ADD',
+                        follow: magic
+                    });
+
+                } else if (level <= 7) {
+
+                    magic.trail = scene.add.particles(0, 0, 'flares', {
+                        frame: 'yellow',
+                        lifespan: 200,
+                        speed: { min: 10, max: 80 },
+                        angle: { min: 0, max: 360 },
+                        scale: { start: 0.35, end: 0.1 },
+                        alpha: { start: 1, end: 0 },
+                        frequency: 10,
+                        rotate: 150,
+                        tint: [0xff22ee, 0xff0000],
+                        blendMode: 'ADD',
+                        follow: magic
+                    });
+                } else {
+                    magic.trail = scene.add.particles(0, 0, 'flares', {
+                        frame: 'yellow',
+                        lifespan: 200,
+                        speed: { min: 10, max: 80 },
+                        angle: { min: 0, max: 360 },
+                        scale: { start: 0.45, end: 0.1 },
+                        alpha: { start: 1, end: 0 },
+                        frequency: 10,
+                        rotate: 150,
+                        tint: [0x0000ff, 0x00ff00],
+                        blendMode: 'ADD',
+                        follow: magic
+                    });
+                }
+
+
+
 
                 magic.body.allowGravity = false;
 

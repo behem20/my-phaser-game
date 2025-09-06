@@ -1,4 +1,4 @@
-import playerInitCfgs from "../PlayerConfigs.js";
+
 
 export default class HealthPack {
     constructor(scene, player, enemy) {
@@ -13,13 +13,28 @@ export default class HealthPack {
         const y = this.player.y + Math.sin(angle) * distance;
 
         const healthPack = this.group.create(x, y, "healthPack");
-        healthPack.setScale(0.6)
+        healthPack.setScale(1)
         // coin.setOrigin(0.5, 0.5);
-        const pickupRadius = healthPack.width * playerInitCfgs.coinsMagnetRadiusBonus;
+        const pickupRadius = healthPack.width * this.scene.playerInitCfgs.coinsMagnetRadiusBonus;
         healthPack.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
         healthPack.setDepth(-2)
         healthPack.setCollideWorldBounds(true);
         healthPack.setBounce(1);
+        healthPack.trail = this.scene.add.particles(0, 0, 'flares', {
+            frame: 'blue',
+            x:healthPack.x,
+            y:healthPack.y,
+            lifespan: 1300,
+            speed: { min: 50, max: 100 },
+            angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+            gravityY: 0,             // без гравитации
+            scale: { start: 0.5, end: 0 }, // уменьшаются
+            alpha: { start: 1, end: 0 },   // исчезают
+            frequency: 100,   
+            tint: [0xffffff, 0xff11ff],
+            blendMode: 'ADD',
+            
+        });
     }
     getGroup() {
         return this.group;

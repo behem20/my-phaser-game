@@ -1,4 +1,4 @@
-import levels from "../levelsConfigs.js";
+
 
 export default class HUD {
     constructor(scene, levelDuration, onLevelComplete) {
@@ -9,6 +9,7 @@ export default class HUD {
         this.score = 0;
         this.exp = 0;
         this.coins = 0;
+
         this.lives = 10;
         this.elapsedTime = 0;
 
@@ -16,7 +17,7 @@ export default class HUD {
         // this.scoreText = scene.add.text(10, 10, "", style).setScrollFactor(0).setDepth(13);
         // this.livesText = scene.add.text(10, 40, "", style).setScrollFactor(0).setDepth(13);
         this.headBGRect = scene.add.rectangle(0, 0, 800, 40, 0x000000, 0.6).setScrollFactor(0).setOrigin(0, 0).setDepth(11)
-        this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(255, 255, 255, 1)" }).setScrollFactor(0).setDepth(13);
+        this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(224, 231, 15, 1)" }).setScrollFactor(0).setDepth(13);
         this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
 
         this.timeText = scene.add.text(400, 23, "", { fontSize: "20px", fill: "#ffffffff" }).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
@@ -69,12 +70,15 @@ export default class HUD {
     updateLives() {
         // this.livesText.setText("Lives: " + this.lives);
     }
-    minusLives() {
-        this.lives -= 1;
+    minusLives(amount = 1) {
+        this.lives -= amount;
         this.updateLives();
     }
     updateCoins() {
         this.coinsText.setText(this.coins);
+    }
+    onFinishCoins(){
+        return this.coins
     }
     clearCoins() {
         this.coins = 0;
@@ -93,15 +97,17 @@ export default class HUD {
             duration: 150,
             ease: 'Cubic.easeOut',
             onComplete: () => {
-this.coinsText.setScale(1)
+                this.coinsText.setScale(1)
             }
         });
     }
     updateExp() {
 
     }
-    addExp() {
-        this.exp++;
+    addExp(amount = 1) {
+
+
+        this.exp += amount;
         this.updateExpProgress()
 
     }
@@ -115,8 +121,8 @@ this.coinsText.setScale(1)
     updateExpProgress() {
         const progress = Phaser.Math.Clamp(
             this.exp / (
-                levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
-                levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
+                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
+                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
             ),
             0,
             1

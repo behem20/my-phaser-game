@@ -1,7 +1,8 @@
-import levels from "../levelsConfigs.js";
+
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 import { setLanguage, t } from "../LanguageManager.js";
+import SkillsUI from "../ui/skillsUI.js";
 
 export default class UpgradeForExpScene extends Phaser.Scene {
     constructor() {
@@ -50,7 +51,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 .setStrokeStyle(2, 0xff6600)
                 .setInteractive();
 
-            if (upgrade.level >= levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills - 1) {
+            if (upgrade.level >= this.gameScene.levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills - 1) {
                 card.fillColor = 0x32222
                 card.setStrokeStyle(5, 0xff6600)
                 // Название
@@ -74,9 +75,12 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 }).setOrigin(0.5);
                 card.on("pointerdown", () => {
 
+
                     playerSkills.upgradePointsCount++;
                     this.onTapSfx.play();
                     this.onSelect(upgrade);
+
+
                     this.scene.stop();
                     this.scene.resume("GameScene");
 
@@ -119,6 +123,17 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                     playerSkills.upgradePointsCount++;
                     this.onTapSfx.play();
                     this.onSelect(upgrade);
+
+
+                    this.gameScene.skillsUI.destroy();//
+                    const nameOfNewSkill = upgrade.name.split(".")[1]
+                    const addNewActiveSkill = this.registry.get('activeSkills')
+                    if(!addNewActiveSkill.includes(nameOfNewSkill)){    //skills icons in game
+                        addNewActiveSkill.push(nameOfNewSkill)
+                        this.registry.set('activeSkills', addNewActiveSkill);
+                    }
+                    this.gameScene.skillsUI = new SkillsUI(this.gameScene, this.registry.get('activeSkills'))//
+
                     this.scene.stop();
                     this.scene.resume("GameScene");
 
@@ -140,7 +155,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
             fontSize: "42px",
             color: "rgba(255, 116, 24, 1)"
         }).setOrigin(0.5)
-        this.levelText = this.add.text(centerX, centerY - 280, `${t(`game.level`)} ${levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount}`, {
+        this.levelText = this.add.text(centerX, centerY - 280, `${t(`game.level`)} ${this.gameScene.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount}`, {
             fontSize: "24px",
             color: "rgba(255, 0, 0, 1)"
         }).setOrigin(0.5)

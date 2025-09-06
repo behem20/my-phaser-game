@@ -178,25 +178,7 @@ export function handleChestCollect(scene, player, chest) {
         })
     });
 }
-export function handleChestCollect(scene, player, chest) {
-    scene.openChestSfx.play() //collect chest sound
 
-    chest.setScale(1.1)
-    chest.disableBody(0, 0)
-    scene.time.delayedCall(200, () => {
-        chest.setScale(1);
-        chest.destroy()
-        chest.trail.destroy()
-        scene.scene.pause()
-        scene.scene.launch('InChestScene', {
-            scene: scene,
-            items: playerItems.allItems,
-            onSelect: (item) => {
-                item.applyItem(scene.playerInitCfgs, scene)
-            }
-        })
-    });
-}
 export function handleHealthPackCollect(scene, player, hp) {
 
     hp.disableBody(1, 0);

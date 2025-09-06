@@ -61,12 +61,17 @@ class EnemyContainer extends Phaser.GameObjects.Container {
             this.shadow.setDepth(this.sprite.depth - 1);
 
 
+
+
         }
     }
 }
 
 
+
 export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKey = 'enemy_normal_1', textureRadius = 20) {
+
+
 
     enemy.activate(x, y, textureKey, animationKey)
 
@@ -76,12 +81,14 @@ export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKe
 
     enemy.body.setSize(w, h);
     enemy.body.setOffset(-w / 2, - h / 2);
+
     enemy.body.setCircle(textureRadius * scale,);
     enemy.setAlpha(1)
     enemy.shadow.setAlpha(0.3)
     enemy.isSpecial = false;
     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
     // if (textureKey == 'enemy_boss_1') enemy.isSpecial = true
+
     // scene.tweens.add({
     //     targets: enemy,
     //     scaleX: 1.02,
@@ -107,6 +114,7 @@ export default class EnemySpawner {
 
 
         this.enemyConfigs = {
+
             normal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.normalType,
             fast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.fastType,
             tank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.tankType,
@@ -132,7 +140,9 @@ export default class EnemySpawner {
         if (!enemy) return;
         enemy.shadow = scene.add.image(x, y + 10, 'shadow');
         // передаем текстуру прямо сюда
+
         resetEnemy(enemy, x, y, this.scene, cfg.texture, cfg.animation, cfg.radius);
+
 
         // задаем параметры
         enemy.speedType = cfg.speed;
@@ -181,6 +191,8 @@ export default class EnemySpawner {
         //     enemy.hpBar.fillRect(x - width / 2, y - offsetY, width, height);
         //     enemy.hpBar.fillStyle(0xff0000, 1);
         //     enemy.hpBar.fillRect(x - width / 2, y - offsetY, width * (hp / maxHP), height);
+
+
 
 
         // });

@@ -72,10 +72,12 @@ export default class CoinSpawner {
             follow: coin,
         }).setDepth(-1);
 
+
         coin.setOrigin(0.5);
         coin.value = cfg.value; // сколько даёт эта монета
 
         const pickupRadius = coin.width * this.scene.playerInitCfgs.coinsMagnetRadiusBonus;
+
         coin.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
 
         coin.setDepth(-2);
@@ -96,8 +98,8 @@ export default class CoinSpawner {
     }
     spawnForKill(enemyX, enemyY, scene, amount = 1) {
 
-        for (let index = 0; index < amount; index++) {
 
+        for (let index = 0; index < amount; index++) {
             this.spawnCoin(enemyX, enemyY)
             console.log('coin for kill spawned');
             

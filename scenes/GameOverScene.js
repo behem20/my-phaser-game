@@ -7,11 +7,13 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     create(data) {
+
         const { coins = 0 } = data;
         console.log(coins);
         
         const goldAmount = Math.trunc(coins);
         const gemAmount =  Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
+
         this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
         data.scene.playerMoveSfx.stop()
 data.scene.gameBGSoundSfx.stop()

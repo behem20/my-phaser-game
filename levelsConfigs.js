@@ -40,7 +40,9 @@ const originalLevels = [
             coefficientToUpgradeLevel: 1.3,
             MaxUpgradeLevelSkills: 8,
             dropCoinsAmount: 1,
+
             dropCoinsAmountBonus: 0.15,
+
             levelUpPointsCount: 1,
             addExpAmountPerKillAmount: 1,
             addGoldAndGemsCoefficient: 0.5,
@@ -58,6 +60,7 @@ const originalLevels = [
                     groups: [
                         // { type: 'boss', count: 1, delayBetweenEnemies: 500 },
                         { type: 'normal', count: 10, delayBetweenEnemies: 1000 },
+
                     ]
                 },
 
@@ -109,7 +112,7 @@ const originalLevels = [
 
                     ]
                 },
-               
+
                 
                 {
                     groups: [
@@ -200,7 +203,9 @@ const originalLevels = [
                         // { type: 'tank', count: 30, delayBetweenEnemies: 10 },
                     ]
                 },
+
                 
+
                 
                 {
                     groups: [
@@ -223,8 +228,7 @@ const originalLevels = [
 
                     ]
                 },
-              
-                
+
                 {
                     groups: [
                         { type: 'fast', count: 50, delayBetweenEnemies: 5 }
@@ -396,7 +400,9 @@ const originalLevels = [
                 },
                 {
                     groups: [
+
                         { type: 'tank', count: 130, delayBetweenEnemies: 23 },
+
 
                     ]
                 },
@@ -507,6 +513,7 @@ const originalLevels = [
             MaxUpgradeLevelSkills: 8,
             dropCoinsAmount: 3,
             dropCoinsAmountBonus: 0.45,
+
             levelUpPointsCount: 1,
             addExpAmountPerKillAmount: 1,
             addGoldAndGemsCoefficient: 0.6,
@@ -1003,7 +1010,9 @@ const originalLevels = [
             coefficientToUpgradeLevel: 1.5,
             MaxUpgradeLevelSkills: 8,
             dropCoinsAmount: 5,
+
             dropCoinsAmountBonus: 0.75,
+
             levelUpPointsCount: 1,
             addExpAmountPerKillAmount: 1,
             addGoldAndGemsCoefficient: 0.7,
@@ -1497,7 +1506,9 @@ const originalLevels = [
             coefficientToUpgradeLevel: 1.6,
             MaxUpgradeLevelSkills: 8,
             dropCoinsAmount: 7,
+
             dropCoinsAmountBonus: 1.05,
+
             levelUpPointsCount: 1,
             addExpAmountPerKillAmount: 1,
             addGoldAndGemsCoefficient: 0.8,

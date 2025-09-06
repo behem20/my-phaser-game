@@ -107,8 +107,10 @@ export default class MenuScene extends Phaser.Scene {
         this.rejectSoundSfx = this.sound.add('rejectSound', { volume: 1 });
         this.successSfx = this.sound.add('successSound', { volume: 0.3 });
 
+
         if (!this.registry.has('goldCount')) this.registry.set('goldCount', 100)
         if (!this.registry.has('gemCount')) this.registry.set('gemCount', 20)
+
 
         const menuBG = this.add.image(0, 0, 'bgPhotoMenu').setOrigin(0).setInteractive()
 
@@ -341,7 +343,7 @@ export default class MenuScene extends Phaser.Scene {
         heroButton.on('pointerout', () => heroButton.setScale(1));
 
         const fire = this.add.image(570, 620, 'fire')
-        
+
         fire.trail = this.add.particles(0, 0, 'red-flares', {
             frame: 'red',
             lifespan: 2800,

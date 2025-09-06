@@ -15,7 +15,6 @@ export const playerItems = {
             this.isActive = true
             player.magicsDurationBonus *= 1.25;
 
-
         }
     },
     hourglass: {
@@ -29,7 +28,6 @@ export const playerItems = {
             player.cooldownReductionBonus += 0.15
             updateCooldownTimers(scene, playerSkills.allSkillsForItems)
 
-
         }
     },
     broom: {
@@ -42,7 +40,6 @@ export const playerItems = {
             this.isActive = true
             player.moveSpeedBonus *= 1.2;
 
-
         }
     },
     lightningRod: {
@@ -54,7 +51,6 @@ export const playerItems = {
         applyItem(player) {
             this.isActive = true
             player.lightningCountBonus++;
-
 
         }
     },
@@ -106,8 +102,10 @@ export const playerItems = {
         isActive: false,
         applyItem(player, scene) {
             // this.isActive = true
+
             scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmount +=
                 scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmountBonus //fix to procent *
+
 
 
         }
@@ -142,7 +140,9 @@ export const playerItems = {
     get nonActiveItems() {
         return this.allItems.filter(item => item.isActive == false)
     },
+
     setAllItemsIsActiveStatus() {
+
         this.allItems.forEach(item => item.isActive = false)
     },
     getRandomItems(scene) {
@@ -158,7 +158,6 @@ export const playerItems = {
                 result.push(item);
             }
         }
-
 
         return result
 

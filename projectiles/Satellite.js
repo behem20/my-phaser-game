@@ -68,19 +68,24 @@ export class Satellites {
                     });
 
                 } else if (this.count < 5) {
+
                    sat.trail = this.scene.add.particles(0, 0, 'flares', {
                         frame: 'red',
+
                         lifespan: 200,
                         speed: 300,
                         angle: { min: 0, max: 360 },
                         scale: { start: 0.7, end: 0 },
+
                         alpha: { start: 0.8, end: 0 },
                         tint: [0xff2211,],
+
                         blendMode: 'SCREEN',
                         follow: sat
                     });
 
                 } else if (this.count < 6) {
+
                      sat.trail = this.scene.add.particles(0, 0, 'flares', {
                         frame: 'red',
                         lifespan: 200,
@@ -95,26 +100,33 @@ export class Satellites {
                 } else if (this.count < 7) {
 
                      sat.trail = this.scene.add.particles(0, 0, 'flares', {
+
                         frame: 'white',
                         lifespan: 200,
                         speed: 300,
                         angle: { min: 0, max: 360 },
                         scale: { start: 0.7, end: 0 },
                         alpha: { start: 0.8, end: 0 },
+
                         tint: [0xffff11,],
+
                         blendMode: 'SCREEN',
                         follow: sat
                     });
                 } else {
 
                     sat.trail = this.scene.add.particles(0, 0, 'flares', {
+
                         frame: 'red',
+
                         lifespan: 200,
                         speed: 300,
                         angle: { min: 0, max: 360 },
                         scale: { start: 0.7, end: 0 },
                         alpha: { start: 0.8, end: 0 },
+
                         tint: [0xffff11,],
+
                         blendMode: 'SCREEN',
                         follow: sat
                     });

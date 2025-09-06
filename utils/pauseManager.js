@@ -117,11 +117,13 @@ export function togglePause(scene) {
 
 
             scene.confirmBox = scene.add.rectangle(200, 300, 400, 400, 0x000000).setScrollFactor(0).setOrigin(0).setDepth(100).setInteractive()
+
             scene.questionText = scene.add.text(300, 350, t('ui.exit?'), { fontSize: '48px', fill: '#fff' }).setScrollFactor(0).setDepth(101)
             scene.confirmYes = scene.add.text(300, 600, t('ui.yes'), { fontSize: '48px', fill: '#fff' }).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(101)
             scene.confirmYes.on('pointerdown', () => {
                 scene.hud.minusLives(10)
                 scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins() })
+
             })
             scene.confirmYes.on('pointerover', () => {
                 scene.onHoverSfx.play()
@@ -133,7 +135,9 @@ export function togglePause(scene) {
                 scene.confirmYes.setScale(1)
             })
 
+
             scene.confirmNot = scene.add.text(450, 600, t('ui.not'), { fontSize: '48px', fill: '#fff' }).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(101)
+
             scene.confirmNot.on('pointerdown', () => {
                 scene.confirmBox.destroy()
                 scene.questionText.destroy()

@@ -27,7 +27,9 @@ import Tooltip from "../ui/Tooltip.js"
 import SkillRegistry from "../SkillsRegistry.js"
 import originalLevels from "../levelsConfigs.js"
 import originalPlayerInitCfgs from "../PlayerConfigs.js"
+
 import SplashSpawner from "../entities/SplashesSpawner.js"
+
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -277,8 +279,8 @@ export default class GameScene extends Phaser.Scene {
         this.fireAura = new FireAura(this, this.player)
         this.satellites = new Satellites(this, this.player)
         this.tooltip = new Tooltip(this);
-        this.splashes = new SplashSpawner(this);
 
+        this.splashes = new SplashSpawner(this);
 
 
 
@@ -383,7 +385,9 @@ export default class GameScene extends Phaser.Scene {
             this.scene.start('GameScene');
         });
         //spawn coins on start close to player
+
         for (let i = 0; i < 45; i++) {
+
             this.coins.spawnRandomly(50, 1500, this)
         }
         // this.scene.pause();
@@ -510,6 +514,7 @@ export default class GameScene extends Phaser.Scene {
             this.levels[this.registry.get('currentLevel')].levelConfigs.expToUpgrade * this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel) {
 
             this.hud.clearExp();
+
             this.skillsUI.hideTooltip()
             this.scene.pause();
             this.scene.launch("UpgradeForExpScene", {

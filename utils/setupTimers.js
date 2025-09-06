@@ -37,7 +37,9 @@ export function setupTimers(scene) {
             if (scene.hud.elapsedTime >= scene.hud.levelDuration) {
                 // playerSkills.resetSkills()
                 // resetLevels()
+
                 scene.hud.onLevelComplete(scene,scene.hud.onFinishCoins())
+
             }
         },
         loop: true

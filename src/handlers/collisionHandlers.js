@@ -87,7 +87,9 @@ export function handleTouchEnemy(scene, player, enemy) {
 
     if (scene.hud.lives <= 0) {
         scene.scene.pause();
+
         scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins() });
+
     }
 }
 
@@ -95,6 +97,7 @@ export function handleCoinCollect(scene, player, coin) {
     scene.coinCollectSoundSfx.play()
 
     coin.disableBody(true, false)
+
 
     const amount = scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmount * coin.value;
     function getRandomAmount(amountBeforeSpread, spread = 2) {
@@ -175,6 +178,25 @@ export function handleChestCollect(scene, player, chest) {
         })
     });
 }
+export function handleChestCollect(scene, player, chest) {
+    scene.openChestSfx.play() //collect chest sound
+
+    chest.setScale(1.1)
+    chest.disableBody(0, 0)
+    scene.time.delayedCall(200, () => {
+        chest.setScale(1);
+        chest.destroy()
+        chest.trail.destroy()
+        scene.scene.pause()
+        scene.scene.launch('InChestScene', {
+            scene: scene,
+            items: playerItems.allItems,
+            onSelect: (item) => {
+                item.applyItem(scene.playerInitCfgs, scene)
+            }
+        })
+    });
+}
 export function handleHealthPackCollect(scene, player, hp) {
 
     hp.disableBody(1, 0);
@@ -198,7 +220,6 @@ export function handleHealthPackCollect(scene, player, hp) {
 }
 
 export function handleItemCollect(scene, player, item) {
-
 
     if (!scene.registry.has('inventory')) scene.registry.set('inventory', []
 

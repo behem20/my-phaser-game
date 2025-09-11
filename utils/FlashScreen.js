@@ -1,4 +1,7 @@
-export function flashScreen(scene, color = 0x99ccff, transparent = 1, duration = 100,) {
+export function flashScreen(scene, 
+    color = 0x99ccff,
+     transparent = 1,
+      duration = 100,) {
     // Создаём белый прямоугольник на весь экран
     const flash = scene.add.rectangle(
         scene.cameras.main.centerX,

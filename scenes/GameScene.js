@@ -27,8 +27,8 @@ import Tooltip from "../ui/Tooltip.js"
 import SkillRegistry from "../SkillsRegistry.js"
 import originalLevels from "../levelsConfigs.js"
 import originalPlayerInitCfgs from "../PlayerConfigs.js"
-
 import SplashSpawner from "../entities/SplashesSpawner.js"
+
 
 
 export default class GameScene extends Phaser.Scene {
@@ -224,10 +224,25 @@ export default class GameScene extends Phaser.Scene {
         for (let i = 1; i <= 6; i++) {
             this.load.image(`splash${i}`, `game/assets/images/enemiesSheets/afterEnemy/${i}.png`);
         }
-         this.load.image(`splashRed`, `game/assets/images/enemiesSheets/afterEnemy/splashRed.png`);
-      
+        this.load.image(`splashRed`, `game/assets/images/enemiesSheets/afterEnemy/splashRed.png`);
+
     }
     create() {
+        console.log('game started');
+        this.hideDamageText = false;
+        this.hideDamageButton = this.add.text(690, 15, 'damage?').setScrollFactor(0).setDepth(12).setInteractive()
+        this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
+        this.hideDamageButton.on('pointerover', () => { this.hideDamageButton.setFontSize(18);; this.onHoverSfx.play() })
+        this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(16); })
+
+        this.fpsText = this.add.text(370, 40, '', {
+            font: '16px Arial',
+            fill: '#00ff00'
+        }).setScrollFactor(0).setDepth(1000);// FPS
+        this.ParticlesText = this.add.text(330, -160, '', {//330,60
+            font: '26px Arial',
+            fill: '#00ffff'
+        }).setScrollFactor(0).setDepth(1000);
         loadAllAnimations(this)
 
         const level = this.registry.get('currentLevel')
@@ -235,6 +250,8 @@ export default class GameScene extends Phaser.Scene {
         this.levels = []
         function resetLevels(scene) {
             scene.levels = JSON.parse(JSON.stringify(originalLevels));
+            console.log(scene.levels);
+
         }
         function resetPlayerInitCfgs(scene) {
             scene.playerInitCfgs = JSON.parse(JSON.stringify(originalPlayerInitCfgs));
@@ -250,6 +267,8 @@ export default class GameScene extends Phaser.Scene {
 
         // const background = 'TempBG_2';
         const pauseButton = this.add.image(785, 25, 'pausePicture').setScale(0.6).setDepth(100).setInteractive().setOrigin(0.5).setScrollFactor(0)
+        pauseButton.on('pointerover', () => { pauseButton.setScale(0.65); this.onHoverSfx.play() })
+        pauseButton.on('pointerout', () => { pauseButton.setScale(0.6) })
 
         //vignette
         this.vignette = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "vignette");
@@ -329,7 +348,26 @@ export default class GameScene extends Phaser.Scene {
         this.restoreHPKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         this.input.keyboard.on("keydown-T", () => {
-            printStats(this.player.gAura);
+            console.log('objects:', this.children.list.length);
+            console.log("graphics:", this.children.list.filter(obj => obj.type === "Graphics").length);
+            console.log("particles:", this.children.list.filter(obj => obj.type === "ParticleEmitter").length);
+            const particlesTTT = this.children.list.filter(obj => obj.type === "ParticleEmitter");
+            particlesTTT.forEach(prt => {
+                console.log(prt.texture)
+            })
+           
+            console.log("enemies:", this.enemies.group.getChildren().length);
+
+            const images = this.children.list.filter(obj => obj.type === 'Image');
+            console.log('Images count:', images.length);
+            // images.forEach(img => {
+            //     console.log(img.texture.key, img.x, img.y);
+            // });
+            const containers = this.children.list.filter(obj => obj.type === 'Container');
+            console.log('Containers count:', containers.length);
+            console.log(this.children.list.map(obj => obj.type));
+            console.log('Tweens total:', this.tweens.getTweens(true).length);
+            // printStats(this.player.gAura);
         });
 
         //inventory key
@@ -371,6 +409,18 @@ export default class GameScene extends Phaser.Scene {
 
         // this.enemies.spawn()
         this.registry.set('enemySpawned', 0)
+        if (this.enemies) {
+            this.enemies.group.children.each(container => {
+                if (container.sprite) {
+                    container.particles.destroy()
+                }
+                if (container.shadow) {//если перезапустить волну то враги из прошлой не унчитожилсь - пытаюсь стереть их
+                    container.shadow.destroy()
+                }
+                container.destroy({ children: true });
+            })
+            this.enemies.group.clear(true, true)
+        }
         this.waveManager = new WaveManager(this, level)
 
         this.events.on('spawnEnemy', (type) => {
@@ -386,10 +436,11 @@ export default class GameScene extends Phaser.Scene {
         });
         //spawn coins on start close to player
 
-        for (let i = 0; i < 45; i++) {
+        for (let i = 0; i < 55; i++) {
 
-            this.coins.spawnRandomly(50, 1500, this)
+            this.coins.spawnRandomly(100, 1600, this)
         }
+
         // this.scene.pause();
         // //    up choose upgrades
         // this.scene.launch("UpgradeForExpScene", {
@@ -436,10 +487,35 @@ export default class GameScene extends Phaser.Scene {
         });
 
         pauseButton.on('pointerdown', () => { this.onTapSfx.play(); togglePause(this) })
+
+        this.time.addEvent({
+            delay: 20,        // 500 мс = 0.5 сек
+            loop: true,
+            callback: () => {
+                this.updateParticlesText();
+            }
+        });
+
+    }
+    updateParticlesText() {
+        let totalParticles = 0;
+
+        // const aliveParticles = this.tornadoGroup.children.entries.forEach(el => {
+
+        //     if (el.particles) totalParticles += el.particles.alive.length;
+        // });
+        if (this.REDparticles) {
+            totalParticles += this.REDparticles.alive.length
+        }
+        // REDparticles
+        this.ParticlesText.setText(` particles: ${totalParticles}`);
+        totalParticles = 0
     }
 
-
     update() {
+        this.fpsText.setText(`FPS: ${Math.floor(this.game.loop.actualFps)}`);
+
+        // console.log(this.chests.getGroup().children.entries[0].trail.alive.length);
 
         //движение игрока
         this.player.update()

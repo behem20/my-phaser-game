@@ -17,13 +17,13 @@ export default class ChestSpawner {
 
         chest.trail = scene.add.particles(0, 0, 'flares', {
             frame: 'yellow',
-            lifespan: 3800,
+            lifespan: 1800,
             speed: { min: 50, max: 100 },
             angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
             gravityY: 0,             // без гравитации
             scale: { start: 0.5, end: 0 }, // уменьшаются
             alpha: { start: 1, end: 0 },   // исчезают
-            frequency: 100,   
+            frequency: 200,   
             tint: [0xffffff, 0xff11ff],
             blendMode: 'ADD',
             follow: chest,

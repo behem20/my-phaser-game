@@ -48,6 +48,11 @@ export function togglePause(scene) {
         if (scene.shootArmageddonTimer) {
             scene.shootArmageddonTimer.paused = true;
         }
+        if (scene.spawnHealthPacksTimer) {
+            scene.spawnHealthPacksTimer.paused = true;
+        }
+
+     
 
 
         scene.waveManager.stopAll()
@@ -258,6 +263,9 @@ export function togglePause(scene) {
         }
         if (scene.shootArmageddonTimer) {
             scene.shootArmageddonTimer.paused = false;
+        }
+        if (scene.spawnHealthPacksTimer) {
+            scene.spawnHealthPacksTimer.paused = false;
         }
 
         scene.waveManager.start();

@@ -36,7 +36,8 @@ class EnemyContainer extends Phaser.GameObjects.Container {
         this.body.enable = false;
 
         if (this.sprite) this.sprite.setVisible(false);
-        if (this.shadow) this.shadow.setVisible(false); // скрываем тень
+        // if (this.shadow) this.shadow.setVisible(false); // скрываем тень
+        if (this.shadow) this.shadow.destroy(); // скрываем тень
     }
 
     activate(x, y, textureKey, animationKey) {
@@ -54,13 +55,12 @@ class EnemyContainer extends Phaser.GameObjects.Container {
         }
 
         if (this.shadow) {
+            this.shadow.setTexture('shadow');
             this.shadow.setVisible(true);        // включаем тень
             this.shadow.setPosition(x, y + 10); // корректируем позицию
             this.shadow.setAlpha(0.3);
             this.shadow.setScale(this.sprite.width / this.shadow.width * 0.8);
             this.shadow.setDepth(this.sprite.depth - 1);
-
-
 
 
         }
@@ -72,10 +72,11 @@ class EnemyContainer extends Phaser.GameObjects.Container {
 export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKey = 'enemy_normal_1', textureRadius = 20) {
 
 
-
+    enemy.shadow = scene.add.image(x, y + 10, 'shadow');
     enemy.activate(x, y, textureKey, animationKey)
 
     const scale = 0.80
+
     const w = enemy.sprite.width * scale;
     const h = enemy.sprite.height * scale;
 
@@ -84,7 +85,14 @@ export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKe
 
     enemy.body.setCircle(textureRadius * scale,);
     enemy.setAlpha(1)
+
+
     enemy.shadow.setAlpha(0.3)
+
+    // enemy.isFast = animationKey == 'enemy_fast_1'
+    // enemy.body.immovable = enemy.isFast 
+
+
     enemy.isSpecial = false;
     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
     // if (textureKey == 'enemy_boss_1') enemy.isSpecial = true
@@ -108,7 +116,7 @@ export default class EnemySpawner {
 
         this.group = scene.physics.add.group({
             classType: EnemyContainer,
-            maxSize: 1050,
+            maxSize: 500,
             runChildUpdate: false
         });
 
@@ -128,7 +136,7 @@ export default class EnemySpawner {
         // this.scene.tweens.killTweensOf(enemy);
 
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-        const distance = Phaser.Math.Between(550, 600);
+        const distance = Phaser.Math.Between(350, 500);//550 600
         const x = this.player.x + Math.cos(angle) * distance;
         const y = this.player.y + Math.sin(angle) * distance;
 
@@ -138,7 +146,7 @@ export default class EnemySpawner {
         const enemy = this.group.get()
 
         if (!enemy) return;
-        enemy.shadow = scene.add.image(x, y + 10, 'shadow');
+        // enemy.shadow = scene.add.image(x, y + 10, 'shadow');
         // передаем текстуру прямо сюда
 
         resetEnemy(enemy, x, y, this.scene, cfg.texture, cfg.animation, cfg.radius);

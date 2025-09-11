@@ -39,7 +39,7 @@ export function handleTornadoHit(scene, tornado, enemy) {
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
-    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 700)
+    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200)
 }
 
 export function handleMeteorHit(scene, meteor, enemy) {
@@ -96,6 +96,7 @@ export function handleTouchEnemy(scene, player, enemy) {
 export function handleCoinCollect(scene, player, coin) {
     scene.coinCollectSoundSfx.play()
 
+    // coin.trail.destroy()
     coin.disableBody(true, false)
 
 
@@ -112,26 +113,30 @@ export function handleCoinCollect(scene, player, coin) {
     scene.hud.addExp(0.1 * coin.value)
 
 
-    const targetX = scene.hud.coinsText.x;
-    const targetY = scene.hud.coinsText.y;
+    const targetX = scene.player.x+Phaser.Math.Between(-40,40);
+    const targetY = scene.player.y-400;
+// console.log(targetX,targetY);
 
     scene.tweens.add({
         targets: coin,
-        x: targetX,
-        y: targetY,
-        scale: 0.5,
-        alpha: 0,
-        duration: 600,
+        // x: targetX ,
+        // y: targetY,
+        x:targetX,
+        y:targetY,
+        scale: 2.4,
+        depth:5,
+        // alpha: 0.5,
+        duration: 350,
         ease: 'Cubic.easeIn',
         onComplete: () => {
-            coin.trail.destroy()
+
             coin.destroy();
 
         }
     });
 
-    coin.setTintFill(0xffffff, 0x00ee13, 0x00ee13, 0x00ee13);
-    coin.setScale(1.1)
+    // coin.setTintFill(0xffffff, 0x00ee13, 0x00ee13, 0x00ee13);
+    // coin.setScale(1)
     scene.time.delayedCall(100, () => {
         coin.clearTint();
     });

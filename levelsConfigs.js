@@ -13,7 +13,7 @@ const originalLevels = [
                 hp: 55,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
-                speed: 150,
+                speed: 120,
                 radius: 12
             },
             tankType: {
@@ -27,7 +27,7 @@ const originalLevels = [
                 hp: 2630,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
-                speed: 50,
+                speed: 45,
                 radius: 120
             },
             coefficientStartEnemiesHP: 30,
@@ -58,8 +58,9 @@ const originalLevels = [
             waves: [
                 {
                     groups: [
-                        // { type: 'boss', count: 1, delayBetweenEnemies: 500 },
-                        { type: 'normal', count: 10, delayBetweenEnemies: 1000 },
+                        { type: 'normal', count: 5, delayBetweenEnemies: 1 },
+                        // { type: 'fast', count: 15, delayBetweenEnemies: 1 },
+                        // { type: 'fast', count: 500000, delayBetweenEnemies: 20 },
 
                     ]
                 },
@@ -113,7 +114,7 @@ const originalLevels = [
                     ]
                 },
 
-                
+
                 {
                     groups: [
                         { type: 'normal', count: 10, delayBetweenEnemies: 450 },
@@ -204,9 +205,9 @@ const originalLevels = [
                     ]
                 },
 
-                
 
-                
+
+
                 {
                     groups: [
 
@@ -252,7 +253,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
 
                 {
                     groups: [
@@ -388,7 +389,7 @@ const originalLevels = [
                 },
                 {
                     groups: [
-                        { type: 'fast', count: 100, delayBetweenEnemies:32 },
+                        { type: 'fast', count: 100, delayBetweenEnemies: 32 },
 
                     ]
                 },
@@ -2076,7 +2077,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
                         { type: 'normal', count: 10, delayBetweenEnemies: 450 },
@@ -2171,7 +2172,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
 
@@ -2198,7 +2199,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
                         { type: 'fast', count: 50, delayBetweenEnemies: 5 }
@@ -2222,7 +2223,7 @@ const originalLevels = [
 
                     ]
                 },
-               
+
 
                 {
                     groups: [
@@ -2934,7 +2935,7 @@ const originalLevels = [
         }
     },
     // 6
-   {
+    {
         enemiesConfigs: {
             normalType: {
                 hp: 100,
@@ -3048,7 +3049,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
                         { type: 'normal', count: 10, delayBetweenEnemies: 450 },
@@ -3143,7 +3144,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
 
@@ -3170,7 +3171,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
                 {
                     groups: [
                         { type: 'fast', count: 50, delayBetweenEnemies: 5 }
@@ -3194,7 +3195,7 @@ const originalLevels = [
 
                     ]
                 },
-                
+
 
                 {
                     groups: [

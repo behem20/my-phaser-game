@@ -38,6 +38,8 @@ export default class WaveManager {
                     if (spawned < group.count) {
                         this.scene.events.emit('spawnEnemy', group.type);
                         spawned++;
+                        
+                        
                     }
                 },
                 repeat: group.count - 1

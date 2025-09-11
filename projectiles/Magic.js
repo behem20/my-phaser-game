@@ -1,11 +1,13 @@
 import SkillsUI from "../ui/skillsUI.js";
 import { flashIcon } from "../utils/flashIcon.js";
 import { getClosestEnemies } from "../utils/getClosestEnemies.js";
+import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js";
 
 export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targetCount = 1, iconID, level) {
 
-
-    const enemies = getClosestEnemies(player.gameObject, enemiesGroup.getChildren(), targetCount);
+    
+    // const enemies = getClosestEnemiesInRadius(scene,player.gameObject, enemiesGroup.getChildren(), targetCount,450);
+const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), targetCount);
 
 
     if (enemies.length === 0) return;
@@ -79,8 +81,6 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targe
                 }
 
 
-
-
                 magic.body.allowGravity = false;
 
 
@@ -90,17 +90,17 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targe
                 const speed = Phaser.Math.Between(480, 520);
                 scene.physics.velocityFromRotation(angle, speed, magic.body.velocity);
 
-                const flash = scene.add.sprite(player.x, player.y, 'flares', 'red')
-                    .setScale(0.5)
-                    .setAlpha(0.8)
-                    .setDepth(-2);
-                scene.tweens.add({
-                    targets: flash,
-                    scale: 0.7,
-                    alpha: 0,
-                    duration: 100,
-                    onComplete: () => flash.destroy()
-                });
+                // const flash = scene.add.sprite(player.x, player.y-20, 'flares', 'green')
+                //     .setScale(0.2)
+                //     .setAlpha(0.8)
+                //     .setDepth(-2);
+                // scene.tweens.add({
+                //     targets: flash,
+                //     scale: 0.3,
+                //     alpha: 0,
+                //     duration: 100,
+                //     onComplete: () => flash.destroy()
+                // });
 
                 scene.time.delayedCall(2000, () => {
                     if (magic.active) { // остановить эмиттер

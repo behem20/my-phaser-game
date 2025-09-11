@@ -35,6 +35,13 @@ export default class HealthPack {
             blendMode: 'ADD',
             
         });
+        this.scene.time.delayedCall(100000, () => {
+            if (healthPack.active) { // значит ещё не уничтожена
+                healthPack.trail.destroy()
+                healthPack.destroy();
+            }
+        });
+        
     }
     getGroup() {
         return this.group;

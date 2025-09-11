@@ -125,7 +125,7 @@ const SkillRegistry = {
         level: 1,
         icon: 'pictureLightning',
         upgrades: [
-            { damage: 50, delay: 1550, targetCount: 1, count: 1, price: 1000 },
+            { damage: 50, delay: 550, targetCount: 1, count: 1, price: 1000 },
             { damage: 57, delay: 1470, targetCount: 1, count: 2, price: 2000 },
             { damage: 66, delay: 1430, targetCount: 2, count: 2, price: 3000 },
             { damage: 78, delay: 1390, targetCount: 2, count: 2, price: 4000 },

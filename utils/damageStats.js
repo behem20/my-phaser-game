@@ -16,9 +16,11 @@ export function printStats(gAura) {
     console.log("=== Damage Stats ===");
     console.log(playerSkills.upgradePointsCount);
 
-    Object.entries(damageStats).forEach(([spell, dmg]) => {
-        console.log(`${spell}: ${dmg}`);
-    });
+    Object.entries(damageStats)
+        .sort(([, valueA], [, valueB]) => valueB - valueA)
+        .forEach(([spell, dmg]) => {
+            console.log(`${spell}: ${dmg}`);
+        });
 }
 export function clearDamageStats(obj) {
     for (const key in obj) {

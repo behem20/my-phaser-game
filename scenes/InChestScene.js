@@ -34,6 +34,7 @@ export default class InChestScene extends Phaser.Scene {
         };
 
         const hud = getHUD()
+        this.isSpellSelected = 0;
         // this.cameras.main.setBackgroundColor("#000000");
         this.bgOverlay = this.add.graphics()
             .fillStyle(0x000000, 0.5) // 0.5 = прозрачность
@@ -72,7 +73,7 @@ export default class InChestScene extends Phaser.Scene {
         this.items.forEach((item, index) => {
             const x = centerX + (index - 1) * spacing;
             const y = centerY - 110;
-            
+
             // Карточка (фон)
             const card = this.add.rectangle(x, y, cardWidth, cardHeight,)
 
@@ -87,6 +88,7 @@ export default class InChestScene extends Phaser.Scene {
             // }).setOrigin(0.5);
 
             card.on("pointerdown", () => {
+                this.isSpellSelected = 1;
                 cards.forEach(item => item.setScale(1))
                 card.setScale(1.2)
                 this.onTapSfx.play();
@@ -156,10 +158,12 @@ export default class InChestScene extends Phaser.Scene {
         this.getTextButton = this.add.rectangle(centerX, centerY + 300, 400, 45, 0xffffff, 0.05).setInteractive().setDepth(2);
         this.getTextButton.on('pointerdown', () => {
             this.onTapSfx.play();
+            if (this.ActiveCard) {
+                this.onSelect(this.ActiveCard); //pravki
+                this.scene.stop();
+                this.scene.resume("GameScene");
+            }else return
 
-            this.onSelect(this.ActiveCard); //pravki
-            this.scene.stop();
-            this.scene.resume("GameScene");
         })
         this.getTextButton.on('pointerover', () => {
 

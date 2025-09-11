@@ -15,17 +15,5 @@ export function applyDamageWithCooldown(scene, sourceKey, target, damage, cooldo
         target.lastDamageBySource[sourceKey] = now;
         damageEnemy(scene, target, playerSkills[sourceKey].damage, getHUD())
         addDamage(sourceKey, playerSkills[sourceKey].damage);
-        // console.log(`${target.name || 'Target'} получил урон от ${sourceKey}: ${damage}, осталось HP: ${target.hp}`);
-
-        // if (target.hp <= 0) {
-        //     // scene.coins.spawnForKill(target.x, target.y, scene)
-        //     // scene.items.ArmorsScrollsSpawn(enemy.x, enemy.y)
-
-        //     playEnemyDeathEffect(scene, target)
-
-        //     // if (enemy.hpBar) enemy.hpBar.destroy();
-        //     getHUD().addExp()
-        //     getHUD().addScore(); // или передай hud сюда
-        // }
     }
 }

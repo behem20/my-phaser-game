@@ -5,7 +5,7 @@ export default class SplashSpawner {
         // создаём группу под кляксы
         this.group = scene.add.group({
             classType: Phaser.GameObjects.Image,
-            maxSize: 1530,       // ограничим пул
+            maxSize: 130,       // ограничим пул
             runChildUpdate: false
         });
     }
@@ -15,9 +15,11 @@ export default class SplashSpawner {
         let splash;
         if (isSpecial) {
             splash = this.group.get(x, y, `splashRed`);
+             if (!splash) return;
             splash.isSpecialRed = true;
         } else {
             splash = this.group.get(x, y, `splash${Phaser.Math.Between(1, 6)}`);
+             if (!splash) return;
             splash.isSpecialRed = false;
         }
 
@@ -30,7 +32,7 @@ export default class SplashSpawner {
         // масштаб от размера врага, с небольшим разбросом
         if (isSpecial) {
             const finalScale = 0.001 * enemyWidth * Phaser.Math.FloatBetween(0.8, 1.2);
-            splash.setScale(finalScale * 0, 5);
+            splash.setScale(finalScale * 0.5);
 
             this.scene.tweens.add({
                 targets: splash,

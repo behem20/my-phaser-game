@@ -4,14 +4,16 @@ import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
 import { flashIcon } from "../utils/flashIcon.js";
 import { flashScreen } from "../utils/FlashScreen.js";
+import { getClosestEnemies } from "../utils/getClosestEnemies.js";
 import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js";
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1,iconID) {
     const lightningKeys = ['lightning1', 'lightning2', 'lightning3', 'lightning4', 'lightning5'];
-    const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
-    const enemies = getClosestEnemiesInRadius(player.gameObject, enemiesGroup.getChildren(), finalCount);
+    const finalCount = targetCount+10 + scene.playerInitCfgs.lightningCountBonus
+    const enemies = getClosestEnemiesInRadius(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
+// const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
 
     if (enemies.length === 0) return;
     flashIcon(scene, iconID)
@@ -28,8 +30,7 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
 
         if (!enemy.active) return;
         applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10)
-        // damageEnemy(scene, enemy, playerSkills.lightning.damage, getHUD())
-        // addDamage("lightning", playerSkills.lightning.damage);
+       
         scene.tweens.add({
             targets: lightning,
             alpha: 0,

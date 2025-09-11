@@ -1213,14 +1213,14 @@ export const playerSkills = {
             return [
                 // this.meteor,
                 this.magic,
-                this.fire,
+                // this.fire,
                 this.light,
-                this.lightning,
-                this.armageddon,
-                this.tornado,
+                // this.lightning,
+                // this.armageddon,
+                // this.tornado,
                 this.fireAura,
                 this.satellite,
-                this.hail,
+                // this.hail,
 
             ]
         }

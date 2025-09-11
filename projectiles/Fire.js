@@ -1,3 +1,4 @@
+import { applyDamageWithCooldown } from "../utils/applyDamageWithCooldown.js";
 import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
 import { flashIcon } from "../utils/flashIcon.js";
@@ -8,7 +9,7 @@ import { playerSkills } from "../utils/upgradesManager.js";
 export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 1, iconID, spellLevel) {
 
     const level = spellLevel - 1
-    const enemies = getClosestEnemies(player.gameObject, enemiesGroup.getChildren(), targetCount);
+    const enemies = getClosestEnemies(scene, player.gameObject, enemiesGroup.getChildren(), targetCount);
     if (enemies.length === 0) return;
     flashIcon(scene, iconID)
     enemies.forEach(enemy => {
@@ -23,7 +24,7 @@ export function shootFire(scene, player, enemiesGroup, fireGroup, targetCount = 
 
 
         const randomScale = Phaser.Math.FloatBetween(0.7, 1.3);
-        const randomBigScale =Phaser.Math.FloatBetween(1.3, 1.6);
+        const randomBigScale = Phaser.Math.FloatBetween(1.3, 1.6);
         fire.setScale(randomScale);
         if (level < 4) {
 
@@ -133,8 +134,7 @@ export function handleFireHit(scene, fire, enemy, hud) {
         if (!otherEnemy.active) return;
         const distance = Phaser.Math.Distance.Between(fire.x, fire.y, otherEnemy.x, otherEnemy.y);
         if (distance <= explosionRadius) {
-            damageEnemy(scene, otherEnemy, playerSkills.fire.finalDamage(scene), getHUD())
-
+            applyDamageWithCooldown(scene, 'fire', enemy, 10, 10)
             addDamage("fire", playerSkills.fire.finalDamage(scene));
         }
     });

@@ -10,8 +10,8 @@ export class Satellites {
             runChildUpdate: false
         });
 
-        this.radius = 200;             // расстояние от героя
-        this.speed = 0.01;            // скорость вращения (радианы на тик)
+        this.radius = 300;//200             // расстояние от героя
+        this.speed = 0.045;            // скорость вращения (радианы на тик)
         this.count = 0;               // количество активных спутников
         this.rotationOffset = 0;      // текущий угол смещения
     }
@@ -26,111 +26,123 @@ export class Satellites {
             const toAdd = this.count - current;
             for (let i = 0; i < toAdd; i++) {
                 const sat = this.group.get(this.player.x, this.player.y, 'satellite').setAlpha(0.1);
-                
 
-                if (this.count < 2) {
-                    sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                        frame: 'red',
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
-                        tint: [0xff2211,],
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
+                sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                   frame: 'blue',
+                    // speed: 30,
+                    scale: { start: 0.15, end: 0.5 },
+                    alpha: { start: 0.6, end: 0.2 },
+                    lifespan: 150,
+                    angle: 0,
+                    frequency: 3, // частота появления
+                    tint: [0xffff33, 0x0000ff],
+                    follow: sat, // следят за игроком
+                    blendMode: 'ADD'
+                });
 
-                } else if (this.count < 3) {
+                // if (this.count < 2) {
+                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         frame: 'red',
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
+                //         tint: [0xff2211,],
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
 
-                    sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                        frame: 'red',
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
-                        tint: [0xffff11,],
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
-                } else if (this.count < 4) {
-                    sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                        frame: 'white',
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
-                        tint: [0xffff11,],
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
+                // } else if (this.count < 3) {
 
-                } else if (this.count < 5) {
+                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         frame: 'red',
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
+                //         tint: [0xffff11,],
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
+                // } else if (this.count < 4) {
+                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         frame: 'white',
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
+                //         tint: [0xffff11,],
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
 
-                   sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                        frame: 'red',
+                // } else if (this.count < 5) {
 
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
+                //    sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         frame: 'red',
 
-                        alpha: { start: 0.8, end: 0 },
-                        tint: [0xff2211,],
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
 
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
+                //         alpha: { start: 0.8, end: 0 },
+                //         tint: [0xff2211,],
 
-                } else if (this.count < 6) {
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
 
-                     sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                        frame: 'red',
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
-                        tint: [0xffff11,],
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
-                } else if (this.count < 7) {
+                // } else if (this.count < 6) {
 
-                     sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //      sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         frame: 'red',
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
+                //         tint: [0xffff11,],
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
+                // } else if (this.count < 7) {
 
-                        frame: 'white',
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
+                //      sat.trail = this.scene.add.particles(0, 0, 'flares', {
 
-                        tint: [0xffff11,],
+                //         frame: 'white',
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
 
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
-                } else {
+                //         tint: [0xffff11,],
 
-                    sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
+                // } else {
 
-                        frame: 'red',
+                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
 
-                        lifespan: 200,
-                        speed: 300,
-                        angle: { min: 0, max: 360 },
-                        scale: { start: 0.7, end: 0 },
-                        alpha: { start: 0.8, end: 0 },
+                //         frame: 'red',
 
-                        tint: [0xffff11,],
+                //         lifespan: 200,
+                //         speed: 300,
+                //         angle: { min: 0, max: 360 },
+                //         scale: { start: 0.7, end: 0 },
+                //         alpha: { start: 0.8, end: 0 },
 
-                        blendMode: 'SCREEN',
-                        follow: sat
-                    });
-                }
+                //         tint: [0xffff11,],
+
+                //         blendMode: 'SCREEN',
+                //         follow: sat
+                //     });
+                // }
 
 
 
@@ -138,7 +150,7 @@ export class Satellites {
                 sat.setSize(60, 60)
                 sat.setActive(true).setVisible(true);
                 sat.body.setAllowGravity(false);
-                sat.setDepth(5);
+                sat.setDepth(6);
             }
         }
 

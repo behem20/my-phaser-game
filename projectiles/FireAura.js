@@ -17,7 +17,8 @@ export function shootFireAura(scene, player, enemiesGroup, fireAuraGroup, radius
         // damageEnemy(scene, enemy, playerSkills.fireAura.damage, getHUD())
         // addDamage("fireAura", playerSkills.fireAura.damage);
 
-        const fx = scene.add.sprite(enemy.x, enemy.y, 'fireAuraAnims').setDepth(10);
+        const fx = scene.add.sprite(enemy.x, enemy.y, 'fireAuraAnims').setDepth(5);
+       fx.setScale(Phaser.Math.FloatBetween(0.3,2))
         fx.play('fireAuraAnim');
 
         // через 300 мс уничтожаем эффект

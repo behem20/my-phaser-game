@@ -16,29 +16,32 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     if (!enemy || !enemy.scene || !enemy.active) return;
     // 🔥 Подсветка врага
     enemy.sprite.setTintFill(randomTintFill('#a70000', '#460303ff'));
-    const textX = enemy.x+Phaser.Math.Between(-20,20)
-    const textY = enemy.y+Phaser.Math.Between(-20,20)
+    const textX = enemy.x + Phaser.Math.Between(-20, 20)
+    const textY = enemy.y + Phaser.Math.Between(-20, 20)
     // 🔥 Отобразить число урона
     if (damage > 0) {
-        const dmgText = scene.add.text(textX, textY - 40, `-${damage}`, {
-            fontSize: Math.random()>0.5?'24px':'30px',
-            fontFamily: 'Arial',
-            color: Math.random()>0.5?'#a70000ff':'#f82f50ff',
-            stroke: '#000000',
-            strokeThickness: 3
-        }).setOrigin(0.5).setDepth(100);
+        if (scene.hideDamageText) {
+            const dmgText = scene.add.text(textX, textY - 40, `-${damage}`, {
+                fontSize: Math.random()>0.5?'24px':'30px',
+                fontFamily: 'Arial',
+                color: Math.random()>0.5?'#a70000ff':'#f82f50ff',
+                stroke: '#000000',
+                strokeThickness: 3
+            }).setOrigin(0.5).setDepth(100);
 
-        // Анимация: всплытие и исчезновение
-        scene.tweens.add({
-            targets: dmgText,
-            y: dmgText.y - 30,
-            alpha: 0,
-            duration: 1800,
-            ease: 'Cubic.easeOut',
-            onComplete: () => {
-                dmgText.destroy();
-            }
-        });
+            // Анимация: всплытие и исчезновение
+            scene.tweens.add({
+                targets: dmgText,
+                y: dmgText.y - 30,
+                alpha: 0,
+                duration: 1800,
+                ease: 'Cubic.easeOut',
+                onComplete: () => {
+                    dmgText.destroy();
+                }
+            });
+        }
+
     }
 
     // 🔥 Доп таймер для очистки
@@ -48,34 +51,34 @@ export function playDamageEffect(enemy, scene, damage = 1) {
             enemy.sprite.setAlpha(1);
         }
     });
-     const rndScale =Phaser.Math.FloatBetween(0.2,0.25)
-        const rndAlpha =Phaser.Math.FloatBetween(0.05,0.1)
-        
-        const rndSpeed =Phaser.Math.Between(150,320)
-        const colors = ['yellow','white','red','blue','green']
+    const rndScale = Phaser.Math.FloatBetween(0.2, 0.25)
+    const rndAlpha = Phaser.Math.FloatBetween(0.05, 0.1)
 
-        const particles = scene.add.particles(0, 0, 'red-flares', {
-            frame: colors[Phaser.Math.Between(0,colors.length-1)],
-            x: enemy.x,
-            y: enemy.y,
-            speed: { min: rndSpeed, max: rndSpeed*1.5 },
-            // angle: { min: -90 - 10, max: -90 + 10 },
-            lifespan: 400,
-            gravityY: 0,
-            scale: { start: rndScale, end: rndScale*1.5 },
-            alpha: { start: rndAlpha, end: 0 },
-            // frequency: 100,
-            quantity: 15
+    const rndSpeed = Phaser.Math.Between(150, 320)
+    const colors = ['yellow', 'white', 'red', 'blue', 'green']
 
-        });
-        scene.tweens.add({
-            targets: particles,
-            alpha: { from: 1, to: 0 },
-            duration: 400,
-            ease: 'Cubic.easeOut',
-            onComplete: () => {
+    // scene.REDparticles = scene.add.particles(0, 0, 'red-flares', {
+    //     frame: colors[Phaser.Math.Between(0, colors.length - 1)],
+    //     x: enemy.x,
+    //     y: enemy.y,
+    //     speed: { min: rndSpeed, max: rndSpeed * 1.5 },
+    //     // angle: { min: -90 - 10, max: -90 + 10 },
+    //     lifespan: 400,
+    //     gravityY: 0,
+    //     scale: { start: rndScale, end: rndScale * 1.5 },
+    //     alpha: { start: rndAlpha, end: 0 },
+    //     // frequency: 100,
+    //     quantity: 15
 
-            }
-        });
-        scene.time.delayedCall(400, () => particles.destroy());
+    // });
+    // scene.tweens.add({
+    //     targets: scene.REDparticles,
+    //     alpha: { from: 1, to: 0 },
+    //     duration: 400,
+    //     ease: 'Cubic.easeOut',
+    //     onComplete: () => {
+
+    //     }
+    // });
+    // scene.time.delayedCall(400, () => scene.REDparticles.destroy());
 }

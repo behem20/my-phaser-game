@@ -12,19 +12,24 @@ export default class Player {
         this.sprite.setCollideWorldBounds(true);
 
         //fire aurs spell
-        this.fireAuraParticles = scene.add.particles(this.sprite.x, this.sprite.y, 'flares', {
+        this.fireAuraBGParticles = scene.add.particles(this.sprite.x, this.sprite.y, 'red-flares', {
             frame: 'red',
-            lifespan: 500,
-            speed: { min: 200, max: 350 },
-            angle: { min: 0, max: 360 },
-            scale: { start: 0.8, end: 1 },
-            alpha: { start: 0.1, end: 0 },
-
-            frequency: 11, // частота появления
+            lifespan: 720,
+            // speed: 360,
+            speed: { min: 120, max: 220 },
+            angle: { start: 0, end: 360, steps: 30 },
+            scale: { start: 0.2, end: 0.7 },
+            alpha: { start: 0.15, end: 0 },
+            frequency: -1, // частота появления
+            quantity: 16,
             tint: [0xff6633, 0xff3322, 0xdd5522],
-            blendMode: 'DIFFERENCE'
+            // tint: [0xff6633, 0xff3322, 0xddee22],
+            // tint: [0xff66FF, 0x2200FF],
+            blendMode: 'SCREEN'
+            // blendMode: 'ADD',
+
         }).setDepth(-1);
-        this.fireAuraParticles.stop()
+
 
         this.fireAuraCircle = this.scene.add.graphics();
         this.scene.tweens.add({
@@ -154,9 +159,17 @@ export default class Player {
 
         //fire aura
         if (playerSkills.fireAura.level > 1) {
-            this.fireAuraParticles.start()
-            this.fireAuraParticles.setPosition(this.sprite.x, this.sprite.y);
-            this.fireAuraParticles.setParticleLifespan(playerSkills.fireAura.radius * 3.5)
+            if (!this.fireAuraBGActive) {//BG FIREAURA
+                this.fireAuraBGActive = true;
+                this.fireAuraBGParticles.setParticleLifespan(playerSkills.fireAura.radius * 6)
+                this.fireAuraBGParticles.setPosition(this.sprite.x, this.sprite.y);
+                this.fireAuraBGParticles.explode(64);
+                // console.log('explode');
+                this.scene.time.delayedCall(30, () => {
+                    this.fireAuraBGActive = false;
+                });
+            }
+
 
 
             this.fireAuraCircle.clear();
@@ -165,6 +178,7 @@ export default class Player {
             this.fireAuraCircle.strokeCircle(0, 0, playerSkills.fireAura.radius); // радиус 80
             this.fireAuraCircle.setPosition(this.scene.cameras.main.worldView.centerX, this.scene.cameras.main.worldView.centerY);
             this.fireAuraCircle.setDepth(5); // чтобы было под игроком
+
         }
     }
 

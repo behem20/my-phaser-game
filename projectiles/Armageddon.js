@@ -1,3 +1,4 @@
+import { applyDamageWithCooldown } from "../utils/applyDamageWithCooldown.js";
 import { damageEnemy } from "../utils/damageEnemy.js";
 import { addDamage } from "../utils/damageStats.js";
 import { flashIcon } from "../utils/flashIcon.js";
@@ -15,7 +16,8 @@ export function shootArmageddon(scene, enemiesGroup, iconID) {
         const distance = Phaser.Math.Distance.Between(scene.player.x, scene.player.y, enemy.x, enemy.y);
         if (distance <= 550) {
 
-            damageEnemy(scene, enemy, damage, getHUD());
+            applyDamageWithCooldown(scene, 'armageddon', enemy, 10, 10)
+            // damageEnemy(scene, enemy, damage, getHUD());
             addDamage("Armageddon", damage);
         }
         // Визуальный эффект (вспышка, тряска, звук)

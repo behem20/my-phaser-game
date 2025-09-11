@@ -71,6 +71,10 @@ export function setupCollisions(scene) {
         }
     );
 
+
+     // Враг касается врага
+   
+
     // Враг касается игрока
     scene.physics.add.overlap(player, enemiesGroup, (player, enemy) => {
         handleTouchEnemy(scene, player, enemy);
@@ -95,5 +99,5 @@ export function setupCollisions(scene) {
         handleItemCollect(scene, player, item);
     }, null, scene);
     // enemy touch enemy
-    // scene.physics.add.collider(enemiesGroup, enemiesGroup);
+    scene.physics.add.collider(enemiesGroup, enemiesGroup);
 }

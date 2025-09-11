@@ -1,5 +1,5 @@
 
-import ArmorsScrollsSpawn from "../entities/ArmorsScrollsSpawner.js";
+
 
 import { getPlayerDamage } from "./damageCalculator.js";
 import { playDamageEffect } from "./damageEffect.js";
@@ -28,7 +28,7 @@ export function damageEnemy(scene, enemy, damage = 1, hud,) {
         playEnemyDeathEffect(scene, enemy)
 
         // if (enemy.hpBar) enemy.hpBar.destroy();
-        hud.addExp(scene.levels[scene.registry.get('currentLevel')].levelConfigs.addExpAmountPerKillAmount)
+        // hud.addExp(scene.levels[scene.registry.get('currentLevel')].levelConfigs.addExpAmountPerKillAmount)
         hud.addScore(); // или передай hud сюда
     }
 }

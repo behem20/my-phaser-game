@@ -19,6 +19,7 @@ class SaveManager {
                 hailLevel: 1,
                 armageddonLevel: 1,
             },
+            score:scene.registry.get('scoreCount')||0
         };
         
 

@@ -127,7 +127,7 @@ export function togglePause(scene) {
             scene.confirmYes = scene.add.text(300, 600, t('ui.yes'), { fontSize: '48px', fill: '#fff' }).setOrigin(0.5).setScrollFactor(0).setInteractive().setDepth(101)
             scene.confirmYes.on('pointerdown', () => {
                 scene.hud.minusLives(10)
-                scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins() })
+                scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins() ,score:scene.hud.score})
 
             })
             scene.confirmYes.on('pointerover', () => {

@@ -384,7 +384,7 @@ export default class GameScene extends Phaser.Scene {
             this.gameBGSoundSfx.stop()
             this.playerMoveSfx.stop()
             this.scene.pause();
-            this.scene.launch("CompleteLevelScene", { scene: this.scene.scene, coins: coins });
+            this.scene.launch("CompleteLevelScene", { scene: this.scene.scene, coins: coins, score: this.hud.score });
         });
         setHUD(this.hud)
         setupTimers(this);

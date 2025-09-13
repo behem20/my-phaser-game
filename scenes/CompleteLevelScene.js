@@ -13,14 +13,18 @@ export default class CompleteLevelScene extends Phaser.Scene {
     create(data) {
         data.scene.playerMoveSfx.stop()
 
+
         const completedList = this.registry.get('completedLevelsList')
         completedList[this.registry.get('currentLevel')] = 1
         this.registry.set('completedLevelsList', completedList)
-        
 
-        const { coins = 0 } = data; //score = enemy killed count
-        // const goldAmount = Math.trunc(score * 0.1 * data.scene.levels[data.scene.registry.get('currentLevel')].levelConfigs.addGoldAndGemsCoefficient);
-        // const gemAmount = Math.trunc(score * 0.03 * data.scene.levels[data.scene.registry.get('currentLevel')].levelConfigs.addGoldAndGemsCoefficient);
+
+        const { coins = 0 } = data;
+        const { score = 0 } = data;
+        const level = this.registry.get('currentLevel') + 1
+        const finalScore = Math.trunc(score * level + coins * 0.2 * level)
+        this.registry.set('scoreCount', this.registry.get('scoreCount') + finalScore)
+
         const goldAmount = Math.trunc(coins);
 
         const gemAmount = Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
@@ -39,7 +43,7 @@ export default class CompleteLevelScene extends Phaser.Scene {
             fill: "#fff"
         }).setOrigin(0.5);
 
-        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${coins}`, {
+        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${finalScore}`, {
             fontSize: "28px",
             fill: "#ff9a03ff"
         }).setOrigin(0.5);

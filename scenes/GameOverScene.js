@@ -10,15 +10,19 @@ export default class GameOverScene extends Phaser.Scene {
     create(data) {
 
         const { coins = 0 } = data;
-        console.log(coins);
-        
+        const { score = 0 } = data;
+        const level = this.registry.get('currentLevel') + 1
+        const finalScore = Math.trunc(score * level + coins * 10.2 * level)
+       
+        this.registry.set('scoreCount', this.registry.get('scoreCount') + finalScore)
+
         const goldAmount = Math.trunc(coins);
-        const gemAmount =  Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
+        const gemAmount = Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
 
         this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
         data.scene.playerMoveSfx.stop()
-data.scene.gameBGSoundSfx.stop()
-data.scene.satelliteStartSoundSfx.stop()
+        data.scene.gameBGSoundSfx.stop()
+        data.scene.satelliteStartSoundSfx.stop()
 
         // Полупрозрачный фон
         this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.7)
@@ -30,7 +34,7 @@ data.scene.satelliteStartSoundSfx.stop()
             fill: "#f80101ff"
         }).setOrigin(0.5);
 
-        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${coins}`, {
+        this.add.text(this.cameras.main.centerX, 240, `${t('game.score')} ${finalScore}`, {
             fontSize: "28px",
             fill: "#f57f10ff"
         }).setOrigin(0.5);
@@ -74,13 +78,13 @@ data.scene.satelliteStartSoundSfx.stop()
             this.scene.start("MenuScene");     // Перейти в меню
         });
         menuBtn.on("pointerover", () => {
-          
+
 
             this.onHoverSfx.play()
             menuBtn.setScale(1.1)
         });
         menuBtn.on("pointerout", () => {
-            
+
             menuBtn.setScale(1)
         });
     }

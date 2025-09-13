@@ -34,7 +34,7 @@ const originalLevels = [
             enemiesProcentHPIncreasePer10sec: 20,
         },
         levelConfigs: {
-            levelDuration: 60,
+            levelDuration: 10,
             backGround: 'background_1',
             expToUpgrade: 10,
             coefficientToUpgradeLevel: 1.3,

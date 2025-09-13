@@ -87,7 +87,7 @@ export function handleTouchEnemy(scene, player, enemy) {
     if (scene.hud.lives <= 0) {
         scene.scene.pause();
 
-        scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins() });
+        scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins(),score:scene.hud.score });
 
     }
 }

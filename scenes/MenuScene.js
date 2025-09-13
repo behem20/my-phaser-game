@@ -67,7 +67,7 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('fire', './game/assets/images/menu/fire.png')
 
         this.load.image('settings', './game/assets/images/menu/settings.png')
-
+        this.load.image('scoreIcon', './game/assets/images/menu/scoreIcon.png')
         this.load.image('soundOn', './game/assets/images/menu/soundOn.png')
         this.load.image('soundOff', './game/assets/images/menu/soundOff.png')
 
@@ -102,6 +102,7 @@ export default class MenuScene extends Phaser.Scene {
             this.registry.set('gemCount', saveData.diamonds);
             this.registry.set('completedLevelsList', saveData.completedLevels);
             this.registry.set('skillsLevelsObj', saveData.skillsLevels);
+            this.registry.set('scoreCount', saveData.score)
             // this.registry.set('metaUpgrades', saveData.metaUpgrades);
         } else {
             this.registry.set('goldCount', 130)
@@ -117,7 +118,8 @@ export default class MenuScene extends Phaser.Scene {
                 satelliteLevel: 1,
                 hailLevel: 1,
                 armageddonLevel: 1,
-            })
+            }),
+                this.registry.set('scoreCount', 0)
         }
         setLevelsToSkillRegistrySpells(this.registry.get('skillsLevelsObj'))
 
@@ -306,6 +308,13 @@ export default class MenuScene extends Phaser.Scene {
             }
         });
 
+        const scoreText = this.add.text(780, 290, this.registry.get('scoreCount'), {
+            fontSize: '28px',
+            fill: '#040500ff',
+            backgroundColor: "#84867459",
+            padding: {left: 5, right: 50, top: 5, bottom: 5  }
+        }).setDepth(10).setOrigin(1, 0.5)
+        const scoreIcon = this.add.image(scoreText.x-20, scoreText.y, 'scoreIcon').setDepth(11)
         menuBG.on('pointerdown', () => {
             this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy();; btn.isChosen = false })
         })

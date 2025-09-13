@@ -74,7 +74,7 @@ const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChild
                         alpha: { start: 1, end: 0 },
                         frequency: 10,
                         rotate: 150,
-                        tint: [0x0000ff, 0x00ff00],
+                        tint: [0xff0000, 0x00ff00],
                         blendMode: 'ADD',
                         follow: magic
                     });
@@ -87,7 +87,7 @@ const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChild
                 let angle = Phaser.Math.Angle.Between(player.x, player.y, enemy.x, enemy.y);
                 angle += Phaser.Math.DegToRad(Phaser.Math.Between(-3, 3)); // ±5°
 
-                const speed = Phaser.Math.Between(480, 520);
+                const speed = Phaser.Math.Between(680, 750);//480-520
                 scene.physics.velocityFromRotation(angle, speed, magic.body.velocity);
 
                 // const flash = scene.add.sprite(player.x, player.y-20, 'flares', 'green')

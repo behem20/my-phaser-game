@@ -1,5 +1,8 @@
 import { setLanguage, t } from "../LanguageManager.js";
-import SkillRegistry from "../SkillsRegistry.js";
+import SkillRegistry, { setLevelsToSkillRegistrySpells } from "../SkillsRegistry.js";
+import FireAura from "../utils/fireAuraConfigs.js";
+import saveManager from "../utils/SaveManager.js";
+import SaveManager from "../utils/SaveManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class MenuScene extends Phaser.Scene {
@@ -87,7 +90,42 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
         setLanguage(this, 'ru');
+        console.log('he');
+
         this.input.mouse.disableContextMenu();
+        saveManager.save(this)
+        const saveData = saveManager.load();
+        console.log(saveData);
+
+        if (saveData) {
+            this.registry.set('goldCount', saveData.coins);
+            this.registry.set('gemCount', saveData.diamonds);
+            this.registry.set('completedLevelsList', saveData.completedLevels);
+            this.registry.set('skillsLevelsObj', saveData.skillsLevels);
+            // this.registry.set('metaUpgrades', saveData.metaUpgrades);
+        } else {
+            this.registry.set('goldCount', 130)
+            this.registry.set('gemCount', 20)
+            this.registry.set('completedLevelsList', [0, 0, 0, 0, 0, 0])
+            this.registry.set('skillsLevelsObj', {
+                magicLevel: 1,
+                fireLevel: 1,
+                lightLevel: 1,
+                lightningLevel: 1,
+                tornadoLevel: 1,
+                fireAuraLevel: 1,
+                satelliteLevel: 1,
+                hailLevel: 1,
+                armageddonLevel: 1,
+            })
+        }
+        setLevelsToSkillRegistrySpells(this.registry.get('skillsLevelsObj'))
+
+
+        // Кнопка сохранить
+        this.input.keyboard.on('keydown-S', () => saveManager.save(this));
+        // Кнопка загрузить
+        this.input.keyboard.on('keydown-L', () => saveManager.load());
         const menuMusic = this.sound.get("bgMusic");//bg music from menu scene off
 
         if (menuMusic && !menuMusic.isPlaying) {
@@ -108,8 +146,8 @@ export default class MenuScene extends Phaser.Scene {
         this.successSfx = this.sound.add('successSound', { volume: 0.3 });
 
 
-        if (!this.registry.has('goldCount')) this.registry.set('goldCount', 100)
-        if (!this.registry.has('gemCount')) this.registry.set('gemCount', 20)
+        // if (!this.registry.has('goldCount')) this.registry.set('goldCount', 55000)
+        // if (!this.registry.has('gemCount')) this.registry.set('gemCount', 20)
 
 
         const menuBG = this.add.image(0, 0, 'bgPhotoMenu').setOrigin(0).setInteractive()
@@ -145,9 +183,9 @@ export default class MenuScene extends Phaser.Scene {
         const gemsIcon = this.add.image(0, 49, 'gem').setScale(0.25).setOrigin(0)
 
         // const completedLevelsList=[0,0,0,0,0,0]
-        if (!this.registry.get('completedLevelsList')) {
-            this.registry.set('completedLevelsList', [0, 0, 0, 0, 0, 0])
-        }
+        // if (!this.registry.get('completedLevelsList')) {
+        //     this.registry.set('completedLevelsList', [0, 0, 0, 0, 0, 0])
+        // }
         const completedList = this.registry.get('completedLevelsList')
         completedList.forEach((el, index) => {
             if (el) {

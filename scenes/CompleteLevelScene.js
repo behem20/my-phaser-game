@@ -1,5 +1,6 @@
 
 import { setLanguage, t } from "../LanguageManager.js";
+import saveManager from "../utils/SaveManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class CompleteLevelScene extends Phaser.Scene {
@@ -72,6 +73,7 @@ export default class CompleteLevelScene extends Phaser.Scene {
         menuBtn.on("pointerdown", () => {
             this.registry.set('goldCount', this.registry.get('goldCount') + goldAmount)
             this.registry.set('gemCount', this.registry.get('gemCount') + gemAmount)
+            saveManager.save(this)
             this.onTapSfx.play();
 
             this.scene.stop();                  // Закрыть GameOver

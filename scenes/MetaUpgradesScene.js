@@ -182,18 +182,17 @@ export default class MetaUpgradesScene extends Phaser.Scene {
             })
             .on('pointerout', () => { upgradeText.setScale(1) })
             .on("pointerdown", () => {
-                // console.log(this.activeSpell);
-                // // SkillRegistry[this.activeSpell].upgrade();
-                // console.log(`${this.activeSpell.entity.key} upgraded:`, SkillRegistry[this.activeSpell.entity.key].level);
-                // console.log(SkillRegistry);
 
-                // console.log(this.scene);
 
                 this.MenuScene.onTapSfx.play()
                 if (this.registry.get('goldCount') >= SkillRegistry[this.activeSpell.entity.key].getCurrentStats().price) {
                     this.registry.set('goldCount', this.registry.get('goldCount') - SkillRegistry[this.activeSpell.entity.key].getCurrentStats().price)
                     goldText.setText(this.registry.get('goldCount'))
                     SkillRegistry[this.activeSpell.entity.key].upgrade()
+
+                    const t = this.registry.get('skillsLevelsObj');
+                    t[`${this.activeSpell.entity.key}Level`] += 1;
+                    this.registry.set('skillsLevelsObj', t); ///data savve
                     flashScreen(this)
                     this.MenuScene.successSfx.play()
 

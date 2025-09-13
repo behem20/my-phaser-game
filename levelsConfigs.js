@@ -6,7 +6,7 @@ const originalLevels = [
                 hp: 75,
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
-                speed: 50,
+                speed: 5,
                 radius: 24
             },
             fastType: {
@@ -34,7 +34,7 @@ const originalLevels = [
             enemiesProcentHPIncreasePer10sec: 20,
         },
         levelConfigs: {
-            levelDuration: 300,
+            levelDuration: 60,
             backGround: 'background_1',
             expToUpgrade: 10,
             coefficientToUpgradeLevel: 1.3,
@@ -51,16 +51,17 @@ const originalLevels = [
             hp: 10,
             maxHP: 10,
             baseCastInterval: 10000,
-            speed: 250,
+            speed: 1250,
         },
         wavesConfigs: {
             delayBetweenWaves: 5000,
             waves: [
                 {
                     groups: [
-                        { type: 'normal', count: 5, delayBetweenEnemies: 1 },
-                        // { type: 'fast', count: 15, delayBetweenEnemies: 1 },
-                        // { type: 'fast', count: 500000, delayBetweenEnemies: 20 },
+                        // { type: 'boss', count: 2, delayBetweenEnemies: 1 },
+                        {type: 'fast', count: 5, delayBetweenEnemies: 1 },
+                        { type: 'normal', count: 500000, delayBetweenEnemies: 10 },
+                        // { type: 'normal', count: 500000, delayBetweenEnemies: 2 },
 
                     ]
                 },

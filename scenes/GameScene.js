@@ -228,6 +228,7 @@ export default class GameScene extends Phaser.Scene {
 
     }
     create() {
+        this.anims.resumeAll();
         console.log('game started');
         this.hideDamageText = false;
         this.hideDamageButton = this.add.text(690, 15, 'damage?').setScrollFactor(0).setDepth(12).setInteractive()
@@ -355,7 +356,7 @@ export default class GameScene extends Phaser.Scene {
             particlesTTT.forEach(prt => {
                 console.log(prt.texture)
             })
-           
+
             console.log("enemies:", this.enemies.group.getChildren().length);
 
             const images = this.children.list.filter(obj => obj.type === 'Image');
@@ -409,18 +410,18 @@ export default class GameScene extends Phaser.Scene {
 
         // this.enemies.spawn()
         this.registry.set('enemySpawned', 0)
-        if (this.enemies) {
-            this.enemies.group.children.each(container => {
-                if (container.sprite) {
-                    container.particles.destroy()
-                }
-                if (container.shadow) {//если перезапустить волну то враги из прошлой не унчитожилсь - пытаюсь стереть их
-                    container.shadow.destroy()
-                }
-                container.destroy({ children: true });
-            })
-            this.enemies.group.clear(true, true)
-        }
+        // if (this.enemies) {
+        //     this.enemies.group.children.each(container => {
+        //         if (container.sprite) {
+        //             container.particles.destroy()
+        //         }
+        //         if (container.shadow) {//если перезапустить волну то враги из прошлой не унчитожилсь - пытаюсь стереть их
+        //             container.shadow.destroy()
+        //         }
+        //         container.destroy({ children: true });
+        //     })
+        //     this.enemies.group.clear(true, true)
+        // }
         this.waveManager = new WaveManager(this, level)
 
         this.events.on('spawnEnemy', (type) => {
@@ -495,7 +496,12 @@ export default class GameScene extends Phaser.Scene {
                 this.updateParticlesText();
             }
         });
-
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
+        console.log(this.time._active);
+    }
+    onShutdown() {
+        if (this.waveManager) this.waveManager.reset(); // только свои таймеры
+        this.events.off('spawnEnemy');                 // только свои события
     }
     updateParticlesText() {
         let totalParticles = 0;

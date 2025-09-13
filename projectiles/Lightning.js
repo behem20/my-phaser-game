@@ -11,7 +11,7 @@ import { playerSkills } from "../utils/upgradesManager.js";
 
 export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1,iconID) {
     const lightningKeys = ['lightning1', 'lightning2', 'lightning3', 'lightning4', 'lightning5'];
-    const finalCount = targetCount+10 + scene.playerInitCfgs.lightningCountBonus
+    const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
     const enemies = getClosestEnemiesInRadius(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
 // const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
 

@@ -1,4 +1,5 @@
 import { t } from "../LanguageManager.js";
+import saveManager from "../utils/SaveManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class GameOverScene extends Phaser.Scene {
@@ -64,6 +65,7 @@ data.scene.satelliteStartSoundSfx.stop()
             data.scene.onTapSfx.play()
             this.registry.set('goldCount', this.registry.get('goldCount') + goldAmount)
             this.registry.set('gemCount', this.registry.get('gemCount') + gemAmount)
+            saveManager.save(this)
             // playerSkills.resetSkills()
             // resetLevels(levels)
             data.scene.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel = 1;

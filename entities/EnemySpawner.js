@@ -71,7 +71,7 @@ class EnemyContainer extends Phaser.GameObjects.Container {
 
 export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKey = 'enemy_normal_1', textureRadius = 20) {
 
-
+    enemy.hpBar = null;
     enemy.shadow = scene.add.image(x, y + 10, 'shadow');
     enemy.activate(x, y, textureKey, animationKey)
 
@@ -89,23 +89,12 @@ export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKe
 
     enemy.shadow.setAlpha(0.3)
 
-    // enemy.isFast = animationKey == 'enemy_fast_1'
-    // enemy.body.immovable = enemy.isFast 
+    enemy.isBoss = animationKey == 'enemy_boss_1'
+   
 
 
     enemy.isSpecial = false;
     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
-    // if (textureKey == 'enemy_boss_1') enemy.isSpecial = true
-
-    // scene.tweens.add({
-    //     targets: enemy,
-    //     scaleX: 1.02,
-    //     scaleY: 0.98,
-    //     yoyo: true,
-    //     duration: 120,
-    //     repeat: -1
-    // });
-    // console.log('RESET enemy', enemy.sprite.texture.key, enemy.sprite.visible);
 }
 
 export default class EnemySpawner {
@@ -136,7 +125,7 @@ export default class EnemySpawner {
         // this.scene.tweens.killTweensOf(enemy);
 
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-        const distance = Phaser.Math.Between(350, 500);//550 600
+        const distance = Phaser.Math.Between(550, 600);//550 600
         const x = this.player.x + Math.cos(angle) * distance;
         const y = this.player.y + Math.sin(angle) * distance;
 
@@ -160,6 +149,8 @@ export default class EnemySpawner {
 
 
     }
+
+
 
     update() {
 
@@ -185,25 +176,7 @@ export default class EnemySpawner {
 
         });
 
-        // hp бар
-        // this.group.children.iterate(enemy => {
-        //     if (!enemy.active) return;
 
-        //     const { x, y, hp, maxHP } = enemy;
-        //     const width = 40;
-        //     const height = 6;
-        //     const offsetY = 30;
-
-        //     enemy.hpBar.clear();
-        //     enemy.hpBar.fillStyle(0x000000, 1);
-        //     enemy.hpBar.fillRect(x - width / 2, y - offsetY, width, height);
-        //     enemy.hpBar.fillStyle(0xff0000, 1);
-        //     enemy.hpBar.fillRect(x - width / 2, y - offsetY, width * (hp / maxHP), height);
-
-
-
-
-        // });
     }
 
     getEnemies() {

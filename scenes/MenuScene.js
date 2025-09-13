@@ -93,7 +93,7 @@ export default class MenuScene extends Phaser.Scene {
         console.log('he');
 
         this.input.mouse.disableContextMenu();
-        saveManager.save(this)
+        // saveManager.save(this)
         const saveData = saveManager.load();
         console.log(saveData);
 

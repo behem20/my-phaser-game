@@ -28,7 +28,7 @@ class SaveManager {
     load() {
         const data = JSON.parse(localStorage.getItem('gameSave'));
 
-        // console.log(data);
+        console.log(data);
 
         return data || null;
     }

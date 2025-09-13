@@ -3,6 +3,7 @@ import SkillRegistry from "../SkillsRegistry.js";
 import Tooltip from "../ui/Tooltip.js";
 import { flashIcon } from "../utils/flashIcon.js";
 import { flashScreen } from "../utils/FlashScreen.js";
+import saveManager from "../utils/SaveManager.js";
 import { openSkillWindow } from "../utils/SpellWindows.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
@@ -193,6 +194,7 @@ export default class MetaUpgradesScene extends Phaser.Scene {
                     const t = this.registry.get('skillsLevelsObj');
                     t[`${this.activeSpell.entity.key}Level`] += 1;
                     this.registry.set('skillsLevelsObj', t); ///data savve
+                    saveManager.save(this)
                     flashScreen(this)
                     this.MenuScene.successSfx.play()
 

@@ -90,7 +90,7 @@ export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKe
     enemy.shadow.setAlpha(0.3)
 
     enemy.isBoss = animationKey == 'enemy_boss_1'
-   
+
 
 
     enemy.isSpecial = false;
@@ -116,6 +116,10 @@ export default class EnemySpawner {
             fast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.fastType,
             tank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.tankType,
             boss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.bossType,
+            midNormal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midNormalType,
+            midFast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midFastType,
+            midTank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midTankType,
+            midBoss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midBossType,
         };
     }
 

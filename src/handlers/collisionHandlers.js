@@ -109,7 +109,7 @@ export function handleCoinCollect(scene, player, coin) {
     scene.registry.set('coinsCount', scene.registry.get('coinsCount') + finalAmount)//fix
     scene.hud.addCoins(finalAmount);
     scene.hud.tintCoins();
-    scene.hud.addExp(0.1 * coin.value)
+    scene.hud.addExp(0.2 * coin.value)
 
 
     const targetX = scene.player.x+Phaser.Math.Between(-40,40);

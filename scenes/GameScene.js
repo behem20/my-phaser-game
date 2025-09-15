@@ -181,6 +181,25 @@ export default class GameScene extends Phaser.Scene {
             frameWidth: 240, // ширина одного кадра
             frameHeight: 240 // высота одного кадра
         });
+        //enemy normal mid
+        this.load.spritesheet('sheet_enemy_midNormal_1', 'game/assets/images/enemiesSheets/sheet_enemy_midNormal_1.png', {
+            frameWidth: 48, // ширина одного кадра
+            frameHeight: 48 // высота одного кадра
+        });
+        //enemy fast mid
+        this.load.spritesheet('sheet_enemy_midFast_1', 'game/assets/images/enemiesSheets/sheet_enemy_midFast_1.png', {
+            frameWidth: 24, // ширина одного кадра
+            frameHeight: 24 // высота одного кадра
+        });//enemy tank mid
+        this.load.spritesheet('sheet_enemy_midTank_1', 'game/assets/images/enemiesSheets/sheet_enemy_midTank_1.png', {
+            frameWidth: 64, // ширина одного кадра
+            frameHeight: 64 // высота одного кадра
+        });
+        //enemy boss mid
+        this.load.spritesheet('sheet_enemy_midBoss_1', 'game/assets/images/enemiesSheets/sheet_enemy_midBoss_1.png', {
+            frameWidth: 240, // ширина одного кадра
+            frameHeight: 240 // высота одного кадра
+        });
         //coins
         this.load.spritesheet('coins_bot_sheet', 'game/assets/images/coins/coin_sheet_bot.png', {
             frameWidth: 16, // ширина одного кадра
@@ -230,8 +249,8 @@ export default class GameScene extends Phaser.Scene {
     create() {
         this.anims.resumeAll();
         console.log('game started');
-        this.hideDamageText = false;
-        this.hideDamageButton = this.add.text(690, 15, 'damage?').setScrollFactor(0).setDepth(12).setInteractive()
+        this.hideDamageText = true;
+        this.hideDamageButton = this.add.text(690, 15, t('game.damage?')).setScrollFactor(0).setDepth(12).setInteractive()
         this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
         this.hideDamageButton.on('pointerover', () => { this.hideDamageButton.setFontSize(18);; this.onHoverSfx.play() })
         this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(16); })
@@ -350,25 +369,25 @@ export default class GameScene extends Phaser.Scene {
 
         this.input.keyboard.on("keydown-T", () => {
             console.log('objects:', this.children.list.length);
-            console.log("graphics:", this.children.list.filter(obj => obj.type === "Graphics").length);
-            console.log("particles:", this.children.list.filter(obj => obj.type === "ParticleEmitter").length);
-            const particlesTTT = this.children.list.filter(obj => obj.type === "ParticleEmitter");
-            particlesTTT.forEach(prt => {
-                console.log(prt.texture)
-            })
+            // console.log("graphics:", this.children.list.filter(obj => obj.type === "Graphics").length);
+            // console.log("particles:", this.children.list.filter(obj => obj.type === "ParticleEmitter").length);
+            // const particlesTTT = this.children.list.filter(obj => obj.type === "ParticleEmitter");
+            // particlesTTT.forEach(prt => {
+            //     console.log(prt.texture)
+            // })
 
-            console.log("enemies:", this.enemies.group.getChildren().length);
+            // console.log("enemies:", this.enemies.group.getChildren().length);
 
-            const images = this.children.list.filter(obj => obj.type === 'Image');
-            console.log('Images count:', images.length);
-            // images.forEach(img => {
-            //     console.log(img.texture.key, img.x, img.y);
-            // });
-            const containers = this.children.list.filter(obj => obj.type === 'Container');
-            console.log('Containers count:', containers.length);
-            console.log(this.children.list.map(obj => obj.type));
-            console.log('Tweens total:', this.tweens.getTweens(true).length);
-            // printStats(this.player.gAura);
+            // const images = this.children.list.filter(obj => obj.type === 'Image');
+            // console.log('Images count:', images.length);
+            // // images.forEach(img => {
+            // //     console.log(img.texture.key, img.x, img.y);
+            // // });
+            // const containers = this.children.list.filter(obj => obj.type === 'Container');
+            // console.log('Containers count:', containers.length);
+            // console.log(this.children.list.map(obj => obj.type));
+            // console.log('Tweens total:', this.tweens.getTweens(true).length);
+            printStats(this.player.gAura);
         });
 
         //inventory key
@@ -437,9 +456,9 @@ export default class GameScene extends Phaser.Scene {
         });
         //spawn coins on start close to player
 
-        for (let i = 0; i < 55; i++) {
+        for (let i = 0; i < 75; i++) {
 
-            this.coins.spawnRandomly(100, 1600, this)
+            this.coins.spawnRandomly(100, 700, this)
         }
 
         // this.scene.pause();

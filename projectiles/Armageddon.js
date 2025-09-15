@@ -14,7 +14,7 @@ export function shootArmageddon(scene, enemiesGroup, iconID) {
         if (!enemy.active) return;
 
         const distance = Phaser.Math.Distance.Between(scene.player.x, scene.player.y, enemy.x, enemy.y);
-        if (distance <= 550) {
+        if (distance <= 1000) {
 
             applyDamageWithCooldown(scene, 'armageddon', enemy, 10, 10)
             // damageEnemy(scene, enemy, damage, getHUD());
@@ -24,7 +24,7 @@ export function shootArmageddon(scene, enemiesGroup, iconID) {
         // scene.tweens.add({
         //     targets: enemy,
         //     alpha: 0,
-        //     duration: 300,
+        //     duration: 30,
         //     ease: 'Cubic.easeOut',
         // });
     });

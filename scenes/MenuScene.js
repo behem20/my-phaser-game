@@ -184,18 +184,12 @@ export default class MenuScene extends Phaser.Scene {
         }).setOrigin(1, 0);
         const gemsIcon = this.add.image(0, 49, 'gem').setScale(0.25).setOrigin(0)
 
-        // const completedLevelsList=[0,0,0,0,0,0]
-        // if (!this.registry.get('completedLevelsList')) {
-        //     this.registry.set('completedLevelsList', [0, 0, 0, 0, 0, 0])
-        // }
+       
         const completedList = this.registry.get('completedLevelsList')
         completedList.forEach((el, index) => {
             if (el) {
-                const complete = this.add.image(100 + 100 * index, 140, 'complete').setDepth(100).setScale(7)
+                const complete = this.add.image(100 + 100 * index, 140, 'complete').setDepth(2).setScale(1)
             }
-
-            // console.log(complete.x, complete.y);
-
         })
         const switchLevelButtonGroupData = [
             {
@@ -247,7 +241,7 @@ export default class MenuScene extends Phaser.Scene {
                     tint: [0xff3344, 0xffff33],
                     blendMode: 'ADD',
                     follow: button,
-                });
+                }).setDepth(3);
 
                 button.isChosen = true;
                 this.registry.set('currentLevel', data.level)
@@ -313,8 +307,8 @@ export default class MenuScene extends Phaser.Scene {
             fill: '#040500ff',
             backgroundColor: "#84867459",
             padding: {left: 5, right: 50, top: 5, bottom: 5  }
-        }).setDepth(10).setOrigin(1, 0.5)
-        const scoreIcon = this.add.image(scoreText.x-20, scoreText.y, 'scoreIcon').setDepth(11)
+        }).setOrigin(1, 0.5)
+        const scoreIcon = this.add.image(scoreText.x-20, scoreText.y, 'scoreIcon')
         menuBG.on('pointerdown', () => {
             this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy();; btn.isChosen = false })
         })

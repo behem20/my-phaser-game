@@ -19,7 +19,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
         const hud = getHUD()
         // this.cameras.main.setBackgroundColor("#000000");
         this.bgOverlay = this.add.graphics()
-            .fillStyle(0x000000, 0.5) // 0.5 = прозрачность
+            .fillStyle(0x000000, 0.9) // 0.5 = прозрачность
             .fillRect(0, 0, this.scale.width, this.scale.height)
             .setScrollFactor(0) // фиксируем к экрану
             .setDepth(-10);     // позади всего

@@ -31,14 +31,14 @@ export default class Player {
         }).setDepth(-1);
 
 
-        this.fireAuraCircle = this.scene.add.graphics();
-        this.scene.tweens.add({
-            targets: this.fireAuraCircle,
-            alpha: { from: 0.3, to: 0.7 },
-            duration: 800, // скорость появления/затухания
-            yoyo: true,    // обратно
-            repeat: -1     // бесконечно
-        });
+        // this.fireAuraCircle = this.scene.add.graphics();
+        // this.scene.tweens.add({
+        //     targets: this.fireAuraCircle,
+        //     alpha: { from: 0.3, to: 0.7 },
+        //     duration: 800, // скорость появления/затухания
+        //     yoyo: true,    // обратно
+        //     repeat: -1     // бесконечно
+        // });
 
 
 
@@ -172,12 +172,12 @@ export default class Player {
 
 
 
-            this.fireAuraCircle.clear();
-            this.fireAuraCircle.lineStyle(5, 0xff9900, 0.3); // толщина 2, оранжевый, прозрачность 0.8
+            // this.fireAuraCircle.clear();
+            // this.fireAuraCircle.lineStyle(5, 0xff9900, 0.3); // толщина 2, оранжевый, прозрачность 0.8
 
-            this.fireAuraCircle.strokeCircle(0, 0, playerSkills.fireAura.radius); // радиус 80
-            this.fireAuraCircle.setPosition(this.scene.cameras.main.worldView.centerX, this.scene.cameras.main.worldView.centerY);
-            this.fireAuraCircle.setDepth(5); // чтобы было под игроком
+            // this.fireAuraCircle.strokeCircle(0, 0, playerSkills.fireAura.radius); // радиус 80
+            // this.fireAuraCircle.setPosition(this.scene.cameras.main.worldView.centerX, this.scene.cameras.main.worldView.centerY);
+            // this.fireAuraCircle.setDepth(5); // чтобы было под игроком
 
         }
     }

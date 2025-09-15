@@ -30,13 +30,14 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         tornado.play(tornadoAnim)
 
         if (!tornado) return;
-        resetTornado(tornado, player.x + Phaser.Math.Between(-410, 400), player.y + Phaser.Math.Between(-410, 420), scene)
+        resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
         // scene.lightShootSfx.play();
         tornado.setActive(true).setVisible(true);
         tornado.body.setAllowGravity(false);
         tornado.body.setCollideWorldBounds(true);
         tornado.body.setBounce(1); // пусть отскакивает от границ
-        tornado.body.setCircle(tornado.width / 2);
+        // tornado.body.setCircle(tornado.width );
+        tornado.body.setCircle(tornado.width , tornado.width / 2 - tornado.width, tornado.height / 2 - tornado.width);
         if (level < 3) {
             tornado.particles = scene.add.particles(0, 0, 'flares', {
                 frame: 'blue',
@@ -69,11 +70,11 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         } else {
             tornado.particles = scene.add.particles(0, 0, 'flares', {
                 frame: 'blue',
-                lifespan: 35 * level,
+                lifespan: 20 * level,
                 speed: 350,
                 angle: { min: 0, max: 360 },
-                scale: { start: 0.2, end: 0.8 },
-                alpha: { start: 0.8, end: 0 },
+                scale: { start: 0.3, end: 0.8 },
+                alpha: { start: 1, end: 0 },
                 tint: [0xff00ff, 0xff0000],
                 // tint: [0x00ff00, 0x993300], // on max level
                 blendMode: 'ADD',
@@ -115,7 +116,7 @@ function resetTornado(tornado, x, y, scene) {
     tornado.body.setAllowGravity(false);
     tornado.body.setCollideWorldBounds(true);
     tornado.body.setBounce(1);
-    tornado.body.setCircle(tornado.width / 2);
+    // tornado.body.setCircle(tornado.width / 2);
     tornado.setScale(1)
 
 

@@ -24,7 +24,6 @@ export function getClosestEnemiesInRadius(scene, source, targets, count, radius 
     const cache = scene._closestEnemiesCache;
 
     if (now - cache.lastUpdate > 200) {
-        console.log('tatrgets reneц');
         
         // Обновляем только раз в 200мс
         cache.result = targets

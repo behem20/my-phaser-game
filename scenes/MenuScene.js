@@ -53,9 +53,8 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('level_infinity', './game/assets/images/menu/level_infinity.png')
 
         this.load.image('complete', './game/assets/images/menu/complete.png')
-        this.load.image('shop', './game/assets/images/menu/shop.png')
         this.load.image('magics', './game/assets/images/menu/magics.png')
-        this.load.image('wood', './game/assets/images/menu/wood.png')
+        
         this.load.image('hero', './game/assets/images/menu/heroMenu.png')
 
         this.load.image('damageIcon', './game/assets/images/ui_icons/damage.png')
@@ -73,29 +72,27 @@ export default class MenuScene extends Phaser.Scene {
 
         this.load.atlas(
             'flares', // имя (можно любое, но обычно flares)
-            'https://labs.phaser.io/assets/particles/flares.png', // картинка
-            'https://labs.phaser.io/assets/particles/flares.json' // описание спрайтов
+            'flares.png', // картинка
+            'flaresInfo.json' // описание спрайтов
         );
         this.load.atlas(
             'red-flares', // имя (можно любое, но обычно flares)
             'game/assets/images/redFlares.png', // картинка
-            'https://labs.phaser.io/assets/particles/flares.json' // описание спрайтов
+            'flaresInfo.json' // описание спрайтов
         );
-        this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.wav');
-        this.load.audio('rejectSound', 'game/assets/sounds/reject.wav')
-        this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.wav');
-        this.load.audio('successSound', 'game/assets/sounds/success.wav');
+        this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.mp3');
+        this.load.audio('rejectSound', 'game/assets/sounds/reject.mp3')
+        this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.mp3');
+        this.load.audio('successSound', 'game/assets/sounds/success.mp3');
 
     }
 
     create() {
         setLanguage(this, 'ru');
-        console.log('he');
 
         this.input.mouse.disableContextMenu();
         // saveManager.save(this)
         const saveData = saveManager.load();
-        console.log(saveData);
 
         if (saveData) {
             this.registry.set('goldCount', saveData.coins);
@@ -184,7 +181,7 @@ export default class MenuScene extends Phaser.Scene {
         }).setOrigin(1, 0);
         const gemsIcon = this.add.image(0, 49, 'gem').setScale(0.25).setOrigin(0)
 
-       
+
         const completedList = this.registry.get('completedLevelsList')
         completedList.forEach((el, index) => {
             if (el) {
@@ -241,7 +238,7 @@ export default class MenuScene extends Phaser.Scene {
                     tint: [0xff3344, 0xffff33],
                     blendMode: 'ADD',
                     follow: button,
-                }).setDepth(3);
+                }).setDepth(2);
 
                 button.isChosen = true;
                 this.registry.set('currentLevel', data.level)
@@ -306,9 +303,9 @@ export default class MenuScene extends Phaser.Scene {
             fontSize: '28px',
             fill: '#040500ff',
             backgroundColor: "#84867459",
-            padding: {left: 5, right: 50, top: 5, bottom: 5  }
+            padding: { left: 5, right: 50, top: 5, bottom: 5 }
         }).setOrigin(1, 0.5)
-        const scoreIcon = this.add.image(scoreText.x-20, scoreText.y, 'scoreIcon')
+        const scoreIcon = this.add.image(scoreText.x - 20, scoreText.y, 'scoreIcon')
         menuBG.on('pointerdown', () => {
             this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy();; btn.isChosen = false })
         })
@@ -323,7 +320,7 @@ export default class MenuScene extends Phaser.Scene {
         // shopButton.on('pointerout', () => shopButton.setScale(1));
 
         //magics
-        const magicsButton = this.add.sprite(100, 700, "magics").setInteractive()
+        const magicsButton = this.add.sprite(100, 700, "magics").setInteractive().setDepth(1)
         magicsButton.on('pointerdown', () => {
             this.onTapSfx.play();
             this.scene.start('MetaUpgradesScene', { scene: this });
@@ -338,7 +335,7 @@ export default class MenuScene extends Phaser.Scene {
             const bgFill = this.add.rectangle(0, 0, 800, 800, 0x000000, 0.95)
                 .setOrigin(0)
                 .setInteractive()
-                .setDepth(0);
+                .setDepth(2);
 
 
             const backBtn = this.add.text(680, 20, t('ui.back'), {
@@ -361,6 +358,7 @@ export default class MenuScene extends Phaser.Scene {
             const toggleSoundButton = this.add.sprite(400, 400, this.sound.mute ? 'soundOn' : 'soundOff')
                 .setInteractive()
                 .setScale(2)
+                .setDepth(2)
             toggleSoundButton.on('pointerdown', () => {
                 this.onTapSfx.play();
                 toggleSoundButton.setTexture(!this.sound.mute ? 'soundOn' : 'soundOff')
@@ -415,7 +413,41 @@ export default class MenuScene extends Phaser.Scene {
             blendMode: 'ADD',
             follow: fire,
         });
-
-
+        magicsButton.trail_1 = this.add.particles(55, 690, 'flares', {
+            frame: 'blue',
+            lifespan: 120,
+            speed: { min: 120, max: 220 },
+            // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+            angle: { min: 0, max: 360 }, // летят вверх, +-10°
+            gravityY: 0,             // без гравитации
+            scale: { start: 0.4, end: 0.7 }, // уменьшаются
+            alpha: { start: 0.5, end: 0 },   // исчезают
+            frequency: 100,
+            quantity: 2,
+            // tint: [0xffaa33, 0xff7633],
+            tint: [0x0000ff, 0x00ff00],
+            // tint:0xff0000, 
+            blendMode: 'ADD',
+            // blendMode: 'SCREEN'
+            // follow: magicsButton,
+        }).setDepth(0);
+        magicsButton.trail_2 = this.add.particles(70, 740, 'flares', {
+            frame: 'red',
+            lifespan: 120,
+            speed: { min: 120, max: 220 },
+            // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+            angle: { min: 0, max: 360 }, // летят вверх, +-10°
+            gravityY: 0,             // без гравитации
+            scale: { start: 0.4, end: 0.7 }, // уменьшаются
+            alpha: { start: 0.5, end: 0 },   // исчезают
+            frequency: 100,
+            quantity: 2,
+            tint: [0xffaa33, 0xff7633],
+            // tint: [0x0000ff, 0x00ff00],
+            // tint:0xff0000, 
+            blendMode: 'ADD',
+            // blendMode: 'SCREEN'
+            // follow: magicsButton,
+        }).setDepth(0);
     }
 }

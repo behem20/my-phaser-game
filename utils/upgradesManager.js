@@ -56,11 +56,11 @@ export function createPlayerSkillsFromRegistry(arr) {
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 75,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 25, targetCount: 5, count: 3, description: 'spellsUpgradeDescription.magic.6'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 25, targetCount: 4, count: 3, description: 'spellsUpgradeDescription.magic.6'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 90,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 80, targetCount: 6, count: 3, description: 'spellsUpgradeDescription.magic.7'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 30, targetCount: 5, count: 3, description: 'spellsUpgradeDescription.magic.7'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 105,
@@ -1200,13 +1200,13 @@ export const playerSkills = {
                 this.magic,
                 this.fire,
                 this.light,
-                // this.lightning,
-                // this.armageddon,
-                // this.tornado,
-                // this.fireAura,
-                // this.satellite,
-                // this.hail,
-                // this.magnetRadius,
+                this.lightning,
+                this.armageddon,
+                this.tornado,
+                this.fireAura,
+                this.satellite,
+                this.hail,
+                this.magnetRadius,
                 this.intellect,
                 this.robe,
             ]

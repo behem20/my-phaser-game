@@ -3,7 +3,7 @@ export default class MusicScene extends Phaser.Scene {
         super({ key: 'MusicScene', active: true })
     }
     preload() {
-        this.load.audio('bgMusic', './game/assets/music/gameSceneMusic.wav')
+        this.load.audio('bgMusic', './game/assets/music/gameSceneMusic.mp3')
     }
     create() {
         if (!this.sound.get('bgMusic')) {

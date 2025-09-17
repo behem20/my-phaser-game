@@ -55,7 +55,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.atlas(
             'inv-flares', // имя (можно любое, но обычно flares)
             'game/assets/images/inv-flares.png', // картинка
-            'https://labs.phaser.io/assets/particles/flares.json' // описание спрайтов
+            'flaresInfo.json' // описание спрайтов
         );
 
 
@@ -71,29 +71,29 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("stars", "game/assets/images/chestItemsPictures/stars.png")
 
 
-        this.load.audio('magicShootSound', 'game/assets/sounds/magicShootSound.wav');
-        this.load.audio('lightShootSound', 'game/assets/sounds/lightShootSound.wav');
-        this.load.audio('fireShootSound', 'game/assets/sounds/fireShootSound.wav');
-        this.load.audio('enemyHitSound', 'game/assets/sounds/enemyHitSound.wav');
-        this.load.audio('enemySplatSound', 'game/assets/sounds/enemySplatSound.wav');
+        this.load.audio('magicShootSound', 'game/assets/sounds/magicShootSound.mp3');
+        this.load.audio('lightShootSound', 'game/assets/sounds/lightShootSound.mp3');
+        this.load.audio('fireShootSound', 'game/assets/sounds/fireShootSound.mp3');
+        this.load.audio('enemyHitSound', 'game/assets/sounds/enemyHitSound.mp3');
+        this.load.audio('enemySplatSound', 'game/assets/sounds/enemySplatSound.mp3');
 
-        this.load.audio('splashesSound', 'game/assets/sounds/splashesSound.wav');
+        this.load.audio('splashesSound', 'game/assets/sounds/splashesSound.mp3');
 
-        this.load.audio('lightningShootSound', 'game/assets/sounds/lightningShootSound.wav');
-        this.load.audio('fireAuraHitSound', 'game/assets/sounds/fireAuraHit_1.wav');
-        this.load.audio('fireShootCollisionSound', 'game/assets/sounds/fireShootCollisionSound.wav')
-        this.load.audio('satelliteStartSound', 'game/assets/sounds/satelliteSound.wav')
-        this.load.audio('satelliteCollisionSound', 'game/assets/sounds/satelliteCollisionSound.wav')
-        this.load.audio('tornadoStartSound', 'game/assets/sounds/tornadoStartSound.wav')
-        this.load.audio('hailShootSound', 'game/assets/sounds/hailShootSound.wav')
-        this.load.audio('thunderLevelUpSound', 'game/assets/sounds/thunderLevelUp.wav') //thunder levelup fix
-        this.load.audio('coinCollectSound', 'game/assets/sounds/coinsCollectSound.wav')
-        this.load.audio('playerMoveSound', 'game/assets/sounds/playerMoveSound.wav')
-        this.load.audio('playerCollectHP', 'game/assets/sounds/collectHP.wav')
-        this.load.audio('levelUpSound', 'game/assets/sounds/levelUpSound.wav')
-        this.load.audio('gameBGSound', 'game/assets/sounds/gameBGSound.wav')
-        this.load.audio('levelStartSound', 'game/assets/sounds/onLevelStartSound.wav')
-        this.load.audio('openChestSound', 'game/assets/sounds/openChestSound.wav')
+        this.load.audio('lightningShootSound', 'game/assets/sounds/lightningShootSound.mp3');
+        this.load.audio('fireAuraHitSound', 'game/assets/sounds/fireAuraHit_1.mp3');
+        this.load.audio('fireShootCollisionSound', 'game/assets/sounds/fireShootCollisionSound.mp3')
+        this.load.audio('satelliteStartSound', 'game/assets/sounds/satelliteSound.mp3')
+        this.load.audio('satelliteCollisionSound', 'game/assets/sounds/satelliteCollisionSound.mp3')
+        this.load.audio('tornadoStartSound', 'game/assets/sounds/tornadoStartSound.mp3')
+        this.load.audio('hailShootSound', 'game/assets/sounds/hailShootSound.mp3')
+        this.load.audio('thunderLevelUpSound', 'game/assets/sounds/thunderLevelUp.mp3') //thunder levelup fix
+        this.load.audio('coinCollectSound', 'game/assets/sounds/coinsCollectSound.mp3')
+        this.load.audio('playerMoveSound', 'game/assets/sounds/playerMoveSound.mp3')
+        this.load.audio('playerCollectHP', 'game/assets/sounds/collectHP.mp3')
+        this.load.audio('levelUpSound', 'game/assets/sounds/levelUpSound.mp3')
+        this.load.audio('gameBGSound', 'game/assets/sounds/gameBGSound.mp3')
+        this.load.audio('levelStartSound', 'game/assets/sounds/onLevelStartSound.mp3')
+        this.load.audio('openChestSound', 'game/assets/sounds/openChestSound.mp3')
 
 
         //player walk anims
@@ -232,23 +232,11 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('chest', 'game/assets/images/chest_2.png')
         this.load.image('healthPack', 'game/assets/images/flask_2.png')
         this.load.image('levelUp', 'game/assets/images/levelUpEffect/levelUp.png')
-        this.load.image('staff', './game/assets/images/inventory/staff.png');
-        this.load.image('staff_2', 'game/assets/images/inventory/staff_2.png')
-        this.load.image('staff_3', 'game/assets/images/inventory/staff_3.png')
-        this.load.image('staff_4', 'game/assets/images/inventory/staff_4.png')
-        this.load.image('hat', './game/assets/images/inventory/hat.png');
-        this.load.image('hat_2', 'game/assets/images/inventory/hat_2.png')
-        this.load.image('hat_3', 'game/assets/images/inventory/hat_3.png')
-        this.load.image('hat_4', 'game/assets/images/inventory/hat_4.png')
-        for (let i = 1; i <= 6; i++) {
-            this.load.image(`splash${i}`, `game/assets/images/enemiesSheets/afterEnemy/${i}.png`);
-        }
         this.load.image(`splashRed`, `game/assets/images/enemiesSheets/afterEnemy/splashRed.png`);
 
     }
     create() {
         this.anims.resumeAll();
-        console.log('game started');
         this.hideDamageText = true;
         this.hideDamageButton = this.add.text(690, 15, t('game.damage?')).setScrollFactor(0).setDepth(12).setInteractive()
         this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
@@ -266,11 +254,10 @@ export default class GameScene extends Phaser.Scene {
         loadAllAnimations(this)
 
         const level = this.registry.get('currentLevel')
-        console.log('current level', level);
         this.levels = []
         function resetLevels(scene) {
             scene.levels = JSON.parse(JSON.stringify(originalLevels));
-            console.log(scene.levels);
+           
 
         }
         function resetPlayerInitCfgs(scene) {
@@ -449,11 +436,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.waveManager.start();
         // next level
-        this.input.keyboard.on('keydown-N', () => {
-            const lvl = this.registry.get('currentLevel');
-            this.registry.set('currentLevel', lvl + 1);
-            this.scene.start('GameScene');
-        });
+       
         //spawn coins on start close to player
 
         for (let i = 0; i < 75; i++) {
@@ -516,7 +499,7 @@ export default class GameScene extends Phaser.Scene {
             }
         });
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
-        console.log(this.time._active);
+      
     }
     onShutdown() {
         if (this.waveManager) this.waveManager.reset(); // только свои таймеры
@@ -560,54 +543,47 @@ export default class GameScene extends Phaser.Scene {
         //Движение fireAura 
         this.fireAura.update()
 
-        //exp scene qqqq
-        if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
-            this.skillsUI.hideTooltip()
-            this.scene.pause();
+        // //exp scene qqqq
+        // if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
+        //     this.skillsUI.hideTooltip()
+        //     this.scene.pause();
 
-            this.scene.launch("UpgradeForExpScene", {
-                scene: this,
-                upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
-                onSelect: (upgrade) => {
-                    upgrade.applyUpgrade(this); // логика применения
+        //     this.scene.launch("UpgradeForExpScene", {
+        //         scene: this,
+        //         upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
+        //         onSelect: (upgrade) => {
+        //             upgrade.applyUpgrade(this); // логика применения
 
-                    playLevelUpEffect(this, this.player)
+        //             playLevelUpEffect(this, this.player)
 
-                }
-            });
-            this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
-            this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
+        //         }
+        //     });
+        //     this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
+        //     this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
 
-        }
+        // }
         //chest scene rrrr
-        if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
-            this.scene.pause();
-            this.scene.launch("InChestScene", {
-                scene: this,
-                items: playerItems.allItems,
-                onSelect: (item) => {
-                    item.applyItem(this.playerInitCfgs, this)
-                }
-            });
+        // if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
+        //     this.scene.pause();
+        //     this.scene.launch("InChestScene", {
+        //         scene: this,
+        //         items: playerItems.allItems,
+        //         onSelect: (item) => {
+        //             item.applyItem(this.playerInitCfgs, this)
+        //         }
+        //     });
 
-        }
+        // }
 
         //pause 
-        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
-            togglePause(this);
-        }
+        // if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+        //     togglePause(this);
+        // }
         //hp restirebtn
-        if (Phaser.Input.Keyboard.JustDown(this.restoreHPKey)) {
-            this.hud.addLives(10);
-        }
-        //inventory
-        if (Phaser.Input.Keyboard.JustDown(this.inventoryKey)) {
-            this.scene.launch('InventoryScene');
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.inventoryOffKey)) {
-            this.scene.stop('InventoryScene');
-
-        }
+        // if (Phaser.Input.Keyboard.JustDown(this.restoreHPKey)) {
+        //     this.hud.addLives(10);
+        // }
+       
         //upgrades for exp
 
         if (this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount < 69 &&

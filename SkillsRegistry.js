@@ -126,11 +126,12 @@ const SkillRegistry = {//basic
         icon: 'pictureLightning',
         upgrades: [
             { damage: 50, delay: 1510, targetCount: 1, count: 1, price: 600 },
-            { damage: 57, delay: 1470, targetCount: 1, count: 2, price: 2400 },
-            { damage: 66, delay: 1430, targetCount: 2, count: 2, price: 4800 },
-            { damage: 78, delay: 1390, targetCount: 2, count: 2, price: 9600 },
-            { damage: 101, delay: 1350, targetCount: 3, count: 2, price: 19200 },
-            { damage: 116, delay: 1310, targetCount: 3, count: 2, price: 1000000 },
+            { damage: 57, delay: 1470, targetCount: 1, count: 2, price: 1200 },
+            { damage: 66, delay: 1430, targetCount: 2, count: 2, price: 2400 },
+            { damage: 78, delay: 1390, targetCount: 2, count: 2, price: 4800 },
+            { damage: 101, delay: 1350, targetCount: 3, count: 2, price: 9600 },
+            { damage: 116, delay: 1310, targetCount: 3, count: 2, price: 19200 },
+             { damage: 136, delay: 1270, targetCount: 3, count: 2, price: 1000000 },
             { damage: 1000, delay: 1270, targetCount: 3, count: 3, price: 1000000 }
         ],
         getCurrentStats() {

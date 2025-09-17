@@ -4,8 +4,12 @@ export function playLevelStartEffect(scene, player) {
     // 🔊 звук
     // scene.levelUpSfx.play();
     //text
+    const isLastLevel = scene.registry.get('currentLevel') == 6
+
+
     scene.levelStartSfx.play()
-    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150, t('game.goal'), {
+    const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150,
+        isLastLevel ? t('game.goal20') : t('game.goal'), {
         fontSize: "56px",
         fill: "rgba(255, 0, 0, 1)",
         // backgroundColor: "#333",
@@ -15,10 +19,10 @@ export function playLevelStartEffect(scene, player) {
         targets: levelStartText,
         alpha: { from: 1, to: 0 },
         scale: { from: 1, to: 1.6 },
-        duration: 2800,
+        duration: 5800,
         onComplete: () => {
             levelStartText.destroy();
-            
+
         }
     });
 

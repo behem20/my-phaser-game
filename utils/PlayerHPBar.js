@@ -38,8 +38,8 @@ export default class PlayerHPMark {
         const width = 40;
         const height = 3;
 
-        const x = 400;
-        const y = 430;
+        const x = this.scene.cameras.main.width/2;
+        const y = this.scene.cameras.main.height/2 + this.scene.cameras.main.height/2/100*6;
 
         // очистка старого
         this.hpBarBg.clear();

@@ -28,6 +28,7 @@ import SkillRegistry from "../SkillsRegistry.js"
 import originalLevels from "../levelsConfigs.js"
 import originalPlayerInitCfgs from "../PlayerConfigs.js"
 import SplashSpawner from "../entities/SplashesSpawner.js"
+import UIManager from "../ui/UIManager.js"
 
 
 
@@ -36,217 +37,31 @@ export default class GameScene extends Phaser.Scene {
         super("GameScene")
     }
     preload() {
-        this.load.image("hp_line", "game/assets/images/all/hp_line.png")
-        this.load.image("pausePicture", "game/assets/images/pausePicture.png")
-
-        this.load.image("shadow", "game/assets/images/shadow.png")
-
-        this.load.image("magic", "game/assets/images/spells/magic.png")
-        this.load.image("light", "game/assets/images/spells/light.png")
-        this.load.image("lightning1", "game/assets/images/lightning/lightning1.png")
-        this.load.image("lightning2", "game/assets/images/lightning/lightning2.png")
-        this.load.image("lightning3", "game/assets/images/lightning/lightning3.png")
-        this.load.image("lightning4", "game/assets/images/lightning/lightning4.png")
-        this.load.image("lightning5", "game/assets/images/lightning/lightning5.png")
-        this.load.image("satellite", "game/assets/images/spells/satellite.png")
-
-        //particles 
-
-        this.load.atlas(
-            'inv-flares', // имя (можно любое, но обычно flares)
-            'game/assets/images/inv-flares.png', // картинка
-            'flaresInfo.json' // описание спрайтов
-        );
-
-
-        //items pcts
-        this.load.image("broom", "game/assets/images/chestItemsPictures/broom.png")
-        this.load.image("lightningRod", "game/assets/images/chestItemsPictures/lightningRod.png")
-        this.load.image("harp", "game/assets/images/chestItemsPictures/harp.png")
-        this.load.image("hourglass", "game/assets/images/chestItemsPictures/hourglass.png")
-        this.load.image("torch", "game/assets/images/chestItemsPictures/torch.png")
-        this.load.image("ring", "game/assets/images/chestItemsPictures/ring.png")
-        this.load.image("bagOfGold", "game/assets/images/chestItemsPictures/bagOfGold.png")
-        this.load.image("stoneOfMalick", "game/assets/images/chestItemsPictures/stoneOfMalick.png")
-        this.load.image("stars", "game/assets/images/chestItemsPictures/stars.png")
-
-
-        this.load.audio('magicShootSound', 'game/assets/sounds/magicShootSound.mp3');
-        this.load.audio('lightShootSound', 'game/assets/sounds/lightShootSound.mp3');
-        this.load.audio('fireShootSound', 'game/assets/sounds/fireShootSound.mp3');
-        this.load.audio('enemyHitSound', 'game/assets/sounds/enemyHitSound.mp3');
-        this.load.audio('enemySplatSound', 'game/assets/sounds/enemySplatSound.mp3');
-
-        this.load.audio('splashesSound', 'game/assets/sounds/splashesSound.mp3');
-
-        this.load.audio('lightningShootSound', 'game/assets/sounds/lightningShootSound.mp3');
-        this.load.audio('fireAuraHitSound', 'game/assets/sounds/fireAuraHit_1.mp3');
-        this.load.audio('fireShootCollisionSound', 'game/assets/sounds/fireShootCollisionSound.mp3')
-        this.load.audio('satelliteStartSound', 'game/assets/sounds/satelliteSound.mp3')
-        this.load.audio('satelliteCollisionSound', 'game/assets/sounds/satelliteCollisionSound.mp3')
-        this.load.audio('tornadoStartSound', 'game/assets/sounds/tornadoStartSound.mp3')
-        this.load.audio('hailShootSound', 'game/assets/sounds/hailShootSound.mp3')
-        this.load.audio('thunderLevelUpSound', 'game/assets/sounds/thunderLevelUp.mp3') //thunder levelup fix
-        this.load.audio('coinCollectSound', 'game/assets/sounds/coinsCollectSound.mp3')
-        this.load.audio('playerMoveSound', 'game/assets/sounds/playerMoveSound.mp3')
-        this.load.audio('playerCollectHP', 'game/assets/sounds/collectHP.mp3')
-        this.load.audio('levelUpSound', 'game/assets/sounds/levelUpSound.mp3')
-        this.load.audio('gameBGSound', 'game/assets/sounds/gameBGSound.mp3')
-        this.load.audio('levelStartSound', 'game/assets/sounds/onLevelStartSound.mp3')
-        this.load.audio('openChestSound', 'game/assets/sounds/openChestSound.mp3')
-
-
-        //player walk anims
-        this.load.spritesheet('player_idle', 'game/assets/images/playerSheets/player_idle.png', {
-            frameWidth: 42, // ширина одного кадра
-            frameHeight: 42 // высота одного кадра
-        });
-        this.load.spritesheet('player_walk_right', 'game/assets/images/playerSheets/player_walk_right.png', {
-            frameWidth: 42, // ширина одного кадра
-            frameHeight: 42 // высота одного кадра
-        });
-        this.load.spritesheet('player_walk_left', 'game/assets/images/playerSheets/player_walk_left.png', {
-            frameWidth: 42, // ширина одного кадра
-            frameHeight: 42 // высота одного кадра
-        });
-        this.load.spritesheet('player_walk_up', 'game/assets/images/playerSheets/player_walk_up.png', {
-            frameWidth: 42, // ширина одного кадра
-            frameHeight: 42 // высота одного кадра
-        });
-        this.load.spritesheet('player_walk_down', 'game/assets/images/playerSheets/player_walk_down.png', {
-            frameWidth: 42, // ширина одного кадра
-            frameHeight: 42 // высота одного кадра
-        });
-        //fire Aura anim
-        this.load.spritesheet('fireAuraAnims', 'game/assets/images/spellsSheets/fireAuraAnim.png', {
-            frameWidth: 24, // ширина одного кадра
-            frameHeight: 24 // высота одного кадра
-        });
-
-        this.load.spritesheet('fireAnims', 'game/assets/images//spellsSheets/firebals.png', {
-            frameWidth: 26, // ширина одного кадра
-            frameHeight: 60 // высота одного кадра
-        });
-        this.load.spritesheet('fireAnims_2', 'game/assets/images//spellsSheets/firebals_2.png', {
-            frameWidth: 26, // ширина одного кадра
-            frameHeight: 60 // высота одного кадра
-        });
-        //fire explosion
-        this.load.spritesheet('fireExplosionAnims', 'game/assets/images/spellsSheets/fireExplosion.png', {
-            frameWidth: 64, // ширина одного кадра
-            frameHeight: 64 // высота одного кадра
-        });
-        //tornado
-        this.load.spritesheet('tornadoAnims', 'game/assets/images/spellsSheets/sheet_tornado.png', {
-            frameWidth: 45, // ширина одного кадра
-            frameHeight: 45 // высота одного кадра
-        });
-        //tornado_2
-        this.load.spritesheet('tornadoAnims_2', 'game/assets/images/spellsSheets/sheet_tornado_2.png', {
-            frameWidth: 45, // ширина одного кадра
-            frameHeight: 45 // высота одного кадра
-        });
-        //hail start
-        this.load.spritesheet('hailStartAnims', 'game/assets/images/hail/hailStart_sheet.png', {
-            frameWidth: 32, // ширина одного кадра
-            frameHeight: 32 // высота одного кадра
-        });
-        //hail active
-        this.load.spritesheet('hailActiveAnims', 'game/assets/images/hail/hailActive_sheet.png', {
-            frameWidth: 32, // ширина одного кадра
-            frameHeight: 32 // высота одного кадра
-        });
-        //hail ending
-        this.load.spritesheet('hailEndingAnims', 'game/assets/images/hail/hailEnding_sheet.png', {
-            frameWidth: 32, // ширина одного кадра
-            frameHeight: 32 // высота одного кадра
-        });
-
-        //enemy normal
-        this.load.spritesheet('sheet_enemy_normal_1', 'game/assets/images/enemiesSheets/sheet_enemy_normal_1.png', {
-            frameWidth: 48, // ширина одного кадра
-            frameHeight: 48 // высота одного кадра
-        });
-        //enemy fast
-        this.load.spritesheet('sheet_enemy_fast_1', 'game/assets/images/enemiesSheets/sheet_enemy_fast_1.png', {
-            frameWidth: 24, // ширина одного кадра
-            frameHeight: 24 // высота одного кадра
-        });//enemy tank
-        this.load.spritesheet('sheet_enemy_tank_1', 'game/assets/images/enemiesSheets/sheet_enemy_tank_1.png', {
-            frameWidth: 64, // ширина одного кадра
-            frameHeight: 64 // высота одного кадра
-        });
-        //enemy boss
-        this.load.spritesheet('sheet_enemy_boss_1', 'game/assets/images/enemiesSheets/sheet_enemy_boss_1.png', {
-            frameWidth: 240, // ширина одного кадра
-            frameHeight: 240 // высота одного кадра
-        });
-        //enemy normal mid
-        this.load.spritesheet('sheet_enemy_midNormal_1', 'game/assets/images/enemiesSheets/sheet_enemy_midNormal_1.png', {
-            frameWidth: 48, // ширина одного кадра
-            frameHeight: 48 // высота одного кадра
-        });
-        //enemy fast mid
-        this.load.spritesheet('sheet_enemy_midFast_1', 'game/assets/images/enemiesSheets/sheet_enemy_midFast_1.png', {
-            frameWidth: 24, // ширина одного кадра
-            frameHeight: 24 // высота одного кадра
-        });//enemy tank mid
-        this.load.spritesheet('sheet_enemy_midTank_1', 'game/assets/images/enemiesSheets/sheet_enemy_midTank_1.png', {
-            frameWidth: 64, // ширина одного кадра
-            frameHeight: 64 // высота одного кадра
-        });
-        //enemy boss mid
-        this.load.spritesheet('sheet_enemy_midBoss_1', 'game/assets/images/enemiesSheets/sheet_enemy_midBoss_1.png', {
-            frameWidth: 240, // ширина одного кадра
-            frameHeight: 240 // высота одного кадра
-        });
-        //coins
-        this.load.spritesheet('coins_bot_sheet', 'game/assets/images/coins/coin_sheet_bot.png', {
-            frameWidth: 16, // ширина одного кадра
-            frameHeight: 16 // высота одного кадра
-        });
-        this.load.spritesheet('coins_mid_sheet', 'game/assets/images/coins/coin_sheet_mid.png', {
-            frameWidth: 16, // ширина одного кадра
-            frameHeight: 16 // высота одного кадра
-        });
-        this.load.spritesheet('coins_top_sheet', 'game/assets/images/coins/coin_sheet_top.png', {
-            frameWidth: 16, // ширина одного кадра
-            frameHeight: 16 // высота одного кадра
-        });
-
-
-
-        this.load.image('background_1', 'game/assets/images/BG/1.png');
-        this.load.image('background_2', 'game/assets/images/BG/2.png');
-        this.load.image('background_3', 'game/assets/images/BG/3.png');
-        this.load.image('background_4', 'game/assets/images/BG/4.png');
-        this.load.image('background_5', 'game/assets/images/BG/5.png');
-        this.load.image('background_6', 'game/assets/images/BG/6.png');
-
-        this.load.image('background_7', 'game/assets/images/BG/7.png');
-
-        this.load.image("vignette", "game/assets/images/lowHPVignette/Lucid_Origin_dark_red_vignette_overlay_with_soft_glowing_edges_2.jpg");
-
-        this.load.image('coin', 'game/assets/images/coins/coin.png')
-
-        this.load.image('chest', 'game/assets/images/chest_2.png')
-        this.load.image('healthPack', 'game/assets/images/flask_2.png')
-        this.load.image('levelUp', 'game/assets/images/levelUpEffect/levelUp.png')
-        this.load.image(`splashRed`, `game/assets/images/enemiesSheets/afterEnemy/splashRed.png`);
 
     }
     create() {
+        this.ui = new UIManager(this);
+        this.scale.on('resize', this.ui.resize, this.ui);
+        const w = this.scale.width;
+        const h = this.scale.height;
         this.anims.resumeAll();
         this.hideDamageText = true;
-        this.hideDamageButton = this.add.text(690, 15, t('game.damage?')).setScrollFactor(0).setDepth(12).setInteractive()
-        this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
-        this.hideDamageButton.on('pointerover', () => { this.hideDamageButton.setFontSize(18);; this.onHoverSfx.play() })
-        this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(16); })
+        this.hideDamageButton = this.ui.createText(t('game.damage?'),
+            { xPercent: 0.92, yPercent: 0.02, fontPercent: 0.02 })
+            .setScrollFactor(0).setDepth(1200).setInteractive()
+        console.log(this.hideDamageButton.style.fontSize);
 
-        this.fpsText = this.add.text(370, 40, '', {
-            font: '16px Arial',
-            fill: '#00ff00'
-        }).setScrollFactor(0).setDepth(1000);// FPS
+        this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
+        this.hideDamageButton.on('pointerover', () => {
+            this.hideDamageButton.setFontSize(parseInt(this.hideDamageButton.style.fontSize) + 2);
+            this.onHoverSfx.play()
+        })
+        this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(parseInt(this.hideDamageButton.style.fontSize) - 2); })
+
+        // this.fpsText = this.add.text(10, this.cameras.main.height-this.cameras.main.height/100*3, '', {
+        //     font: '16px ',
+        //     fill: '#ffffffff'
+        // }).setScrollFactor(0).setDepth(1000);// FPS
         this.ParticlesText = this.add.text(330, -160, '', {//330,60
             font: '26px Arial',
             fill: '#00ffff'
@@ -257,7 +72,7 @@ export default class GameScene extends Phaser.Scene {
         this.levels = []
         function resetLevels(scene) {
             scene.levels = JSON.parse(JSON.stringify(originalLevels));
-           
+
 
         }
         function resetPlayerInitCfgs(scene) {
@@ -273,9 +88,11 @@ export default class GameScene extends Phaser.Scene {
         // console.log(background);
 
         // const background = 'TempBG_2';
-        const pauseButton = this.add.image(785, 25, 'pausePicture').setScale(0.6).setDepth(100).setInteractive().setOrigin(0.5).setScrollFactor(0)
-        pauseButton.on('pointerover', () => { pauseButton.setScale(0.65); this.onHoverSfx.play() })
-        pauseButton.on('pointerout', () => { pauseButton.setScale(0.6) })
+        const pauseButton = this.ui.createImage('pausePicture', { xPercent: 0.98, yPercent: 0.025 }, 0.04).setDepth(100).setInteractive().setOrigin(0.5).setScrollFactor(0)
+
+        pauseButton.basicScale = pauseButton.scale
+        pauseButton.on('pointerover', () => { pauseButton.setScale(pauseButton.scale * 1.1); this.onHoverSfx.play() })
+        pauseButton.on('pointerout', () => { pauseButton.setScale(pauseButton.basicScale) })
 
         //vignette
         this.vignette = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "vignette");
@@ -290,11 +107,16 @@ export default class GameScene extends Phaser.Scene {
 
 
 
-        this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, background).setOrigin(0, 0).setDepth(-5).setScrollFactor(0);
+        this.background = this.ui.createTileSprite(background,
+            { xPercent: 0.5, yPercent: 0.5 }, 1, 1)
+            .setOrigin(0.5).setDepth(-5).setScrollFactor(0);
+
         this.physics.world.setBoundsCollision(false, false, false, false);
         this.physics.world.setBounds(-Infinity, -Infinity, Infinity, Infinity);
         this.cameras.main.setBounds(-Infinity, -Infinity, Infinity, Infinity);
-        this.player = new Player(this, 5000, 5000);
+        // this.physics.world.setBounds(0, 0, w*2, h*2);
+        // this.cameras.main.setBounds(0, 0, w*2, h*2);
+        this.player = new Player(this, 0, 0);
         this.lightMask = new LightMask(this, 700); // радиус 150 // fog
         this.hpMark = new PlayerHPMark(this, this.player.sprite);
         this.enemies = new EnemySpawner(this, this.player)
@@ -436,12 +258,16 @@ export default class GameScene extends Phaser.Scene {
 
         this.waveManager.start();
         // next level
-       
+        // this.input.keyboard.on('keydown-N', () => {
+        //     const lvl = this.registry.get('currentLevel');
+        //     this.registry.set('currentLevel', lvl + 1);
+        //     this.scene.start('GameScene');
+        // });
         //spawn coins on start close to player
 
-        for (let i = 0; i < 75; i++) {
+        for (let i = 0; i < 175; i++) {
 
-            this.coins.spawnRandomly(100, 700, this)
+            this.coins.spawnRandomly(100, 1400, this)
         }
 
         // this.scene.pause();
@@ -499,7 +325,7 @@ export default class GameScene extends Phaser.Scene {
             }
         });
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
-      
+
     }
     onShutdown() {
         if (this.waveManager) this.waveManager.reset(); // только свои таймеры
@@ -521,15 +347,21 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        this.fpsText.setText(`FPS: ${Math.floor(this.game.loop.actualFps)}`);
+        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)}`);
 
         // console.log(this.chests.getGroup().children.entries[0].trail.alive.length);
-
+        this.vignette.setPosition(this.cameras.main.centerX,this.cameras.main.centerY)
+        this.vignette.setScale(
+            this.cameras.main.width / this.vignette.width,
+            this.cameras.main.height / this.vignette.height
+        );
         //движение игрока
-        this.player.update()
-        this.background.tilePositionX = this.cameras.main.scrollX * 1;
-        this.background.tilePositionY = this.cameras.main.scrollY * 1;
 
+        this.player.update()
+        if (this.background) {
+            this.background.tilePositionX = this.cameras.main.scrollX;
+            this.background.tilePositionY = this.cameras.main.scrollY;
+        }
         this.lightMask.update(this.player);
 
         //хп игрока бар
@@ -543,25 +375,25 @@ export default class GameScene extends Phaser.Scene {
         //Движение fireAura 
         this.fireAura.update()
 
-        // //exp scene qqqq
-        // if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
-        //     this.skillsUI.hideTooltip()
-        //     this.scene.pause();
+        //exp scene qqqq
+        if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
+            this.skillsUI.hideTooltip()
+            this.scene.pause();
 
-        //     this.scene.launch("UpgradeForExpScene", {
-        //         scene: this,
-        //         upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
-        //         onSelect: (upgrade) => {
-        //             upgrade.applyUpgrade(this); // логика применения
+            this.scene.launch("UpgradeForExpScene", {
+                scene: this,
+                upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
+                onSelect: (upgrade) => {
+                    upgrade.applyUpgrade(this); // логика применения
 
-        //             playLevelUpEffect(this, this.player)
+                    playLevelUpEffect(this, this.player)
 
-        //         }
-        //     });
-        //     this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
-        //     this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
+                }
+            });
+            this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
+            this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
 
-        // }
+        }
         //chest scene rrrr
         // if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
         //     this.scene.pause();
@@ -583,7 +415,7 @@ export default class GameScene extends Phaser.Scene {
         // if (Phaser.Input.Keyboard.JustDown(this.restoreHPKey)) {
         //     this.hud.addLives(10);
         // }
-       
+
         //upgrades for exp
 
         if (this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount < 69 &&

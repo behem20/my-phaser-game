@@ -1,8 +1,8 @@
 import { setLanguage, t } from "../LanguageManager.js";
 import SkillRegistry, { setLevelsToSkillRegistrySpells } from "../SkillsRegistry.js";
+import UIManager from "../ui/UIManager.js";
 import FireAura from "../utils/fireAuraConfigs.js";
 import saveManager from "../utils/SaveManager.js";
-import SaveManager from "../utils/SaveManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class MenuScene extends Phaser.Scene {
@@ -11,83 +11,16 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.json('lang_ru', 'game/assets/lang/ru.json');
-
-        //magics pcts
-        this.load.image("pictureMagic", "game/assets/images/lvlUpPictures/pictureMagic.png")
-        this.load.image("pictureTornado", "game/assets/images/lvlUpPictures/pictureTornado.png")
-        this.load.image("pictureLight", "game/assets/images/lvlUpPictures/pictureLight.png")
-        this.load.image("pictureLightning", "game/assets/images/lvlUpPictures/pictureLightning.png")
-        this.load.image("pictureFire", "game/assets/images/lvlUpPictures/pictureFire.png")
-        this.load.image("pictureFireAura", "game/assets/images/lvlUpPictures/pictureFireAura.png")
-        this.load.image("pictureSatellite", "game/assets/images/lvlUpPictures/pictureSatellite.png")
-        this.load.image("pictureMeteor", "game/assets/images/lvlUpPictures/pictureMeteor.png")
-        this.load.image("pictureHail", "game/assets/images/lvlUpPictures/pictureHail.png")
-        this.load.image("pictureArmageddon", "game/assets/images/lvlUpPictures/pictureArmageddon.png")
-        this.load.image("pictureMagnet", "game/assets/images/lvlUpPictures/pictureMagnet.png")
-        this.load.image("pictureIntellect", "game/assets/images/lvlUpPictures/pictureIntellect.png")
-        this.load.image("pictureRobe", "game/assets/images/lvlUpPictures/pictureRobe.png")
-
-        //magics icons
-        this.load.image("iconMagic", "game/assets/images/skillsIcons/iconMagic.png")
-        this.load.image("iconTornado", "game/assets/images/skillsIcons/iconTornado.png")
-        this.load.image("iconLight", "game/assets/images/skillsIcons/iconLight.png")
-        this.load.image("iconLightning", "game/assets/images/skillsIcons/iconLightning.png")
-        this.load.image("iconFire", "game/assets/images/skillsIcons/iconFire.png")
-        this.load.image("iconFireAura", "game/assets/images/skillsIcons/iconFireAura.png")
-        this.load.image("iconSatellite", "game/assets/images/skillsIcons/iconSatellite.png")
-        this.load.image("iconMeteor", "game/assets/images/skillsIcons/iconMeteor.png")
-        this.load.image("iconHail", "game/assets/images/skillsIcons/iconHail.png")
-        this.load.image("iconArmageddon", "game/assets/images/skillsIcons/iconArmageddon.png")
-        this.load.image("iconMagnet", "game/assets/images/skillsIcons/iconMagnet.png")
-        this.load.image("iconIntellect", "game/assets/images/skillsIcons/iconIntellect.png")
-        this.load.image("iconRobe", "game/assets/images/skillsIcons/iconRobe.png")
-
-        this.load.image('bgPhotoMenu', './game/assets/images/menu/worldWhite.png')
-        this.load.image('level_1', './game/assets/images/menu/level_1.png')
-        this.load.image('level_2', './game/assets/images/menu/level_2.png')
-        this.load.image('level_3', './game/assets/images/menu/level_3.png')
-        this.load.image('level_4', './game/assets/images/menu/level_4.png')
-        this.load.image('level_5', './game/assets/images/menu/level_5.png')
-        this.load.image('level_6', './game/assets/images/menu/level_6.png')
-        this.load.image('level_infinity', './game/assets/images/menu/level_infinity.png')
-
-        this.load.image('complete', './game/assets/images/menu/complete.png')
-        this.load.image('magics', './game/assets/images/menu/magics.png')
-        
-        this.load.image('hero', './game/assets/images/menu/heroMenu.png')
-
-        this.load.image('damageIcon', './game/assets/images/ui_icons/damage.png')
-        this.load.image('cooldownIcon', './game/assets/images/ui_icons/cooldown.png')
-        this.load.image('arrowsIcon', './game/assets/images/ui_icons/arrows.png')
-        this.load.image('arrowIcon', './game/assets/images/ui_icons/arrow.png')
-        this.load.image('gold', './game/assets/images/coins/gold.png')
-        this.load.image('gem', './game/assets/images/coins/gem.png')
-        this.load.image('fire', './game/assets/images/menu/fire.png')
-
-        this.load.image('settings', './game/assets/images/menu/settings.png')
-        this.load.image('scoreIcon', './game/assets/images/menu/scoreIcon.png')
-        this.load.image('soundOn', './game/assets/images/menu/soundOn.png')
-        this.load.image('soundOff', './game/assets/images/menu/soundOff.png')
-
-        this.load.atlas(
-            'flares', // имя (можно любое, но обычно flares)
-            'flares.png', // картинка
-            'flaresInfo.json' // описание спрайтов
-        );
-        this.load.atlas(
-            'red-flares', // имя (можно любое, но обычно flares)
-            'game/assets/images/redFlares.png', // картинка
-            'flaresInfo.json' // описание спрайтов
-        );
-        this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.mp3');
-        this.load.audio('rejectSound', 'game/assets/sounds/reject.mp3')
-        this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.mp3');
-        this.load.audio('successSound', 'game/assets/sounds/success.mp3');
 
     }
 
     create() {
+        this.ui = new UIManager(this);
+        this.scale.on('resize', this.ui.resize, this.ui);
+        const centerX = this.cameras.main.width / 2
+        const centerY = this.cameras.main.height / 2
+        const cw = this.cameras.main.width
+        const ch = this.cameras.main.height
         setLanguage(this, 'ru');
 
         this.input.mouse.disableContextMenu();
@@ -154,10 +87,10 @@ export default class MenuScene extends Phaser.Scene {
         if (!this.registry.has('currentLevel')) this.registry.set('currentLevel', 0);
         let level = this.registry.get('currentLevel');
 
-        const titleText = this.add.text(80, 200, t('game.title'), {
+        const titleText = this.add.text(centerX, centerY - ch * 0.2, t('game.title'), {
             fontSize: "64px",
             fill: "#000000ff"
-        });
+        }).setOrigin(0.5, 0.5);
         this.tweens.add({
             targets: titleText,
             alpha: 0,           // до какой прозрачности уходит
@@ -182,35 +115,36 @@ export default class MenuScene extends Phaser.Scene {
         const gemsIcon = this.add.image(0, 49, 'gem').setScale(0.25).setOrigin(0)
 
 
+
+        const switchLevelButtonGroupData = [
+            {
+                x: centerX - 375, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_1', level: 0, isChosen: false,
+            },
+            {
+                x: centerX - 250, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_2', level: 1, isChosen: false,
+            },
+            {
+                x: centerX - 125, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_3', level: 2, isChosen: false,
+            },
+            {
+                x: centerX, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_4', level: 3, isChosen: false,
+            },
+            {
+                x: centerX + 125, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_5', level: 4, isChosen: false,
+            },
+            {
+                x: centerX + 250, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_6', level: 5, isChosen: false,
+            },
+            {
+                x: centerX + 375, y: centerY - centerY * 0.7, scene: 'GameScene', key: 'level_infinity', level: 6, isChosen: false,
+            },
+        ]
         const completedList = this.registry.get('completedLevelsList')
         completedList.forEach((el, index) => {
             if (el) {
-                const complete = this.add.image(100 + 100 * index, 140, 'complete').setDepth(2).setScale(1)
+                const complete = this.add.image(switchLevelButtonGroupData[index].x, switchLevelButtonGroupData[index].y, 'complete').setDepth(2).setScale(1)
             }
         })
-        const switchLevelButtonGroupData = [
-            {
-                x: 100, y: 140, scene: 'GameScene', key: 'level_1', level: 0, isChosen: false,
-            },
-            {
-                x: 200, y: 140, scene: 'GameScene', key: 'level_2', level: 1, isChosen: false,
-            },
-            {
-                x: 300, y: 140, scene: 'GameScene', key: 'level_3', level: 2, isChosen: false,
-            },
-            {
-                x: 400, y: 140, scene: 'GameScene', key: 'level_4', level: 3, isChosen: false,
-            },
-            {
-                x: 500, y: 140, scene: 'GameScene', key: 'level_5', level: 4, isChosen: false,
-            },
-            {
-                x: 600, y: 140, scene: 'GameScene', key: 'level_6', level: 5, isChosen: false,
-            },
-            {
-                x: 700, y: 140, scene: 'GameScene', key: 'level_infinity', level: 6, isChosen: false,
-            },
-        ]
         this.switchLevelButtonGroup = this.add.group();
         switchLevelButtonGroupData.forEach(data => {
             const button = this.add.sprite(data.x, data.y, data.key).setInteractive()
@@ -259,17 +193,24 @@ export default class MenuScene extends Phaser.Scene {
 
         //start button
         let toggleStartText = false;
-        const startBtn = this.add.text(130, 400, t('ui.start'), {
+        const startBtn = this.add.text(centerX, centerY, t('ui.start'), {
             fontSize: '48px',
             fill: '#fff',
             backgroundColor: "#333",
             padding: { x: 20, y: 10 }
-        }).setInteractive();
+        })
+            .setOrigin(0.5, 0.5)
+            .setInteractive();
+
 
         this.time.addEvent({
             delay: 1000,
             callback: () => {
                 toggleStartText = !toggleStartText;
+                // upgrdesText.setStyle({
+
+                //     color: toggleStartText ? 'rgba(255, 0, 0, 1)' : '#fff',
+                // })
                 startBtn.setStyle({
                     color: toggleStartText ? '#fff' : 'rgba(135, 153, 135, 1)',
                 })
@@ -293,13 +234,14 @@ export default class MenuScene extends Phaser.Scene {
                 this.onTapSfx.play();
                 // playerSkills.resetMagicSkill()
                 // playerSkills
+                if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.start();
                 this.scene.pause()
                 // this.scene.launch('GameScene')
                 this.scene.start('GameScene')
             }
         });
 
-        const scoreText = this.add.text(780, 290, this.registry.get('scoreCount'), {
+        const scoreText = this.add.text(cw, centerY, this.registry.get('scoreCount'), {
             fontSize: '28px',
             fill: '#040500ff',
             backgroundColor: "#84867459",
@@ -307,7 +249,7 @@ export default class MenuScene extends Phaser.Scene {
         }).setOrigin(1, 0.5)
         const scoreIcon = this.add.image(scoreText.x - 20, scoreText.y, 'scoreIcon')
         menuBG.on('pointerdown', () => {
-            this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy();; btn.isChosen = false })
+            this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy(); btn.isChosen = false })
         })
 
         // //shop
@@ -320,7 +262,10 @@ export default class MenuScene extends Phaser.Scene {
         // shopButton.on('pointerout', () => shopButton.setScale(1));
 
         //magics
-        const magicsButton = this.add.sprite(100, 700, "magics").setInteractive().setDepth(1)
+        const magicsButton = this.add.sprite(cw - cw * 0.99, ch - this.textures.get('magics').source[0].height - ch * 0.03, "magics")
+            .setInteractive()
+            .setDepth(1)
+            .setOrigin(0)
         magicsButton.on('pointerdown', () => {
             this.onTapSfx.play();
             this.scene.start('MetaUpgradesScene', { scene: this });
@@ -329,22 +274,22 @@ export default class MenuScene extends Phaser.Scene {
         magicsButton.on('pointerout', () => magicsButton.setScale(1));
 
         //settings
-        const settingsButton = this.add.sprite(770, 30, "settings").setInteractive()
+        const settingsButton = this.add.sprite(cw - cw * 0.02, 30, "settings").setInteractive()
         settingsButton.on('pointerdown', () => {
             this.onTapSfx.play();
-            const bgFill = this.add.rectangle(0, 0, 800, 800, 0x000000, 0.95)
+            const bgFill = this.ui.createRectangle(
+                { xPercent: 0, yPercent: 0, widthPercent: 1, heightPercent: 1 }, 0x550000, 1)
                 .setOrigin(0)
                 .setInteractive()
                 .setDepth(2);
 
 
-            const backBtn = this.add.text(680, 20, t('ui.back'), {
-                fontSize: '24px',
-                color: '#fff',
-                backgroundColor: '#333'
-            })
+            const backBtn = this.ui.createText(
+                t('ui.back'),
+                { xPercent: 0.5, yPercent: 0.30, fontPercent: 0.05 },
+                { fontSize: '24px', color: '#fff', backgroundColor: '#333' })
                 .setInteractive({ useHandCursor: true })
-                .setOrigin(0)
+                .setOrigin(0.5)
                 .setDepth(2)
                 .on('pointerdown', () => {
                     this.onTapSfx.play();
@@ -355,10 +300,21 @@ export default class MenuScene extends Phaser.Scene {
                 .on('pointerover', () => {
                     this.onHoverSfx.play()
                 })
-            const toggleSoundButton = this.add.sprite(400, 400, this.sound.mute ? 'soundOn' : 'soundOff')
+
+
+            const soundButtonHeight = this.textures.get("soundOn").source[0].height
+            const pixelTo10percent = ch / 10
+            const scaleTo10percent = pixelTo10percent / soundButtonHeight
+            const scaleToUI = scaleTo10percent / 10
+
+            const toggleSoundButton = this.ui.createImage(this.sound.mute ? 'soundOn' : 'soundOff',
+                { xPercent: 0.5, yPercent: 0.5 },
+                scaleToUI
+            )
                 .setInteractive()
-                .setScale(2)
+                // .setScale(scaleTo10percent)
                 .setDepth(2)
+                .setOrigin(0.5)
             toggleSoundButton.on('pointerdown', () => {
                 this.onTapSfx.play();
                 toggleSoundButton.setTexture(!this.sound.mute ? 'soundOn' : 'soundOff')
@@ -373,15 +329,16 @@ export default class MenuScene extends Phaser.Scene {
         settingsButton.on('pointerout', () => settingsButton.setScale(1));
 
         //hero
-        const heroButton = this.add.sprite(650, 540, 'hero').setInteractive()
-        //hero in menu open inventory
+
+        const heroButton = this.add.sprite(cw - this.textures.get('hero').source[0].width, ch - this.textures.get('hero').source[0].height, 'hero').setInteractive().setOrigin(0)
         heroButton.on('pointerdown', () => {
             this.onTapSfx.play();
         })
         heroButton.on('pointerover', () => { this.onHoverSfx.play(); heroButton.setScale(1.005) });
         heroButton.on('pointerout', () => heroButton.setScale(1));
 
-        const fire = this.add.image(570, 620, 'fire')
+
+        const fire = this.add.image(heroButton.x + 54, heroButton.y + 300, 'fire')
 
         fire.trail = this.add.particles(0, 0, 'red-flares', {
             frame: 'red',
@@ -413,41 +370,88 @@ export default class MenuScene extends Phaser.Scene {
             blendMode: 'ADD',
             follow: fire,
         });
-        magicsButton.trail_1 = this.add.particles(55, 690, 'flares', {
-            frame: 'blue',
-            lifespan: 120,
-            speed: { min: 120, max: 220 },
-            // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
-            angle: { min: 0, max: 360 }, // летят вверх, +-10°
-            gravityY: 0,             // без гравитации
-            scale: { start: 0.4, end: 0.7 }, // уменьшаются
-            alpha: { start: 0.5, end: 0 },   // исчезают
-            frequency: 100,
-            quantity: 2,
-            // tint: [0xffaa33, 0xff7633],
-            tint: [0x0000ff, 0x00ff00],
-            // tint:0xff0000, 
-            blendMode: 'ADD',
-            // blendMode: 'SCREEN'
-            // follow: magicsButton,
-        }).setDepth(0);
-        magicsButton.trail_2 = this.add.particles(70, 740, 'flares', {
-            frame: 'red',
-            lifespan: 120,
-            speed: { min: 120, max: 220 },
-            // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
-            angle: { min: 0, max: 360 }, // летят вверх, +-10°
-            gravityY: 0,             // без гравитации
-            scale: { start: 0.4, end: 0.7 }, // уменьшаются
-            alpha: { start: 0.5, end: 0 },   // исчезают
-            frequency: 100,
-            quantity: 2,
-            tint: [0xffaa33, 0xff7633],
-            // tint: [0x0000ff, 0x00ff00],
-            // tint:0xff0000, 
-            blendMode: 'ADD',
-            // blendMode: 'SCREEN'
-            // follow: magicsButton,
-        }).setDepth(0);
+        // magicsButton.trail_1 = this.add.particles(55, 690, 'flares', {
+        //     frame: 'blue',
+        //     lifespan: 1120,
+        //     speed: { min: 0, max: 220 },
+        //     // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+        //     angle: { min: 0, max: 360 }, // летят вверх, +-10°
+        //     gravityY: 0,             // без гравитации
+        //     scale: { start: 0.4, end: 0.7 }, // уменьшаются
+        //     alpha: { start: 0.5, end: 0 },   // исчезают
+        //     frequency: 100,
+        //     quantity: 2,
+        //     // tint: [0xffaa33, 0xff7633],
+        //     tint: [0x0000ff, 0x00ff00],
+        //     // tint:0xff0000, 
+        //     blendMode: 'ADD',
+        //     // blendMode: 'SCREEN'
+        //     // follow: magicsButton,
+        // }).setDepth(0);
+        // magicsButton.trail_2 = this.add.particles(70, 740, 'flares', {
+        //     frame: 'red',
+        //     lifespan: 1220,
+        //     speed: { min: 120, max: 220 },
+        //     // angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+        //     angle: { min: 180, max: 360 }, // летят вверх, +-10°
+        //     gravityY: 0,             // без гравитации
+        //     scale: { start: 0.4, end: 0.7 }, // уменьшаются
+        //     alpha: { start: 0.5, end: 0 },   // исчезают
+        //     frequency: 100,
+        //     quantity: 2,
+        //     tint: [0xffaa33, 0xff7633],
+        //     // tint: [0x0000ff, 0x00ff00],
+        //     // tint:0xff0000, 
+        //     blendMode: 'ADD',
+        //     // blendMode: 'SCREEN'
+        //     // follow: magicsButton,
+        // }).setDepth(0);
+
+
+
+        const upgrdesText = this.add.text(magicsButton.x + this.textures.get('magics').source[0].width / 2, magicsButton.y - ch * 0.02, t('ui.UPGRADES'), {
+            font: '26px Arial',
+            fill: '#cf241eff',
+            padding: { x: 20, y: 10 },
+            // backgroundColor: "#706b6bff",
+        }).setOrigin(0.5, 0.5)
+
+        const fx2 = magicsButton.postFX.addGlow(0xffff25, 0, 0, false, 0.1, 24);
+        this.tweens.add({
+            targets: fx2,
+            outerStrength: 3,
+            yoyo: true,
+            loop: -1,
+            ease: 'sine.inout'
+        });
+        const fx1 = upgrdesText.postFX.addGlow(0xff0000, 0, 0, false, 0.1, 24);
+        this.tweens.add({
+            targets: fx1,
+            outerStrength: 4,
+            yoyo: true,
+            loop: -1,
+            ease: 'sine.inout'
+        });
+        // this.time.addEvent({
+        //     delay: 70, // каждые 50 мс
+        //     loop: true,
+        //     callback: () => {
+        //         let ctx = upgrdesText.canvas.getContext('2d');
+        //         let gradient = ctx.createLinearGradient(
+        //             offset, 0,
+        //             upgrdesText.width + offset, 0);
+        //         // gradient.addColorStop(0, '#cfb6b662');
+        //         gradient.addColorStop(0.01, '#f55757ff');
+
+        //         // gradient.addColorStop(0.25, '#ff0303ff');
+        //         gradient.addColorStop(0.21, '#cfb6b662');
+        //         gradient.addColorStop(0.51, '#c8ff00ff');
+        //         // gradient.addColorStop(0.71, '#f5000062');
+        //         // Применяем как заливку
+        //         upgrdesText.setFill(gradient);
+
+        //         offset = (offset + 10) % (Math.max(upgrdesText.width, 1));
+        //     }
+        // });
     }
 }

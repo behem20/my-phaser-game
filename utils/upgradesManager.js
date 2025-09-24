@@ -168,27 +168,27 @@ export function createPlayerSkillsFromRegistry(arr) {
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 35,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 5, radius: 160, description: 'spellsUpgradeDescription.fireAura.2'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 5, radius: 220, description: 'spellsUpgradeDescription.fireAura.2'
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 70,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 10, radius: 190, description: 'spellsUpgradeDescription.fireAura.3'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 10, radius: 250, description: 'spellsUpgradeDescription.fireAura.3'
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 105,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 15, radius: 220, description: 'spellsUpgradeDescription.fireAura.4'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 15, radius: 280, description: 'spellsUpgradeDescription.fireAura.4'
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 140,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 20, radius: 250, description: 'spellsUpgradeDescription.fireAura.5'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 20, radius: 310, description: 'spellsUpgradeDescription.fireAura.5'
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 175,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 25, radius: 280, description: 'spellsUpgradeDescription.fireAura.6'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 25, radius: 340, description: 'spellsUpgradeDescription.fireAura.6'
         },
         {
             damage: SkillRegistry.fireAura.damage + SkillRegistry.fireAura.damage / 100 * 210,
-            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 30, radius: 310, description: 'spellsUpgradeDescription.fireAura.7'
+            delay: SkillRegistry.fireAura.delay - SkillRegistry.fireAura.delay / 100 * 30, radius: 370, description: 'spellsUpgradeDescription.fireAura.7'
         },
     ];
     arr.tornado.upgrades = [

@@ -6,6 +6,13 @@ export default class HUD {
         this.levelDuration = levelDuration;
         this.onLevelComplete = onLevelComplete;
 
+        this.centerX = this.scene.cameras.main.width / 2;
+        this.centerY = this.scene.cameras.main.height / 2;
+        this.x = this.scene.cameras.main.width;
+        this.y = this.scene.cameras.main.height;
+
+        console.log(this.centerX, this.centerY);
+
         this.score = 0;
         this.exp = 0;
         this.coins = 0;
@@ -16,16 +23,21 @@ export default class HUD {
         const style = { fontSize: "20px", fill: "#fff" };
         // this.scoreText = scene.add.text(10, 10, "", style).setScrollFactor(0).setDepth(13);
         // this.livesText = scene.add.text(10, 40, "", style).setScrollFactor(0).setDepth(13);
-        this.headBGRect = scene.add.rectangle(0, 0, 800, 40, 0x000000, 0.6).setScrollFactor(0).setOrigin(0, 0).setDepth(11)
+        this.headBGRect = this.scene.ui.createRectangle(
+            { xPercent: 0, yPercent: 0, widthPercent: 1, heightPercent: 0.04 },
+             0x000000, 0.6)
+             .setScrollFactor(0).setOrigin(0, 0).setDepth(11)
         this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(224, 231, 15, 1)" }).setScrollFactor(0).setDepth(13);
         this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
 
-        this.timeText = scene.add.text(400, 23, "", { fontSize: "20px", fill: "#ffffffff" }).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
+        this.timeText = scene.ui.createText("",
+            { xPercent: 0.5, yPercent: 0.025, fontPercent: 0.025 },
+            { fontSize: '20px', color: '#fff' },).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
         this.debugText = scene.add.text(10, 40, "", { fontSize: "10px", fill: "#fff" }).setScrollFactor(0).setDepth(13);
         this.expProgressBarBg = scene.add.graphics();
         this.expProgressBarFill = scene.add.graphics().setDepth(13);
         this.expProgressBarBg.fillStyle(0x000000, 0.8).setDepth(12);              //0x115577
-        this.expProgressBarBg.fillRect(0, 0, 800, 10).setScrollFactor(0);
+
         this.updateExpProgress();
 
 
@@ -77,7 +89,7 @@ export default class HUD {
     updateCoins() {
         this.coinsText.setText(this.coins);
     }
-    onFinishCoins(){
+    onFinishCoins() {
         return this.coins
     }
     clearCoins() {
@@ -119,6 +131,8 @@ export default class HUD {
 
 
     updateExpProgress() {
+        const ch = this.scene.cameras.main.height;
+        const cw = this.scene.cameras.main.width;
         const progress = Phaser.Math.Clamp(
             this.exp / (
                 this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
@@ -128,27 +142,30 @@ export default class HUD {
             1
         );
 
-        const width = 800 * progress;
+
+        const width = this.scene.cameras.main.width * progress;
+        // console.log(ch);
 
         // Основной бар
         this.expProgressBarFill.clear();
         this.expProgressBarFill.fillStyle(0x00A2E8, 1); //0xff3477
-        this.expProgressBarFill.fillRect(0, 0, width, 10).setScrollFactor(0);
+        this.expProgressBarBg.fillRect(0, 0, cw, ch * 0.011).setScrollFactor(0)
+        this.expProgressBarFill.fillRect(0, 0, width, ch * 0.011).setScrollFactor(0);
 
-        // Эффект бегущей полосы
-        const glow = this.scene.add.graphics().setScrollFactor(0).setDepth(100);
-        glow.fillStyle(0xffffff, 0.8);
-        glow.fillRect(0, 0, 30, 10); // ширина полоски 20 пикселей
+        // // Эффект бегущей полосы
+        // const glow = this.scene.add.graphics().setScrollFactor(0).setDepth(100);
+        // glow.fillStyle(0xffffff, 0.8);
+        // glow.fillRect(0, 0, 30, 10); // ширина полоски 20 пикселей
 
-        glow.x = 0;
-        glow.y = 0;
+        // glow.x = 0;
+        // glow.y = 0;
 
-        this.scene.tweens.add({
-            targets: glow,
-            x: width - 30,
-            duration: 300,
-            ease: 'Cubic.easeOut',
-            onComplete: () => glow.destroy()
-        });
+        // this.scene.tweens.add({
+        //     targets: glow,
+        //     x: width - 30,
+        //     duration: 300,
+        //     ease: 'Cubic.easeOut',
+        //     onComplete: () => glow.destroy()
+        // });
     }
 }   

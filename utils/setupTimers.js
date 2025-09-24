@@ -22,7 +22,7 @@ export function setupTimers(scene) {
     });
      //chests
     scene.spawnChestsTimer = scene.time.addEvent({
-        delay: 30000,
+        delay:30000,
         callback: () => scene.chests.spawnChest(350, 400, scene),
         callbackScope: scene,
         loop: true

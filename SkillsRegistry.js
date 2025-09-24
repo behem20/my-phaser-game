@@ -320,14 +320,14 @@ const SkillRegistry = {//basic
         level: 1,
         icon: 'pictureArmageddon',
         upgrades: [
-            { damage: 100000, delay: 30000, targetCount: 1, count: 1, price: 600 },
-            { damage: 100000, delay: 29250, targetCount: 1, count: 2, price: 1200 },
-            { damage: 100000, delay: 28500, targetCount: 2, count: 2, price: 2400 },
-            { damage: 100000, delay: 27750, targetCount: 2, count: 2, price: 4800 },
-            { damage: 100000, delay: 27000, targetCount: 3, count: 2, price: 9600 },
-            { damage: 100000, delay: 26250, targetCount: 3, count: 2, price: 19200 },
-            { damage: 100000, delay: 25500, targetCount: 3, count: 3, price: 1000000 },
-            { damage: 100000, delay: 24750, targetCount: 3, count: 3, price: 1000000 }
+            { damage: 100000, delay: 60000, targetCount: 1, count: 1, price: 600 },
+            { damage: 100000, delay: 58500, targetCount: 1, count: 2, price: 1200 },
+            { damage: 100000, delay: 57000, targetCount: 2, count: 2, price: 2400 },
+            { damage: 100000, delay: 55000, targetCount: 2, count: 2, price: 4800 },
+            { damage: 100000, delay: 53500, targetCount: 3, count: 2, price: 9600 },
+            { damage: 100000, delay: 52000, targetCount: 3, count: 2, price: 19200 },
+            { damage: 100000, delay: 50500, targetCount: 3, count: 3, price: 1000000 },
+            { damage: 100000, delay: 49000, targetCount: 3, count: 3, price: 1000000 }
 
         ],
         getCurrentStats() {

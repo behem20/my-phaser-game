@@ -17,12 +17,19 @@ export default class MetaUpgradesScene extends Phaser.Scene {
     }
 
     create() {
-        const scene = this;
 
+
+
+        if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.start();
+        const scene = this;
+        const centerX = this.cameras.main.centerX;
+        const centerY = this.cameras.main.centerY;
+        const cw = this.cameras.main.width
+        const ch = this.cameras.main.height
 
         this.toolTip = new Tooltip(this)
 
-        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x031303, 1)
+        this.add.rectangle(0, 0, cw, ch, 0x031303, 1)
             .setOrigin(0)
             .setScrollFactor(0);
 
@@ -35,10 +42,9 @@ export default class MetaUpgradesScene extends Phaser.Scene {
 
 
         //title
-        this.add.text(400, 100, 'Мета-улучшения', { fontSize: '32px', color: '#fff' }).setOrigin(0.5);
-        this.tempBG = this.add.rectangle(375, 150, 350, 150, 0x031303,).setOrigin(0).setDepth(3)
-        const centerX = this.cameras.main.centerX;
-        const centerY = this.cameras.main.centerY;
+        this.add.text(centerX, centerY - centerY * 0.75, 'Мета-улучшения', { fontSize: '32px', color: '#fff' }).setOrigin(0.5, 0.5);
+        this.tempBG = this.add.rectangle(centerX, centerY + centerY * 0.40, 350, 150, 0x031303,).setOrigin(0.5).setDepth(3)
+
         const spacingRows = 100;
         const spacingColumn = 120;
         const allSpells = []
@@ -47,15 +53,27 @@ export default class MetaUpgradesScene extends Phaser.Scene {
         this.activeSpell = {}
 
 
+        // const getPosition = (index) => {
+        //     if (index <= 2) return { x: 80 + spacingColumn * index, y: 200 };
+        //     if (index > 2 && index <= 5) return { x: -280 + spacingColumn * index, y: 320 };
+        //     if (index > 5 && index <= 8) return { x: - 640 + spacingColumn * index, y: 440 };
+        //     if (index > 8 && index <= 11) return { x: - 1000 + spacingColumn * index, y: 560 };
+        //     return null;
+        // };
         const getPosition = (index) => {
-            if (index <= 2) return { x: 80 + spacingColumn * index, y: 200 };
-            if (index > 2 && index <= 5) return { x: -280 + spacingColumn * index, y: 320 };
-            if (index > 5 && index <= 8) return { x: - 640 + spacingColumn * index, y: 440 };
-            if (index > 8 && index <= 11) return { x: - 1000 + spacingColumn * index, y: 560 };
+            if (index == 0) return { x: centerX - 120, y: centerY * 0.5 };
+            if (index == 1) return { x: centerX, y: centerY * 0.5 };
+            if (index == 2) return { x: centerX + 120, y: centerY * 0.5 };
+            if (index == 3) return { x: centerX - 120, y: centerY * 0.75 };
+            if (index == 4) return { x: centerX, y: centerY * 0.75 };
+            if (index == 5) return { x: centerX + 120, y: centerY * 0.75 };
+            if (index == 6) return { x: centerX - 120, y: centerY };
+            if (index == 7) return { x: centerX, y: centerY };
+            if (index == 8) return { x: centerX + 120, y: centerY };
             return null;
         };
 
-        const bg = this.add.rectangle(20, 150, 350, 360, 0x000000, 0.5).setOrigin(0).setDepth(0)
+        const bg = this.add.rectangle(centerX, centerY * 0.38, 350, 360, 0x000000, 0.5).setOrigin(0.5, 0).setDepth(0)
 
         function renderSpells(scene) {
 
@@ -76,14 +94,15 @@ export default class MetaUpgradesScene extends Phaser.Scene {
 
             if (scene.activeSpell.entity) {
 
-                scene.activeSpell.level = scene.add.text(410, 155, scene.activeSpell.entity.level, { color: '#9fddf5ff' }).setDepth(5)
-                scene.activeSpell.nextLevel = scene.add.text(650, 155, scene.activeSpell.entity.nextLevel, { fontSize: "20px", color: '#00b7ffff' }).setDepth(5)
-                scene.activeSpell.currentDamageText = scene.add.text(410, 200, scene.activeSpell.entity.getCurrentStats().damage, { color: '#f07a72ff' }).setDepth(5)
-                scene.activeSpell.nextDamageText = scene.add.text(650, 200, scene.activeSpell.entity.getNextStats().damage, { fontSize: "20px", color: '#ff1100ff' }).setDepth(5)
-                scene.activeSpell.currentCooldownText = scene.add.text(410, 270, `${scene.activeSpell.entity.getCurrentStats().delay / 1000}c`, { color: '#ec81ecff' }).setDepth(5)
-                scene.activeSpell.nextCooldownText = scene.add.text(650, 270, `${scene.activeSpell.entity.getNextStats().delay / 1000}c`, { fontSize: "20px", color: '#ff00ff' }).setDepth(5)
-                scene.activeSpell.price = scene.add.text(560, 735, scene.activeSpell.entity.getCurrentStats().price, { fontSize: "28px", color: '#fae902ff' }).setDepth(5)
 
+                // scene.activeSpell.level = scene.add.text(centerX - 160, ch * 0.65, scene.activeSpell.entity.level, { fontSize: "30px", color: '#9fddf5ff' }).setDepth(5).setOrigin(0.5)
+                // scene.activeSpell.nextLevel = scene.add.text(centerX + 160, ch * 0.65, scene.activeSpell.entity.nextLevel, { fontSize: "32px", color: '#00b7ffff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.currentDamageText = scene.add.text(centerX - 160, ch * 0.67, scene.activeSpell.entity.getCurrentStats().damage, { fontSize: "30px", color: '#f07a72ff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.nextDamageText = scene.add.text(centerX + 160, ch * 0.67, scene.activeSpell.entity.getNextStats().damage, { fontSize: "32px", color: '#ff1100ff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.currentCooldownText = scene.add.text(centerX - 160, ch * 0.75, `${scene.activeSpell.entity.getCurrentStats().delay / 1000}c`, { fontSize: "30px", color: '#ec81ecff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.nextCooldownText = scene.add.text(centerX + 160, ch * 0.75, `${scene.activeSpell.entity.getNextStats().delay / 1000}c`, { fontSize: "32px", color: '#ff00ff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.price = scene.add.text(centerX, centerY + centerY * 0.65, scene.activeSpell.entity.getCurrentStats().price, { fontSize: "28px", color: '#fae902ff' }).setDepth(5).setOrigin(0.5)
+                scene.activeSpell.title = scene.add.text(centerX, ch * 0.6, t(`spellsNames.${scene.activeSpell.entity.key}`), { fontSize: "24px", color: '#1ffa02ff' }).setOrigin(0.5)
 
                 scene.activeSpell.trail = scene.add.particles(0, 0, 'flares', {
                     frame: 'yellow',
@@ -133,13 +152,14 @@ export default class MetaUpgradesScene extends Phaser.Scene {
                     }
                     scene.activeSpell.id = index;
                     scene.activeSpell.entity = el;
-                    scene.activeSpell.level = scene.add.text(410, 155, el.level, { color: '#9fddf5ff' }).setDepth(5)
-                    scene.activeSpell.nextLevel = scene.add.text(650, 155, el.nextLevel, { fontSize: "20px", color: '#00b7ffff' }).setDepth(5)
-                    scene.activeSpell.currentDamageText = scene.add.text(410, 200, el.getCurrentStats().damage, { color: '#f07a72ff' }).setDepth(5)
-                    scene.activeSpell.nextDamageText = scene.add.text(650, 200, el.getNextStats().damage, { fontSize: "20px", color: '#ff1100ff' }).setDepth(5)
-                    scene.activeSpell.currentCooldownText = scene.add.text(410, 270, `${el.getCurrentStats().delay / 1000}c`, { color: '#ec81ecff' }).setDepth(5)
-                    scene.activeSpell.nextCooldownText = scene.add.text(650, 270, `${el.getNextStats().delay / 1000}c`, { fontSize: "20px", color: '#ff00ff' }).setDepth(5)
-                    scene.activeSpell.price = scene.add.text(560, 735, scene.activeSpell.entity.getCurrentStats().price, { fontSize: "28px", color: '#fae902ff' }).setDepth(5)
+                    // scene.activeSpell.level = scene.add.text(centerX - 160, ch * 0.65, el.level, { fontSize: "30px", color: '#9fddf5ff' }).setDepth(5).setOrigin(0.5)
+                    // scene.activeSpell.nextLevel = scene.add.text(centerX + 160, ch * 0.65, el.nextLevel, { fontSize: "32px", color: '#00b7ffff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.currentDamageText = scene.add.text(centerX - 160, ch * 0.67, el.getCurrentStats().damage, { fontSize: "30px", color: '#f07a72ff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.nextDamageText = scene.add.text(centerX + 160, ch * 0.67, el.getNextStats().damage, { fontSize: "32px", color: '#ff1100ff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.currentCooldownText = scene.add.text(centerX - 160, ch * 0.75, `${el.getCurrentStats().delay / 1000}c`, { fontSize: "30px", color: '#ec81ecff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.nextCooldownText = scene.add.text(centerX + 160, ch * 0.75, `${el.getNextStats().delay / 1000}c`, { fontSize: "32px", color: '#ff00ff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.price = scene.add.text(centerX, centerY + centerY * 0.65, scene.activeSpell.entity.getCurrentStats().price, { fontSize: "28px", color: '#fae902ff' }).setDepth(5).setOrigin(0.5)
+                    scene.activeSpell.title = scene.add.text(centerX, ch * 0.6, t(`spellsNames.${scene.activeSpell.entity.key}`), { fontSize: "24px", color: '#1ffa02ff' }).setOrigin(0.5)
 
                     scene.activeSpell.trail = scene.add.particles(0, 0, 'flares', {
                         frame: 'yellow',
@@ -163,18 +183,18 @@ export default class MetaUpgradesScene extends Phaser.Scene {
         }
         renderSpells(this)
 
-        this.currentDamageIcon = this.add.image(390, 210, 'damageIcon')
-        this.currentColldownIcon = this.add.image(390, 275, 'cooldownIcon')
+        this.currentDamageIcon = this.add.image(centerX - 160, ch * 0.64, 'damageIcon')
+        this.currentColldownIcon = this.add.image(centerX - 160, ch * 0.72, 'cooldownIcon')
 
-        this.nextDamageIcon = this.add.image(630, 210, 'damageIcon')
-        this.nextColldownIcon = this.add.image(630, 275, 'cooldownIcon')
+        this.nextDamageIcon = this.add.image(centerX + 160, ch * 0.64, 'damageIcon')
+        this.nextColldownIcon = this.add.image(centerX + 160, ch * 0.72, 'cooldownIcon')
 
-        this.arrows = this.add.image(540, 240, 'arrowIcon').setScale(2)
+        this.arrows = this.add.image(centerX, ch * 0.70, 'arrowIcon').setScale(2)
 
 
         //upgrade spell
-        this.upgradeTextHider = this.add.rectangle(390, 750, 300, 40, 0x031303).setScrollFactor(0).setDepth(100).setInteractive()
-        const upgradeText = this.add.text(400, 750, "Улучшить способность ", { fontSize: "20px", color: 'rgba(238, 241, 10, 1)' })
+        this.upgradeTextHider = this.add.rectangle(centerX, ch * 0.88, 300, 40, 0x031303).setScrollFactor(0).setDepth(100).setInteractive().setOrigin(0.5)
+        const upgradeText = this.add.text(centerX, centerY + centerY * 0.75, "Улучшить способность ", { fontSize: "20px", color: 'rgba(238, 241, 10, 1)' })
             .setOrigin(0.5)
             .setInteractive()
             .on('pointerover', () => {
@@ -222,20 +242,28 @@ export default class MetaUpgradesScene extends Phaser.Scene {
 
                 renderSpells(this)
             });
-
+        const fx = upgradeText.postFX.addShine(3, .5, 1);
         // Кнопка "Назад"
-        const backBtn = this.add.text(680, 20, t('ui.back'), {
+        const backBtn = this.add.text(centerX, centerY + centerY * 0.9, t('ui.back'), {
             fontSize: '24px',
             color: '#fff',
+            padding: { x: 10, y: 5 },
             backgroundColor: '#333'
-        })
+        }).setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
+
+                if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
                 this.scene.start('MenuScene');
                 this.MenuScene.onHoverSfx.play()
             })
             .on('pointerover', () => {
                 this.MenuScene.onHoverSfx.play()
+                backBtn.setScale(1.1)
+            })
+            .on('pointerout', () => {
+                this.MenuScene.onHoverSfx.play()
+                backBtn.setScale(1)
             })
 
 

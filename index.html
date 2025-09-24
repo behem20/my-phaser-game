@@ -16,15 +16,20 @@
             margin: auto;
         }
     </style>
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+    <script src="phaser.min.js"></script>
+
+    <!-- <script type="module" src="./game.js"></script> -->
+    <script>
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
+    </script>
+    <script type="module" src="js/init-ya.js"></script>
+    <script src="rexvirtualjoystickplugin.min.js"></script>
 
 </head>
 
 <body>
-    <script src="phaser.min.js"></script>
-    
-    <script src="rexvirtualjoystickplugin.min.js"></script>
-
-    <script type="module" src="./game.js"></script>
+    <div id="game"></div>
 </body>
 
 </html>

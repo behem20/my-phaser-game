@@ -59,7 +59,7 @@ export default class Player {
 
 
         // Камера следует за игроком
-        scene.cameras.main.startFollow(this.sprite);
+        scene.cameras.main.startFollow(this.sprite, false, 1, 1);
 
         // Клавиши
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -73,8 +73,8 @@ export default class Player {
         this.currentAnim = null;
 
         this.joystick = scene.rexVirtualJoystick.add(scene, {
-            x: 400,
-            y: 600,
+            x: this.scene.cameras.main.width*20,// за экраном '/2' норм
+            y: this.scene.cameras.main.height*20+this.scene.cameras.main.height/2*0.7,
             radius: 120,
             base: scene.add.circle(0, 0, 80, 0x888888).setAlpha(0.5),
             thumb: scene.add.circle(0, 0, 40, 0xcccccc).setAlpha(0.5),
@@ -85,7 +85,8 @@ export default class Player {
     update() {
 
 
-        const speed = this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed * this.scene.playerInitCfgs.moveSpeedBonus;
+        const speed = 
+        this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed  * this.scene.playerInitCfgs.moveSpeedBonus;
 
         let moveX = 0;
         let moveY = 0;

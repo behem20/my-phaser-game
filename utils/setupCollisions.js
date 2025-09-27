@@ -9,7 +9,8 @@ import {
     handleMeteorHit,
     handleHealthPackCollect,
     handleHailHit,
-    handleChestCollect
+    handleChestCollect,
+    handleMagnetCollect
 } from "../src/handlers/collisionHandlers.js";
 
 import { handleFireHit } from "../projectiles/Fire.js";
@@ -22,6 +23,7 @@ export function setupCollisions(scene) {
     const coinsGroup = scene.coins.getGroup();
     const itemsGroup = scene.items.getGroup();
     const chestGroup = scene.chests.getGroup();
+     const magnetsGroup = scene.magnets.getGroup();
     const healthPacksGroup = scene.healthPack.getGroup()
     // Магия
     scene.physics.add.overlap(scene.magicShots, enemiesGroup, (magic, enemy) => {
@@ -87,6 +89,10 @@ export function setupCollisions(scene) {
     // Игрок собирает сундук
     scene.physics.add.overlap(player, chestGroup, (player, chest) => {
         handleChestCollect(scene, player, chest);
+    }, null, scene);
+     // Игрок собирает магнит
+    scene.physics.add.overlap(player, magnetsGroup, (player, magnet) => {
+        handleMagnetCollect(scene, player, magnet);
     }, null, scene);
 
     // Игрок собирает аптеку

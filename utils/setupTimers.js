@@ -28,6 +28,15 @@ export function setupTimers(scene) {
         loop: true
     });
 
+       //magnets
+    scene.spawnMagnetsTimer = scene.time.addEvent({
+        delay:60000,
+        callback: () => scene.magnets.spawnMagnet(350, 400, scene),
+        callbackScope: scene,
+        loop: true
+    });
+    
+
     // время
     scene.gameTimer = scene.time.addEvent({
         delay: 1000,

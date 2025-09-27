@@ -301,6 +301,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('coin', 'game/assets/images/coins/coin.png')
 
         this.load.image('chest', 'game/assets/images/chest_2.png')
+        this.load.image('magnet', 'game/assets/images/magnet.png')
         this.load.image('healthPack', 'game/assets/images/flask_2.png')
         this.load.image('levelUp', 'game/assets/images/levelUpEffect/levelUp.png')
         this.load.image(`splashRed`, `game/assets/images/enemiesSheets/afterEnemy/splashRed.png`);

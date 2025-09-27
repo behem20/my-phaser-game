@@ -183,6 +183,21 @@ export function handleChestCollect(scene, player, chest) {
     });
 }
 
+export function handleMagnetCollect(scene, player, magnet) {
+    scene.openChestSfx.play() //collect chest sound
+console.log('magnet collected');
+
+    magnet.setScale(1.1)
+    magnet.disableBody(0, 0)
+    scene.time.delayedCall(200, () => {
+        magnet.setScale(1);
+        magnet.destroy()
+        magnet.trail.destroy()
+        
+    });
+    scene.coins.activateMagnet(500, 500);
+}
+
 export function handleHealthPackCollect(scene, player, hp) {
 
     hp.disableBody(1, 0);

@@ -29,6 +29,8 @@ import originalLevels from "../levelsConfigs.js"
 import originalPlayerInitCfgs from "../PlayerConfigs.js"
 import SplashSpawner from "../entities/SplashesSpawner.js"
 import UIManager from "../ui/UIManager.js"
+import { MagnetSkill } from "../entities/Magnet.js"
+import MagnetSpawner from "../entities/MagnetSpawner.js"
 
 
 
@@ -58,7 +60,7 @@ export default class GameScene extends Phaser.Scene {
         })
         this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(parseInt(this.hideDamageButton.style.fontSize) - 2); })
 
-        this.fpsText = this.add.text(this.cameras.main.width/2, 40, '', {
+        this.fpsText = this.add.text(this.cameras.main.width / 2, 40, '', {
             font: '16px ',
             fill: '#ffffffff'
         }).setScrollFactor(0).setDepth(1000);// FPS
@@ -121,13 +123,18 @@ export default class GameScene extends Phaser.Scene {
         this.hpMark = new PlayerHPMark(this, this.player.sprite);
         this.enemies = new EnemySpawner(this, this.player)
         this.coins = new CoinSpawner(this, this.player, this.enemies);
+        // this.magnet = new MagnetSkill(this, this.player, this.coins.getGroup(), {
+        //     radius: 400,
+        //     speed: 300,
+        //     duration: 1000
+        // });
         this.chests = new ChestSpawner(this, this.player)
         this.healthPack = new HealthPack(this, this.player);
         this.items = new ArmorsScrollsSpawner(this, this.player, this.enemies)
         this.fireAura = new FireAura(this, this.player)
         this.satellites = new Satellites(this, this.player)
         this.tooltip = new Tooltip(this);
-
+        this.magnets = new MagnetSpawner(this, this.player)
         this.splashes = new SplashSpawner(this);
 
 
@@ -198,6 +205,9 @@ export default class GameScene extends Phaser.Scene {
             // console.log('Tweens total:', this.tweens.getTweens(true).length);
             printStats(this.player.gAura);
         });
+        // this.input.keyboard.on('keydown-M', () => {
+        //     this.coins.activateMagnet(500, 500);
+        // });
 
         //inventory key
         this.inventoryKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
@@ -363,8 +373,8 @@ export default class GameScene extends Phaser.Scene {
             this.cameras.main.width / this.vignette.width,
             this.cameras.main.height / this.vignette.height
         );
-        //движение игрока
 
+        //движение игрока
         this.player.update()
         if (this.background) {
             this.background.tilePositionX = this.cameras.main.scrollX;
@@ -372,6 +382,8 @@ export default class GameScene extends Phaser.Scene {
         }
         this.lightMask.update(this.player);
 
+        // //magnet
+        // this.magnet.update();
         //хп игрока бар
         this.hpMark.update();
         // Движение врагов к игроку

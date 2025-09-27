@@ -8,7 +8,7 @@ import { playerSkills } from "../utils/upgradesManager.js";
 
 // Каст града (hail) с интервалом
 export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50, iconID) {
-    const hailRadius = 105;
+    const hailRadius = 135;
     const damage = playerSkills.hail?.damage || 20;
 
     // flashScreen(scene, 0x15ccff, 0.2, count * interval)

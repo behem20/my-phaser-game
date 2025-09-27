@@ -78,7 +78,8 @@ export default class Tooltip {
 
         // Контейнер
         this.container = this.scene.add.container(x + 25, y, [bg, ...elements])
-            .setScrollFactor(0);
+            .setScrollFactor(0)
+            .setDepth(15);
     }
 
     hide() {

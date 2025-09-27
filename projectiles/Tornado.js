@@ -4,8 +4,8 @@ import { flashIcon } from "../utils/flashIcon.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLevel) {
-    const level = spellLevel-1;
-    
+    const level = spellLevel - 1;
+
 
     for (let i = 0; i < count; i++) {
 
@@ -30,14 +30,18 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         tornado.play(tornadoAnim)
 
         if (!tornado) return;
-        resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
+        const MIN_DIST = scene.LightMaskRadius * 0.6
+        const MAX_DIST = scene.LightMaskRadius*0.8
+        // resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
+
+        resetTornado(tornado,player, MIN_DIST,MAX_DIST, scene)
         // scene.lightShootSfx.play();
         tornado.setActive(true).setVisible(true);
         tornado.body.setAllowGravity(false);
         tornado.body.setCollideWorldBounds(true);
         tornado.body.setBounce(1); // пусть отскакивает от границ
         // tornado.body.setCircle(tornado.width );
-        tornado.body.setCircle(tornado.width , tornado.width / 2 - tornado.width, tornado.height / 2 - tornado.width);
+        tornado.body.setCircle(tornado.width, tornado.width / 2 - tornado.width, tornado.height / 2 - tornado.width);
         if (level < 3) {
             tornado.particles = scene.add.particles(0, 0, 'flares', {
                 frame: 'blue',
@@ -110,7 +114,13 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
     }
 
 }
-function resetTornado(tornado, x, y, scene) {
+function resetTornado(tornado,player, MIN_DIST, MAX_DIST, scene) {
+    let x, y;
+    do {
+        x = player.x + Phaser.Math.Between(-MAX_DIST, MAX_DIST);
+        y = player.y + Phaser.Math.Between(-MAX_DIST, MAX_DIST);
+    } while (Phaser.Math.Distance.Between(player.x, player.y, x, y) < MIN_DIST);
+
     tornado.enableBody(true, x, y, true, true);
     tornado.setActive(true).setVisible(true);
     tornado.body.setAllowGravity(false);

@@ -11,7 +11,6 @@ export default class HUD {
         this.x = this.scene.cameras.main.width;
         this.y = this.scene.cameras.main.height;
 
-        console.log(this.centerX, this.centerY);
 
         this.score = 0;
         this.exp = 0;

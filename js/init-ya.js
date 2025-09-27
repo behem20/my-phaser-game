@@ -2,29 +2,29 @@ import { startGame } from "../game.js";
 import { YaManager } from "./yaManager.js";
 
 
-async function initYandexSdkAndStart() {
-    // console.log("initYandexSdkAndStart вызван");
+export async function initYandexSdkAndStart() {
     let sdk = null;
-    // Если SDK доступен (в релизе на Яндексе), инициализируем его:
+
     if (window.yaGames) {
         try {
             sdk = await window.yaGames.init();
             window.ysdk = sdk;
-            // console.log('Yandex SDK inited', sdk);
+            console.log('Yandex SDK inited', sdk);
             // ✅ автоопределение языка (п.2.14)
-            let portalLang = sdk.environment.i18n.lang;
-            let langToUse = (portalLang === "ru") ? "ru" : "ru";
+            // let portalLang = sdk.environment.i18n.lang;
+            const portalLang = sdk?.environment?.i18n?.lang;
+            const SUPPORTED = ['ru']; // у тебя поддерживается только русский
+
+            const langToUse = (portalLang && SUPPORTED.includes(portalLang)) ? portalLang : 'ru';
             window.gameLang = langToUse;
         } catch (e) {
-            // console.warn('YaGames.init() failed — running without SDK', e);
             window.ysdk = null;
         }
     } else {
-        // Локальная разработка — ставим "mock" объект, чтобы код не сломался.
-        // console.log('yaGames not found: using local mock for development.');
+       
         window.ysdk = createLocalYsdkMock();
     }
-    // console.log('YaManager', YaManager);
+ 
     // Теперь можно запускать игру — передаём SDK если нужно.
     if (YaManager && typeof YaManager.init === 'function') {
         await YaManager.init();
@@ -51,13 +51,10 @@ async function initYandexSdkAndStart() {
     }
 
     testLocalSdk();
-    if (window.ysdk && window.ysdk.features) {
-        window.ysdk.features.LoadingAPI?.ready();   // Game Ready
-        window.ysdk.features.GameplayAPI?.start(); // Начало игрового процесса
-    }
+  
     startGame();
 }
-//    if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.start();
+//    if (window.ysdk?.features?.GameplayAPI) window.ysdk.features.GameplayAPI.start();
 //    if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
 function createLocalYsdkMock() {
     // минимальный mock — дополняй методами, которые ты реально используешь
@@ -78,7 +75,7 @@ function createLocalYsdkMock() {
             }
         },
         features: {
-            LoadingAPI: { ready: () => { } },
+            LoadingAPI: { ready: () => {console.log("ready") } },
             GameplayAPI: {
                 start: () => {
                     console.log("start");
@@ -86,7 +83,7 @@ function createLocalYsdkMock() {
                     console.log('stop');
                 }
             },
-        }
+        }   
     };
 }
 

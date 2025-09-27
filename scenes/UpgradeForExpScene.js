@@ -50,7 +50,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
         this.upgrades = playerSkills.getRandomUpgrades(this)
 
 
-        console.log((centerY) / cw);
+        // console.log((centerY) / cw);
 
         this.upgrades.forEach((upgrade, index) => {
             const x = 0.5 + (index - 1) * spacing;

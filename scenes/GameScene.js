@@ -49,7 +49,7 @@ export default class GameScene extends Phaser.Scene {
         this.hideDamageButton = this.ui.createText(t('game.damage?'),
             { xPercent: 0.92, yPercent: 0.02, fontPercent: 0.02 })
             .setScrollFactor(0).setDepth(1200).setInteractive()
-        console.log(this.hideDamageButton.style.fontSize);
+        // console.log(this.hideDamageButton.style.fontSize);
 
         this.hideDamageButton.on('pointerdown', () => { this.hideDamageText = !this.hideDamageText; this.onTapSfx.play() })
         this.hideDamageButton.on('pointerover', () => {
@@ -58,10 +58,10 @@ export default class GameScene extends Phaser.Scene {
         })
         this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(parseInt(this.hideDamageButton.style.fontSize) - 2); })
 
-        // this.fpsText = this.add.text(10, this.cameras.main.height-this.cameras.main.height/100*3, '', {
-        //     font: '16px ',
-        //     fill: '#ffffffff'
-        // }).setScrollFactor(0).setDepth(1000);// FPS
+        this.fpsText = this.add.text(this.cameras.main.width/2, 40, '', {
+            font: '16px ',
+            fill: '#ffffffff'
+        }).setScrollFactor(0).setDepth(1000);// FPS
         this.ParticlesText = this.add.text(330, -160, '', {//330,60
             font: '26px Arial',
             fill: '#00ffff'
@@ -326,6 +326,13 @@ export default class GameScene extends Phaser.Scene {
         });
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
 
+        //mouse 
+        this.input.on('pointermove', pointer => {
+            // pointer.worldX / worldY — координаты в игровом мире
+            this.mouseX = pointer.worldX;
+            this.mouseY = pointer.worldY;
+        });
+
     }
     onShutdown() {
         if (this.waveManager) this.waveManager.reset(); // только свои таймеры
@@ -347,10 +354,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)}`);
+        this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)}`);
 
         // console.log(this.chests.getGroup().children.entries[0].trail.alive.length);
-        this.vignette.setPosition(this.cameras.main.centerX,this.cameras.main.centerY)
+
+        this.vignette.setPosition(this.cameras.main.centerX, this.cameras.main.centerY)
         this.vignette.setScale(
             this.cameras.main.width / this.vignette.width,
             this.cameras.main.height / this.vignette.height

@@ -32,7 +32,10 @@ export default class LightMask {
         const ch = this.scene.cameras.main.height
         const cw = this.scene.cameras.main.width
 
-        const radius = ch > cw ? ch * 0.7 : cw * 0.7;
+        const radius = ch > cw ? ch * 0.7 /2: cw * 0.7/2;
+        this.scene.LightMaskRadius = radius
+     
+        
         // console.log(radius);
         
         const cam = this.scene.cameras.main;
@@ -40,7 +43,7 @@ export default class LightMask {
         const screenY = target.y - cam.scrollY;
 
         // Рисуем градиентный круг
-        this.createLightCircle(radius/2);
+        this.createLightCircle(radius);
 
         // Чёрный фон
         this.visionTexture.clear();

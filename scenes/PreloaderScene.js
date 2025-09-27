@@ -8,7 +8,7 @@ export default class PreloaderScene extends Phaser.Scene {
         // Добавим текст "Загрузка..." посередине
         const { width, height } = this.scale;
         // console.log(width,height);
-        
+
         this.loadingText = this.add.text(width / 2, height / 2, 'Загрузка...', {
             fontSize: '24px',
             fill: '#ffffff'
@@ -308,7 +308,31 @@ export default class PreloaderScene extends Phaser.Scene {
     }
 
     create() {
+
+
+          if (window.ysdk && window.ysdk.features) {
+
+                window.ysdk.features.LoadingAPI?.ready();   // Game Ready
+                // window.ysdk.features.GameplayAPI?.start(); // Начало игрового процесса
+            }
         // После загрузки — переход в меню
         this.scene.start('MenuScene');
+
+        // this.load.on('complete', async () => {
+        //     console.log('Preload complete, ждем SDK...');
+        //     // ждём, пока SDK реально инициализирован
+        //     if (!window.ysdk) {
+        //         console.warn('SDK не готов, пытаемся дождаться...');
+        //         // можно добавить ожидание промиса или просто fallback
+        //     } else {
+        //         // ✅ SDK готов — вызываем LoadingAPI.ready()
+        //         window.ysdk.features.LoadingAPI?.ready();
+        //         console.log('✅ LoadingAPI.ready вызван');
+        //     }
+
+        //     // Переход к сцене меню
+        //     this.scene.start('MenuScene');
+        // });
+
     }
 }

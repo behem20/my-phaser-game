@@ -70,7 +70,7 @@ export default class InChestScene extends Phaser.Scene {
         //10 45 20 55
         //centerX, centerY-centerY/100*90, 780, 730
         //centerX, centerY - centerY / 100 * 88, 760, 710
-        console.log(780 / 800);
+        // console.log(780 / 800);
 
         const chestInnerBG = this.ui.createRectangle(
             { xPercent: 0.5, yPercent: 0.5, widthPercent: 0.9125, heightPercent: 0.875 }, 0x000000, 1)
@@ -90,8 +90,8 @@ export default class InChestScene extends Phaser.Scene {
 
         //  const cardWidth = 200;
         // const cardHeight = 250;
-        console.log(200 / cw);
-        console.log(250 / ch); //10  26
+        // console.log(200 / cw);
+        // console.log(250 / ch); //10  26
 
         //720 362.5 
         //960 362.5
@@ -101,7 +101,7 @@ export default class InChestScene extends Phaser.Scene {
             const x = 0.5 + (index - 1) * spacing;
             const y = 0.4;
 
-            console.log(x, y);
+            // console.log(x, y);
 
             // Карточка (фон)
             const card = this.ui.createRectangle(
@@ -163,7 +163,7 @@ export default class InChestScene extends Phaser.Scene {
                     fontSize: "24px",
                     color: "#2af318ff"
                 }).setOrigin(0.5);
-                console.log(this.ActiveCardDescription);
+                // console.log(this.ActiveCardDescription);
 
                 
 

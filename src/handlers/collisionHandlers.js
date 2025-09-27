@@ -32,7 +32,7 @@ export function handleLightHit(scene, light, enemy) {
 export function handleTornadoHit(scene, tornado, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
-    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 300)
+    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150)
     // addDamage("tornado", playerSkills.tornado.damage);
 }
 
@@ -62,10 +62,10 @@ export function handleMeteorHit(scene, meteor, enemy) {
 
 export function handleHailHit(scene, hail, enemy) {
     if (!enemy.active) return;
-    const explosion = scene.add.circle(hail.x, hail.y, 45, 0x0066ff, 0.3)
+    const explosion = scene.add.circle(hail.x, hail.y, 45, 0xff0000, 1) //0x0066ff
         .setDepth(10)
         .setBlendMode('ADD');
-    scene.time.delayedCall(400, () => explosion.destroy());
+    scene.time.delayedCall(1400, () => explosion.destroy());
     scene.enemies.getGroup().getChildren().forEach(otherEnemy => {
         if (!otherEnemy.active) return;
         const distance = Phaser.Math.Distance.Between(hail.x, hail.y, otherEnemy.x, otherEnemy.y);

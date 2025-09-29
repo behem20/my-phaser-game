@@ -542,7 +542,7 @@ export default class CoinSpawner {
         coin.isMagnetized = false;
         coin.magnetSpeed = 0;
 
-   
+
     }
 
     spawnForKill(enemyX, enemyY, amount = 1) {
@@ -581,7 +581,8 @@ export default class CoinSpawner {
     }
 
     update() {
-        if (!this.group) return;
+        // if (!this.group) return;
+        if (!this.group || !this.group.children) return;
 
         this.group.children.iterate(coin => {
             if (!coin || !coin.active) return;

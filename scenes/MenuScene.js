@@ -16,7 +16,7 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
 
-       
+
         this.ui = new UIManager(this);
         this.scale.on('resize', this.ui.resize, this.ui);
         const centerX = this.cameras.main.width / 2
@@ -285,11 +285,12 @@ export default class MenuScene extends Phaser.Scene {
                 this.onTapSfx.play();
                 // playerSkills.resetMagicSkill()
                 // playerSkills
-                if (ysdk?.features?.GameplayAPI){
+                if (ysdk?.features?.GameplayAPI) {
                     console.log(ysdk);
-                    
-                    ysdk.features.GameplayAPI.start()} ;
-                
+
+                    ysdk.features.GameplayAPI.start()
+                };
+
                 this.scene.pause()
                 // this.scene.launch('GameScene')
                 this.scene.start('GameScene')
@@ -472,6 +473,7 @@ export default class MenuScene extends Phaser.Scene {
             blendMode: 'ADD',
             follow: fire,
         });
+        
         // magicsButton.trail_1 = this.add.particles(55, 690, 'flares', {
         //     frame: 'blue',
         //     lifespan: 1120,
@@ -521,18 +523,18 @@ export default class MenuScene extends Phaser.Scene {
                 // backgroundColor: "#706b6bff",
             }).setOrigin(0.5, 0.5)
 
-        const fx2 = magicsButton.postFX.addGlow(0xffff25, 0, 0, false, 0.1, 24);
+        const fx2 = magicsButton.postFX.addGlow(0xffff25, 0, 0, false, 0.1, 4);
         this.tweens.add({
             targets: fx2,
-            outerStrength: 3,
+            outerStrength: 2,
             yoyo: true,
             loop: -1,
             ease: 'sine.inout'
         });
-        const fx1 = upgrdesText.postFX.addGlow(0xff0000, 0, 0, false, 0.1, 24);
+        const fx1 = upgrdesText.postFX.addGlow(0xff0000, 0, 0, false, 0.1, 4);
         this.tweens.add({
             targets: fx1,
-            outerStrength: 4,
+            outerStrength: 2,
             yoyo: true,
             loop: -1,
             ease: 'sine.inout'

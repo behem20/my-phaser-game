@@ -11,6 +11,8 @@ export function setupTimers(scene) {
         callbackScope: scene,
         loop: true
     });
+   
+  
 
     //healthpacks
     const spawnHealthPacksTimerDelay = Phaser.Math.Between(15000,35000)

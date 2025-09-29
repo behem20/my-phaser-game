@@ -44,6 +44,7 @@ export default class GameScene extends Phaser.Scene {
     create() {
         this.ui = new UIManager(this);
         this.scale.on('resize', this.ui.resize, this.ui);
+        // this.visionTexture.setSize(gameSize.width + 100, gameSize.height + 100);
         const w = this.scale.width;
         const h = this.scale.height;
         this.anims.resumeAll();
@@ -123,6 +124,7 @@ export default class GameScene extends Phaser.Scene {
         this.hpMark = new PlayerHPMark(this, this.player.sprite);
         this.enemies = new EnemySpawner(this, this.player)
         this.coins = new CoinSpawner(this, this.player, this.enemies);
+
         // this.magnet = new MagnetSkill(this, this.player, this.coins.getGroup(), {
         //     radius: 400,
         //     speed: 300,
@@ -203,11 +205,11 @@ export default class GameScene extends Phaser.Scene {
             // console.log('Containers count:', containers.length);
             // console.log(this.children.list.map(obj => obj.type));
             // console.log('Tweens total:', this.tweens.getTweens(true).length);
-            printStats(this.player.gAura);
+            // printStats(this.player.gAura);
         });
-        // this.input.keyboard.on('keydown-M', () => {
-        //     this.coins.activateMagnet(500, 500);
-        // });
+        this.input.keyboard.on('keydown-M', () => {
+            this.coins.activateMagnet(500, 500);
+        });
 
         //inventory key
         this.inventoryKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
@@ -273,9 +275,11 @@ export default class GameScene extends Phaser.Scene {
         //     this.registry.set('currentLevel', lvl + 1);
         //     this.scene.start('GameScene');
         // });
-        //spawn coins on start close to player
 
-        for (let i = 0; i < 175; i++) {
+
+
+        //spawn coins on start close to player
+        for (let i = 0; i < 175; i++) {//175
 
             this.coins.spawnRandomly(100, 1400, this)
         }
@@ -364,7 +368,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)}`);
+        this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} , ${this.children.list.length}`);
 
         // console.log(this.chests.getGroup().children.entries[0].trail.alive.length);
 
@@ -380,6 +384,8 @@ export default class GameScene extends Phaser.Scene {
             this.background.tilePositionX = this.cameras.main.scrollX;
             this.background.tilePositionY = this.cameras.main.scrollY;
         }
+
+        //fog
         this.lightMask.update(this.player);
 
         // //magnet

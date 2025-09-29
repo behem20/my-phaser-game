@@ -87,7 +87,7 @@ const originalLevels = [
                 {
                     groups: [
                         // { type: 'boss', count: 2, delayBetweenEnemies: 1 },
-                        { type: 'normal', count: 15, delayBetweenEnemies: 1 },
+                        { type: 'normal', count: 1, delayBetweenEnemies: 1 },
                         // { type: 'midNormal', count: 5, delayBetweenEnemies: 50 },
                         // { type: 'fast', count: 500000, delayBetweenEnemies: 40 },
                         // { type: 'normal', count: 500000, delayBetweenEnemies: 2 },

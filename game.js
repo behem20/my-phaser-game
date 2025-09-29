@@ -29,7 +29,8 @@ export function startGame() {
         },
         scale: {
             mode: Phaser.Scale.RESIZE, // подстраиваемся под размер экрана
-            autoCenter: Phaser.Scale.CENTER_BOTH
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            // resolution: 0.5 ,
         },
         scene: [
             PreloaderScene,

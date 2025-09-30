@@ -29,7 +29,7 @@ export default class ChestSpawner {
             follow: chest,
         });
         
-        this.scene.time.delayedCall(100000, () => {
+        this.scene.time.delayedCall(300000, () => {
             if (chest.active) { // значит ещё не уничтожена
                 chest.trail.destroy()
                 chest.destroy();

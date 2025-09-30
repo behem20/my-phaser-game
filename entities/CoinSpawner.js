@@ -541,6 +541,13 @@ export default class CoinSpawner {
 
         coin.isMagnetized = false;
         coin.magnetSpeed = 0;
+        this.scene.time.delayedCall(cfg.life, () => {
+            if (coin.active) {
+                // coin.trail.destroy()
+                coin.destroy();
+
+            }
+        });
 
 
     }

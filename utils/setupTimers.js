@@ -7,7 +7,7 @@ export function setupTimers(scene) {
     // Монеты
     scene.spawnCoinsTimer = scene.time.addEvent({
         delay: 1400,
-        callback: () => scene.coins.spawnRandomly(500, 2000, scene),
+        callback: () => scene.coins.spawnRandomly(100, 200, scene),
         callbackScope: scene,
         loop: true
     });
@@ -23,16 +23,18 @@ export function setupTimers(scene) {
         loop: true
     });
      //chests
+     const spawnChestsTimerDelay = Phaser.Math.Between(35000,65000)
     scene.spawnChestsTimer = scene.time.addEvent({
-        delay:30000,
+        delay:spawnChestsTimerDelay,
         callback: () => scene.chests.spawnChest(350, 400, scene),
         callbackScope: scene,
         loop: true
     });
 
        //magnets
+        const spawnMagnetsTimerDelay = Phaser.Math.Between(60000,105000)
     scene.spawnMagnetsTimer = scene.time.addEvent({
-        delay:60000,
+        delay:spawnMagnetsTimerDelay,
         callback: () => scene.magnets.spawnMagnet(350, 400, scene),
         callbackScope: scene,
         loop: true

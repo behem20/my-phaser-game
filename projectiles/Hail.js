@@ -26,7 +26,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
             // const MAX_DIST = 200 * 0.8 + i * 20
             // const MIN_DIST = (scene.LightMaskRadius * 0.7 - i * 40) / 2
             // const MAX_DIST = (scene.LightMaskRadius - i * 40) / 2
-             const MIN_DIST = 20
+            const MIN_DIST = 20
             const MAX_DIST = 150
             // console.log(MIN_DIST, MAX_DIST);
 
@@ -90,7 +90,9 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                     }
                 });
                 hailSprite.once('animationcomplete-hailActiveAnim', () => {
-                    // hailSprite.trail.destroy()
+                    hailSprite.trail.destroy()
+                    console.log('destroy');
+                    
                     hailSprite.destroy();
                     // explosion.destroy()
                 });

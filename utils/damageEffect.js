@@ -34,7 +34,7 @@ export function playDamageEffect(enemy, scene, damage = 1) {
                 targets: dmgText,
                 y: dmgText.y - 30,
                 alpha: 0,
-                duration: 1800,
+                duration: 900,
                 ease: 'Cubic.easeOut',
                 onComplete: () => {
                     dmgText.destroy();

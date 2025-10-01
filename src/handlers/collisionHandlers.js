@@ -185,7 +185,7 @@ export function handleChestCollect(scene, player, chest) {
 
 export function handleMagnetCollect(scene, player, magnet) {
     scene.openChestSfx.play() //collect chest sound
-console.log('magnet collected');
+// console.log('magnet collected');
 
     magnet.setScale(1.1)
     magnet.disableBody(0, 0)

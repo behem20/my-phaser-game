@@ -311,9 +311,9 @@ export default class PreloaderScene extends Phaser.Scene {
     create() {
 
 
-          if (window.ysdk && window.ysdk.features) {
+          if (window.game.ysdk && window.ysdk.features) {
 
-                window.ysdk.features.LoadingAPI?.ready();   // Game Ready
+                window.game.ysdk.features.LoadingAPI?.ready();   // Game Ready
                 // window.ysdk.features.GameplayAPI?.start(); // Начало игрового процесса
             }
         // После загрузки — переход в меню

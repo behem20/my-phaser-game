@@ -22,19 +22,19 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     if (damage > 0) {
         if (scene.hideDamageText) {
             const dmgText = scene.add.text(textX, textY - 40, `-${damage}`, {
-                fontSize: Math.random()>0.5?'24px':'30px',
+                fontSize: Math.random()>0.5?'16px':'20px',
                 fontFamily: 'Arial',
-                color: Math.random()>0.5?'#a70000ff':'#f82f50ff',
+                color: Math.random()>0.5?'#ff0000ff':'#da0d0dff',
                 stroke: '#000000',
-                strokeThickness: 3
+                strokeThickness: 1
             }).setOrigin(0.5).setDepth(100);
 
             // Анимация: всплытие и исчезновение
             scene.tweens.add({
                 targets: dmgText,
                 y: dmgText.y - 30,
-                alpha: 0,
-                duration: 900,
+                // alpha: 0.4,
+                duration: 500,
                 ease: 'Cubic.easeOut',
                 onComplete: () => {
                     dmgText.destroy();

@@ -1,18 +1,18 @@
 export const YaManager = {
     sdk: null,
+    gameLang: 'ru',
 
-    init: async function () {
-        if (window.yaGames) {
-            // реальный SDK
+    init: async function (sdkInstance = null) {
+        if (sdkInstance) {
+            this.sdk = sdkInstance;
+        } else if (window.yaGames) {
             this.sdk = await window.yaGames.init();
-            // console.log('Yandex SDK готов');
         } else {
             // локальный mock
             this.sdk = {
                 player: {
                     async setData(data) {
                         localStorage.setItem('mockSave', JSON.stringify(data));
-                        // console.log('Сохранено локально (mock)');
                     },
                     async getData() {
                         const data = localStorage.getItem('mockSave');
@@ -20,18 +20,19 @@ export const YaManager = {
                     }
                 }
             };
-            // console.log('Локальный mock SDK готов');
         }
+        const portalLang = this.sdk?.environment?.i18n?.lang;
+        const SUPPORTED = ['ru'];
+        this.gameLang = portalLang && SUPPORTED.includes(portalLang) ? portalLang : 'ru';
+        window.gameLang = this.gameLang;
+        console.log('Язык игры:', this.gameLang);
     },
 
     saveGame: async function (data) {
         if (!this.sdk) return;
         try {
             await this.sdk.player.setData(data);
-            // console.log('Сохранено', this.sdk === window.yaGames ? 'в облако' : 'локально (mock)');
-        } catch (e) {
-            // console.warn('Ошибка сохранения', e);
-        }
+        } catch (e) { }
     },
 
     loadGame: async function () {
@@ -39,7 +40,6 @@ export const YaManager = {
         try {
             return await this.sdk.player.getData();
         } catch (e) {
-            // console.warn('Ошибка загрузки', e);
             return {};
         }
     }

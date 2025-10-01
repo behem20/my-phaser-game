@@ -285,10 +285,10 @@ export default class MenuScene extends Phaser.Scene {
                 this.onTapSfx.play();
                 // playerSkills.resetMagicSkill()
                 // playerSkills
-                if (ysdk?.features?.GameplayAPI) {
-                    console.log(ysdk);
+                if (window.game.ysdk?.features?.GameplayAPI) {
+                    // console.log(window.ysdk);
 
-                    ysdk.features.GameplayAPI.start()
+                    window.game.ysdk.features.GameplayAPI.start()
                 };
 
                 this.scene.pause()

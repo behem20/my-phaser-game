@@ -368,9 +368,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
-         all ${this.children.list.length},
-          active ${this.children.list.filter(obj => obj.active).length}`);
+        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} `);
+        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
+        //  all ${this.children.list.length},
+        //   active ${this.children.list.filter(obj => obj.active).length}`);
 
         // this.fpsText.setText(`
         //     фпс: ${Math.floor(this.game.loop.actualFps)} 
@@ -383,24 +384,24 @@ export default class GameScene extends Phaser.Scene {
         // console.log('display:', this.add.displayList.length);
         // console.log('update list:', this.sys.updateList.list.length);
 
-        if (this.time.now % 2000 < 16) {
-            console.log('=== OBJECT COUNTS ===');
+        // if (this.time.now % 2000 < 16) {
+        //     console.log('=== OBJECT COUNTS ===');
 
-            console.log('children:', this.children?.list?.length ?? 'N/A');
-            console.log('display:', this.sys?.displayList?.list?.length ?? 'N/A');
-            console.log('update:', this.sys?.updateList?.length ?? 'N/A');
-            console.log('physics bodies:', this.physics?.world?.bodies?.size ?? 'N/A');
-            console.log('tweens:', this.tweens?.tweens?.length ?? 'N/A');
-            const allTweens = this.tweens?.tweens ?? [];
-            console.log('=== ACTIVE TWEENS ===', allTweens.length);
+        //     console.log('children:', this.children?.list?.length ?? 'N/A');
+        //     console.log('display:', this.sys?.displayList?.list?.length ?? 'N/A');
+        //     console.log('update:', this.sys?.updateList?.length ?? 'N/A');
+        //     console.log('physics bodies:', this.physics?.world?.bodies?.size ?? 'N/A');
+        //     console.log('tweens:', this.tweens?.tweens?.length ?? 'N/A');
+        //     const allTweens = this.tweens?.tweens ?? [];
+        //     console.log('=== ACTIVE TWEENS ===', allTweens.length);
 
-            // allTweens.forEach((tween, i) => {
-            //     console.log(i, tween.targets, tween.totalDuration, tween.isPlaying());
-            // });
-            console.log('timers:', this.time?.events?.length ?? 'N/A');
-            console.log('fps:', Math.floor(this.game.loop.actualFps) ?? 'N/A');
+        //     // allTweens.forEach((tween, i) => {
+        //     //     console.log(i, tween.targets, tween.totalDuration, tween.isPlaying());
+        //     // });
+        //     console.log('timers:', this.time?.events?.length ?? 'N/A');
+        //     console.log('fps:', Math.floor(this.game.loop.actualFps) ?? 'N/A');
 
-        }
+        // }
         // console.log(this.chests.getGroup().children.entries[0].trail.alive.length);
 
         this.vignette.setPosition(this.cameras.main.centerX, this.cameras.main.centerY)
@@ -433,24 +434,24 @@ export default class GameScene extends Phaser.Scene {
         this.fireAura.update()
 
         //exp scene qqqq
-        if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
-            this.skillsUI.hideTooltip()
-            this.scene.pause();
+        // if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
+        //     this.skillsUI.hideTooltip()
+        //     this.scene.pause();
 
-            this.scene.launch("UpgradeForExpScene", {
-                scene: this,
-                upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
-                onSelect: (upgrade) => {
-                    upgrade.applyUpgrade(this); // логика применения
+        //     this.scene.launch("UpgradeForExpScene", {
+        //         scene: this,
+        //         upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
+        //         onSelect: (upgrade) => {
+        //             upgrade.applyUpgrade(this); // логика применения
 
-                    playLevelUpEffect(this, this.player)
+        //             playLevelUpEffect(this, this.player)
 
-                }
-            });
-            this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
-            this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
+        //         }
+        //     });
+        //     this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
+        //     this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
 
-        }
+        // }
         //chest scene rrrr
         // if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
         //     this.scene.pause();

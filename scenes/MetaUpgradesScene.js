@@ -22,7 +22,7 @@ export default class MetaUpgradesScene extends Phaser.Scene {
         this.scale.on('resize', this.ui.resize, this.ui);
 
 
-        if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.start();
+        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.start();
         const scene = this;
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
@@ -418,7 +418,7 @@ export default class MetaUpgradesScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
 
-                if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
+                if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.stop();
                 this.scene.start('MenuScene');
                 this.MenuScene.onHoverSfx.play()
             })

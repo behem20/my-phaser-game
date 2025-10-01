@@ -17,7 +17,7 @@ export function togglePause(scene) {
     scene.isPaused = !scene.isPaused;
 
     if (scene.isPaused) {
-        if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
+        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.stop();
         scene.anims.pauseAll();
 
         scene.physics.world.pause();
@@ -259,7 +259,7 @@ export function togglePause(scene) {
         });
 
     } else {
-        if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.start();
+        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.start();
         scene.anims.resumeAll();
         scene.physics.world.resume();
         if (scene.shootMagicTimer) {

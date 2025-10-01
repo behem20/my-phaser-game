@@ -91,7 +91,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                 });
                 hailSprite.once('animationcomplete-hailActiveAnim', () => {
                     hailSprite.trail.destroy()
-                    console.log('destroy');
+                    // console.log('destroy');
                     
                     hailSprite.destroy();
                     // explosion.destroy()

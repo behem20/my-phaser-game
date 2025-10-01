@@ -15,7 +15,7 @@ export default class GameOverScene extends Phaser.Scene {
         const ch = this.cameras.main.height
         const cw = this.cameras.main.width
 
-        if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
+        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.stop();
 
         const { coins = 0 } = data;
         const { score = 0 } = data;

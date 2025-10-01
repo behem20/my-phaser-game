@@ -1,58 +1,38 @@
 import { startGame } from "../game.js";
 import { YaManager } from "./yaManager.js";
 
+function waitForYaGames(timeout = 5000) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now();
 
-export async function initYandexSdkAndStart() {
-    let sdk = null;
+        const check = () => {
+            if (window.yaGames) {
+                resolve(window.yaGames);
+            } else if (Date.now() - start > timeout) {
+                reject(new Error('Yandex SDK not loaded'));
+            } else {
+                requestAnimationFrame(check); // ждём следующего кадра
+            }
+        };
 
-    if (window.yaGames) {
-        try {
-            sdk = await window.yaGames.init();
-            window.ysdk = sdk;
-            console.log('Yandex SDK inited', sdk);
-            // ✅ автоопределение языка (п.2.14)
-            // let portalLang = sdk.environment.i18n.lang;
-            const portalLang = sdk?.environment?.i18n?.lang;
-            const SUPPORTED = ['ru']; // у тебя поддерживается только русский
+        check();
+    });
+}
+async function initYandexSdkAndStart() {
+    try {
+        const yaGames = await waitForYaGames(); // ждём SDK
+        const sdk = await yaGames.init();
+        window.ysdk = sdk;
 
-            const langToUse = (portalLang && SUPPORTED.includes(portalLang)) ? portalLang : 'ru';
-            window.gameLang = langToUse;
-        } catch (e) {
-            window.ysdk = null;
-        }
-    } else {
-       
-        window.ysdk = createLocalYsdkMock();
-    }
- 
-    // Теперь можно запускать игру — передаём SDK если нужно.
-    if (YaManager && typeof YaManager.init === 'function') {
-        await YaManager.init();
-    }
-    // Теперь запускаем игру
-    async function testLocalSdk() {
-        if (!window.ysdk) {
-            // console.warn("SDK не инициализирован");
-            return;
-        }
+        await YaManager.init(sdk); // передаём готовый SDK
 
-        // console.log("=== Тест mock SDK ===");
-
-        // 1. Сохраняем тестовые данные
-        await window.ysdk.storage.set('testData', { coins: 100, gems: 5 });
-        // console.log("Данные записаны в mock SDK");
-
-        // 2. Читаем их обратно
-        const loaded = await window.ysdk.storage.get('testData');
-        // console.log("Загруженные данные:", loaded);
-
-        // 3. Проверка на LocalStorage
-        // console.log("LocalStorage:", localStorage.getItem('testData'));
+        startGame();
+    } catch (e) {
+        console.error('Ошибка инициализации SDK:', e);
+        await YaManager.init(); // fallback на mock
+        startGame();
     }
 
-    testLocalSdk();
-  
-    startGame();
 }
 //    if (window.ysdk?.features?.GameplayAPI) window.ysdk.features.GameplayAPI.start();
 //    if (ysdk?.features?.GameplayAPI) ysdk.features.GameplayAPI.stop();
@@ -75,7 +55,7 @@ function createLocalYsdkMock() {
             }
         },
         features: {
-            LoadingAPI: { ready: () => {console.log("ready") } },
+            LoadingAPI: { ready: () => { console.log("ready") } },
             GameplayAPI: {
                 start: () => {
                     console.log("start");
@@ -83,7 +63,7 @@ function createLocalYsdkMock() {
                     console.log('stop');
                 }
             },
-        }   
+        }
     };
 }
 

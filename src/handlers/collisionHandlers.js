@@ -19,27 +19,27 @@ export function handleMagicHit(scene, magic, enemy) {
     magic.destroy();
 
     // damageEnemy(scene, enemy, playerSkills.magic.damage || 35, getHUD())
-    applyDamageWithCooldown(scene, 'magic', enemy, 10, 10)
+    applyDamageWithCooldown(scene, 'magic', enemy, 10, 10,magic)
     // addDamage("magic", playerSkills.magic.damage || 35);
 }
 
 export function handleLightHit(scene, light, enemy) {
     if (!enemy.active) return;
-    applyDamageWithCooldown(scene, 'light', enemy, 10, 500)
+    applyDamageWithCooldown(scene, 'light', enemy, 10, 300,light)
     // damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
     // addDamage("light", playerSkills.light.damage);
 }
 export function handleTornadoHit(scene, tornado, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
-    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150)
+    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150,tornado)
     // addDamage("tornado", playerSkills.tornado.damage);
 }
 
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
-    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200)
+    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200,satellite)
 }
 
 export function handleMeteorHit(scene, meteor, enemy) {
@@ -71,7 +71,7 @@ export function handleHailHit(scene, hail, enemy) {
         const distance = Phaser.Math.Distance.Between(hail.x, hail.y, otherEnemy.x, otherEnemy.y);
         if (distance <= 1200) {
 
-            applyDamageWithCooldown(scene, 'hail', enemy, 10, 10)
+            applyDamageWithCooldown(scene, 'hail', enemy, 10, 10,hail)
         }
     });
     hail.destroy();

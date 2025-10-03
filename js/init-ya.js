@@ -1,7 +1,7 @@
 import { startGame } from "../game.js";
 import { YaManager } from "./yaManager.js";
 
-function waitForYaGames(timeout = 5000) {
+function waitForYaGames(timeout = 100) {
     return new Promise((resolve, reject) => {
         const start = Date.now();
 

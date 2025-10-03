@@ -414,7 +414,7 @@ export default class MenuScene extends Phaser.Scene {
 
         const heroButton = this.ui.createImage(
             'hero',
-            { xPercent: 0.89, yPercent: 0.85 },).setInteractive().setOrigin(0.2, 0.7)
+            { xPercent: 0.89, yPercent: 0.85 },0.3).setInteractive().setOrigin(0.2, 0.7)
 
         heroButton.on('pointerdown', () => {
             this.onTapSfx.play();

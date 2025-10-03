@@ -42,6 +42,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
             } while (Phaser.Math.Distance.Between(player.x, player.y, x, y) < MIN_DIST);
 
             const hailSprite = scene.add.sprite(x, y, "hailStartAnims");
+             hailSprite.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
             // const explosion = scene.add.circle(x, y, 45, 0xff0000, 1) //0x0066ff
             //     .setDepth(10)
             //     .setBlendMode('ADD');
@@ -84,7 +85,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                     if (!enemy.active) return;
                     const distance = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
                     if (distance <= hailRadius) {
-                        applyDamageWithCooldown(scene, 'hail', enemy, 10, 10)
+                        applyDamageWithCooldown(scene, 'hail', enemy, 10, 10,hailSprite)
                         // damageEnemy(scene, enemy, damage, getHUD());
                         addDamage("hail", damage);
                     }

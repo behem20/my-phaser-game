@@ -62,12 +62,15 @@ export default class GameScene extends Phaser.Scene {
         this.hideDamageButton.on('pointerout', () => { this.hideDamageButton.setFontSize(parseInt(this.hideDamageButton.style.fontSize) - 2); })
 
         this.fpsText = this.add.text(this.cameras.main.width / 2, 40, '', {
-            font: '16px ',
-            fill: '#ffffffff'
+            font: '24px ',
+            fill: '#00ff00ff',
+            stroke: '#1af307ff',
+            strokeThickness: 1
         }).setScrollFactor(0).setDepth(1000);// FPS
         this.ParticlesText = this.add.text(330, -160, '', {//330,60
             font: '26px Arial',
-            fill: '#00ffff'
+            fill: '#00ffff',
+            
         }).setScrollFactor(0).setDepth(1000);
         loadAllAnimations(this)
 
@@ -314,20 +317,20 @@ export default class GameScene extends Phaser.Scene {
 
         this.skillsUI = new SkillsUI(this, this.registry.get('activeSkills'));
         // fake magic on lelve start
-        this.shootFakeMagicTimer = this.time.addEvent({
-            delay: SkillRegistry.magic.getCurrentStats().delay,
-            callback: () => shootMagic(
-                this,
-                this.player,
-                this.enemies.getGroup(),
-                this.magicShots,
-                1,
-                1,
-                '',
-                1
-            ),
-            loop: true
-        });
+        // this.shootFakeMagicTimer = this.time.addEvent({
+        //     delay: SkillRegistry.magic.getCurrentStats().delay,
+        //     callback: () => shootMagic(
+        //         this,
+        //         this.player,
+        //         this.enemies.getGroup(),
+        //         this.magicShots,
+        //         1,
+        //         1,
+        //         '',
+        //         1
+        //     ),
+        //     loop: true
+        // });
 
         pauseButton.on('pointerdown', () => { this.onTapSfx.play(); togglePause(this) })
 
@@ -368,7 +371,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} `);
+        this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
         // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
         //  all ${this.children.list.length},
         //   active ${this.children.list.filter(obj => obj.active).length}`);
@@ -434,24 +437,24 @@ export default class GameScene extends Phaser.Scene {
         this.fireAura.update()
 
         //exp scene qqqq
-        // if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
-        //     this.skillsUI.hideTooltip()
-        //     this.scene.pause();
+        if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
+            this.skillsUI.hideTooltip()
+            this.scene.pause();
 
-        //     this.scene.launch("UpgradeForExpScene", {
-        //         scene: this,
-        //         upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
-        //         onSelect: (upgrade) => {
-        //             upgrade.applyUpgrade(this); // логика применения
+            this.scene.launch("UpgradeForExpScene", {
+                scene: this,
+                upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
+                onSelect: (upgrade) => {
+                    upgrade.applyUpgrade(this); // логика применения
 
-        //             playLevelUpEffect(this, this.player)
+                    playLevelUpEffect(this, this.player)
 
-        //         }
-        //     });
-        //     this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
-        //     this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
+                }
+            });
+            this.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount++;
+            this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
 
-        // }
+        }
         //chest scene rrrr
         // if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
         //     this.scene.pause();

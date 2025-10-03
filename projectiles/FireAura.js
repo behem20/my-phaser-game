@@ -13,7 +13,7 @@ export function shootFireAura(scene, player, enemiesGroup, fireAuraGroup, radius
         if (!scene.fireAuraSfx.isPlaying) {
             scene.fireAuraSfx.play();
         }
-        applyDamageWithCooldown(scene, 'fireAura', enemy, 10, 300)
+        applyDamageWithCooldown(scene, 'fireAura', enemy, 10, 300,fireAuraGroup)
         // damageEnemy(scene, enemy, playerSkills.fireAura.damage, getHUD())
         // addDamage("fireAura", playerSkills.fireAura.damage);
 

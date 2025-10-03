@@ -26,10 +26,11 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
         // scene.magicShootSfx.play();
         const randomKey = Phaser.Utils.Array.GetRandom(lightningKeys);
         const lightning = lightningGroup.create(enemy.x, enemy.y, randomKey).setOrigin(0.5, 1);
+         lightning.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
         lightning.body.allowGravity = false;
 
         if (!enemy.active) return;
-        applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10)
+        applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10,lightning)
        
         scene.tweens.add({
             targets: lightning,

@@ -32,7 +32,8 @@ export function playDamageEffect(enemy, scene, damage = 1) {
             // Анимация: всплытие и исчезновение
             scene.tweens.add({
                 targets: dmgText,
-                y: dmgText.y - 30,
+                y: dmgText.y - Phaser.Math.Between(25,40),
+                x:dmgText.x + Phaser.Math.Between(-10,10),
                 // alpha: 0.4,
                 duration: 500,
                 ease: 'Cubic.easeOut',

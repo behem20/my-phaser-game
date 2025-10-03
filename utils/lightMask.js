@@ -13,11 +13,12 @@ export default class LightMask {
         .setDepth(10)
         .setScrollFactor(0)
         .setOrigin(0.5,0.5)
+        .setAlpha(0.6)
         .setPosition(this.scene.cameras.main.width/2,this.scene.cameras.main.height/2);
 
         // Форма для круга света
         this.lightShape = scene.make.graphics({ x: 0, y: 0, add: false });
-this.scene.scale.on('resize', this.onResize, this);
+        this.scene.scale.on('resize', this.onResize, this);
     }
 
     createLightCircle(radius) {

@@ -213,7 +213,7 @@ export default class GameScene extends Phaser.Scene {
             printStats(this.player.gAura);
         });
         this.input.keyboard.on('keydown-M', () => {
-            this.coins.activateMagnet(1500, 500);
+            this.coins.activateMagnet(3500, 500);
         });
 
         //inventory key

@@ -31,6 +31,7 @@ import SplashSpawner from "../entities/SplashesSpawner.js"
 import UIManager from "../ui/UIManager.js"
 import { MagnetSkill } from "../entities/Magnet.js"
 import MagnetSpawner from "../entities/MagnetSpawner.js"
+import { createClouds } from "../projectiles/Lightning.js"
 
 
 
@@ -70,7 +71,7 @@ export default class GameScene extends Phaser.Scene {
         this.ParticlesText = this.add.text(330, -160, '', {//330,60
             font: '26px Arial',
             fill: '#00ffff',
-            
+
         }).setScrollFactor(0).setDepth(1000);
         loadAllAnimations(this)
 
@@ -90,7 +91,8 @@ export default class GameScene extends Phaser.Scene {
 
 
         const background = this.levels[level].levelConfigs.backGround
-
+        this.thunderClouds = []
+        this.thunderCloudsActive=false
         // console.log(background);
 
         // const background = 'TempBG_2';
@@ -208,10 +210,10 @@ export default class GameScene extends Phaser.Scene {
             // console.log('Containers count:', containers.length);
             // console.log(this.children.list.map(obj => obj.type));
             // console.log('Tweens total:', this.tweens.getTweens(true).length);
-            // printStats(this.player.gAura);
+            printStats(this.player.gAura);
         });
         this.input.keyboard.on('keydown-M', () => {
-            this.coins.activateMagnet(500, 500);
+            this.coins.activateMagnet(1500, 500);
         });
 
         //inventory key
@@ -317,20 +319,20 @@ export default class GameScene extends Phaser.Scene {
 
         this.skillsUI = new SkillsUI(this, this.registry.get('activeSkills'));
         // fake magic on lelve start
-        // this.shootFakeMagicTimer = this.time.addEvent({
-        //     delay: SkillRegistry.magic.getCurrentStats().delay,
-        //     callback: () => shootMagic(
-        //         this,
-        //         this.player,
-        //         this.enemies.getGroup(),
-        //         this.magicShots,
-        //         1,
-        //         1,
-        //         '',
-        //         1
-        //     ),
-        //     loop: true
-        // });
+        this.shootFakeMagicTimer = this.time.addEvent({
+            delay: SkillRegistry.magic.getCurrentStats().delay,
+            callback: () => shootMagic(
+                this,
+                this.player,
+                this.enemies.getGroup(),
+                this.magicShots,
+                1,
+                1,
+                '',
+                1
+            ),
+            loop: true
+        });
 
         pauseButton.on('pointerdown', () => { this.onTapSfx.play(); togglePause(this) })
 
@@ -371,8 +373,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update() {
-        this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
-        // this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
+        // this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
+        this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
         //  all ${this.children.list.length},
         //   active ${this.children.list.filter(obj => obj.active).length}`);
 
@@ -390,10 +392,10 @@ export default class GameScene extends Phaser.Scene {
         // if (this.time.now % 2000 < 16) {
         //     console.log('=== OBJECT COUNTS ===');
 
-        //     console.log('children:', this.children?.list?.length ?? 'N/A');
-        //     console.log('display:', this.sys?.displayList?.list?.length ?? 'N/A');
-        //     console.log('update:', this.sys?.updateList?.length ?? 'N/A');
-        //     console.log('physics bodies:', this.physics?.world?.bodies?.size ?? 'N/A');
+        //     // console.log('children:', this.children?.list?.length ?? 'N/A');
+        //     // console.log('display:', this.sys?.displayList?.list?.length ?? 'N/A');
+        //     // console.log('update:', this.sys?.updateList?.length ?? 'N/A');
+        //     // console.log('physics bodies:', this.physics?.world?.bodies?.size ?? 'N/A');
         //     console.log('tweens:', this.tweens?.tweens?.length ?? 'N/A');
         //     const allTweens = this.tweens?.tweens ?? [];
         //     console.log('=== ACTIVE TWEENS ===', allTweens.length);
@@ -436,6 +438,18 @@ export default class GameScene extends Phaser.Scene {
         //Движение fireAura 
         this.fireAura.update()
 
+        //thunder
+        if (playerSkills.lightning.level > 1) {
+           
+          
+            if (!this.thunderCloudsActive) {
+                this.thunderCloudsActive=true
+              
+
+                createClouds(this)
+
+            }
+        }
         //exp scene qqqq
         if (Phaser.Input.Keyboard.JustDown(this.tabKey)) {
             this.skillsUI.hideTooltip()

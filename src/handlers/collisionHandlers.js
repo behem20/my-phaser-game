@@ -195,7 +195,7 @@ export function handleMagnetCollect(scene, player, magnet) {
         magnet.trail.destroy()
         
     });
-    scene.coins.activateMagnet(500, 500);
+    scene.coins.activateMagnet(1500, 500);
 }
 
 export function handleHealthPackCollect(scene, player, hp) {

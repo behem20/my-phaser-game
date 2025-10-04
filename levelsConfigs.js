@@ -24,10 +24,10 @@ const originalLevels = [
                 radius: 32
             },
             bossType: {
-                hp: 2630,
+                hp: 26030,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
-                speed: 45,//45
+                speed: 1,//45
                 radius: 120
             },
             midNormalType: {
@@ -82,7 +82,7 @@ const originalLevels = [
             speed: 250,//250
         },
         wavesConfigs: {
-            delayBetweenWaves: 5000,
+            delayBetweenWaves:5000,
             waves: [
                 {
                     groups: [

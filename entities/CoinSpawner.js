@@ -601,13 +601,13 @@ export default class CoinSpawner {
 
                 if (dist < this.magnetRadius) {
                     coin.isMagnetized = true;
-                    coin.magnetSpeed = 40; // 🔹 стартовая скорость притяжения (можно менять)
+                    coin.magnetSpeed = 60; // 🔹 стартовая скорость притяжения (можно менять)
                 }
             }
 
             if (coin.isMagnetized) {
                 // 🔹 Здесь регулируется скорость полета монеты
-                const factor = 0.04; // 0.08 = медленнее, 0.12 = чуть быстрее
+                const factor = 0.08; // 0.08 = медленнее, 0.12 = чуть быстрее
                 coin.x += (this.player.x - coin.x) * factor;
                 coin.y += (this.player.y - coin.y) * factor;
             }

@@ -1,3 +1,6 @@
+import { createClouds } from "../projectiles/Lightning.js";
+import { playerSkills } from "../utils/upgradesManager.js";
+
 export default class UIManager {
     constructor(scene) {
         this.scene = scene;
@@ -56,6 +59,9 @@ export default class UIManager {
     resize() {
         for (let i = 0; i < this.elements.length; i++) {
             this.updateElement(i);
+        }
+        if(playerSkills.lightning.level>1){
+            createClouds(this.scene)
         }
     }
 

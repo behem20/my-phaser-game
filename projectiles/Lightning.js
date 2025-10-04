@@ -9,41 +9,155 @@ import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js
 import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
-export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1,iconID) {
+export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1, iconID) {
     const lightningKeys = ['lightning1', 'lightning2', 'lightning3', 'lightning4', 'lightning5'];
     const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
-    const enemies = getClosestEnemiesInRadius(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
-// const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
+
+
+    const enemies = getClosestEnemiesInRadius(scene, player.gameObject, enemiesGroup.getChildren(), finalCount, scene.LightMaskRadius + 50);
+    // const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
+
 
     if (enemies.length === 0) return;
     flashIcon(scene, iconID)
     flashScreen(scene, 0x99ccff, 0.1)
     scene.lightningShootSfx.play();
-
+    // flashRandomClouds(scene, x)
     enemies.forEach(enemy => {
         // scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.9, 1.1));
 
         // scene.magicShootSfx.play();
+
         const randomKey = Phaser.Utils.Array.GetRandom(lightningKeys);
+
         const lightning = lightningGroup.create(enemy.x, enemy.y, randomKey).setOrigin(0.5, 1);
-         lightning.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
+       
+        shrinkSprite(scene, lightning)
+        lightning.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
         lightning.body.allowGravity = false;
 
         if (!enemy.active) return;
-        applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10,lightning)
-       
-        scene.tweens.add({
-            targets: lightning,
-            alpha: 0,
-            yoyo: true,        // вернуться обратно к alpha=1
-            repeat: 1,         // сколько раз повторить (1 = один цикл туда-обратно)
-            duration: 70,      // скорость мигания
-            onComplete: () => {
-                lightning.destroy(); // удаляем после анимации
-            }
-        });
+        flashRandomClouds(scene, enemy.x, scene.cameras.main.scrollY, enemy.x, enemy.y)
+        applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10, lightning)
+
+
+
+        // scene.tweens.add({
+        //     targets: lightning,
+        //     alpha: 0,
+        //     yoyo: true,        // вернуться обратно к alpha=1
+        //     repeat: 1,         // сколько раз повторить (1 = один цикл туда-обратно)
+        //     duration: 70,      // скорость мигания
+        //     onComplete: () => {
+        //         lightning.destroy(); // удаляем после анимации
+        //     }
+        // });
+        // scene.time.delayedCall(150, () => lightning.destroy())
+
+
 
     })
 
     player.attackTextureOnce();
+}
+
+export function createCloudsParticles(scene, x) {
+    scene.thunderCloudsTrail = scene.add.particles(x, 0, 'flares', {
+        frame: 'white',
+        lifespan: 520,
+        // speed: 360,
+        speed: { min: 120, max: 220 },
+        angle: { start: 0, end: 180, steps: 15 },
+        scale: { start: 0.4, end: 0.7 },
+        alpha: { start: 0.95, end: 0 },
+        // frequency: -1, // частота появления
+        quantity: 3,
+        tint: 0x888888, // серый цвет (hex)
+        // tint: [0xff6633, 0xff3322, 0xdd5522],
+        // tint: [0xff6633, 0xff3322, 0xddee22],
+        // tint: [0xff66FF, 0x2200FF],
+        // tint: [0xffffFF, 0x2200FF],
+        // tint: [0xff0000,]
+        // blendMode: 'SCREEN'
+        // blendMode: 'ADD',
+    }).setScrollFactor(0)
+    // const speeds = [{min: 50, max: 130 },{min: 80, max: 180 },{min: 120, max: 220 }]
+
+
+    if (scene.thunderClouds) scene.thunderClouds.push(scene.thunderCloudsTrail)
+
+}
+export function createClouds(scene) {
+    if (scene.thunderClouds) {
+        scene.thunderClouds.forEach(el => el.destroy());
+        scene.thunderClouds.length = 0
+    }
+
+    for (let x = 0; x < scene.scale.width + 100; x += Phaser.Math.Between(100, 150)) {
+        createCloudsParticles(scene, x);
+    }
+
+
+}
+export function flashRandomClouds(scene, skyX, skyY, enemyX, enemyY) {
+
+    scene.sparkCloudsTrail = scene.add.particles(0, 0, 'flares', {
+        frame: 'white',
+        lifespan: 220,
+        speed: { min: 120, max: 220 },
+        // speed: {min: 120, max: 220 },
+        angle: { start: 0, end: 180, steps: 15 },
+        // angle: { start: 0, end: 360, steps: 30 },
+        scale: { start: 0.7, end: 0.2 },
+        alpha: { start: 1, end: 0 },
+        frequency: -1, // частота появления
+        quantity: 16,
+        // tint: [0xff6633, 0xff3322, 0xdd5522],
+        // tint: [0xff6633, 0xff3322, 0xddee22],
+        // tint: [ 0xff0000],
+        // blendMode: 'SCREEN'
+        blendMode: 'ADD',
+    }).setDepth(2)
+    scene.sparkCloudsTrail.emitParticleAt(skyX, skyY, 20,);
+
+    scene.contactLightningTrail = scene.add.particles(0, 0, 'flares', {
+        frame: 'white',
+        lifespan: 220,
+        speed: { min: 120, max: 160 },
+        // speed: {min: 120, max: 220 },
+        angle: { start: 0, end: 360, steps: 15 },
+        // angle: { start: 0, end: 360, steps: 30 },
+        scale: { start: 0.7, end: 0.2 },
+        alpha: { start: 1, end: 0.5 },
+        frequency: -1, // частота появления
+        quantity: 16,
+        tint: [0xff6633, 0xff3322, 0xdd5522],
+        // tint: [0xff6633, 0xff3322, 0xddee22],
+        // tint: [ 0xff0000],
+        // blendMode: 'SCREEN'
+        blendMode: 'ADD',
+    }).setDepth(4)
+    scene.contactLightningTrail.emitParticleAt(enemyX, enemyY, 20,);
+    scene.time.delayedCall(210, () => scene.sparkCloudsTrail.destroy());
+    scene.time.delayedCall(210, () => scene.contactLightningTrail.destroy());
+}
+function shrinkSprite(scene, sprite) {
+    const randExtentionScaleX = Phaser.Math.FloatBetween(0.8, 1.15)
+    const randShrinkScaleX = Phaser.Math.FloatBetween(0.2, 0.5)
+    scene.tweens.add({
+        targets: sprite,
+        scaleX: sprite.scaleX * randExtentionScaleX, // сначала чуть шире
+        duration: 40,
+        yoyo: true,
+        ease: 'Quad.easeOut',
+        onComplete: () => {
+            scene.tweens.add({
+                targets: sprite,
+                scaleX: sprite.scaleX * randShrinkScaleX, // теперь схлопываем
+                duration: 100,
+                ease: 'Linear',
+                onComplete: () => { sprite.destroy() }
+            });
+        }
+    });
 }

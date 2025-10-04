@@ -1201,14 +1201,14 @@ export const playerSkills = {
                 this.fire,
                 this.light,
                 this.lightning,
-                this.armageddon,
-                this.tornado,
-                this.fireAura,
-                this.satellite,
-                this.hail,
-                this.magnetRadius,
-                this.intellect,
-                this.robe,
+                // this.armageddon,
+                // this.tornado,
+                // this.fireAura,
+                // this.satellite,
+                // this.hail,
+                // this.magnetRadius,
+                // this.intellect,
+                // this.robe,
             ]
         } else {
             return [
@@ -1217,11 +1217,11 @@ export const playerSkills = {
                 this.fire,
                 this.light,
                 this.lightning,
-                this.armageddon,
-                this.tornado,
-                this.fireAura,
-                this.satellite,
-                this.hail,
+                // this.armageddon,
+                // this.tornado,
+                // this.fireAura,
+                // this.satellite,
+                // this.hail,
 
             ]
         }

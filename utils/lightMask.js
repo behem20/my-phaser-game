@@ -42,8 +42,9 @@ export default class LightMask {
              width: gameSize.width + 100,
              height: gameSize.height + 100,
              add: true
+
         });
-    this.visionTexture.setOrigin(0.5, 0.5);
+    this.visionTexture.setOrigin(0.5, 0.5).setAlpha(0.6);
     this.visionTexture.setScrollFactor(0).setDepth(10);
         
         const newWidth = gameSize.width + 100;

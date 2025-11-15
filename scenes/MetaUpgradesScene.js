@@ -170,7 +170,7 @@ export default class MetaUpgradesScene extends Phaser.Scene {
             allSpellsLevel.forEach((el) => { el.destroy() })
 
             spells.forEach((el, index, array) => {
-               
+
 
                 const pos = getPosition(index);
                 if (!pos) return;
@@ -178,13 +178,13 @@ export default class MetaUpgradesScene extends Phaser.Scene {
                     el.level,
                     { xPercent: pos.x + 0.02, yPercent: pos.y + 0.05, fontPercent: 0.03 },
                     { fontSize: "20px", color: 'rgba(255, 7, 160, 1)' }).setDepth(2)
+
                 const spell = scene.ui.createImage(
                     el.icon,
                     { xPercent: pos.x, yPercent: pos.y },
-                    0.1
+                    0.09
                 )
                     .setDepth(1)
-                    .setScale(2)
                     .setOrigin(0.5)
                     .setInteractive();
 
@@ -400,7 +400,7 @@ export default class MetaUpgradesScene extends Phaser.Scene {
 
                 }
 
-                this.activeSpellIDMULTIPLY+=1;
+                this.activeSpellIDMULTIPLY += 1;
                 renderSpells(this)
             });
         const fx = upgradeText.postFX.addShine(3, .5, 1);

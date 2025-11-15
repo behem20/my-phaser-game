@@ -10,7 +10,7 @@ import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1, iconID) {
-    const lightningKeys = ['lightning1', 'lightning2', 'lightning3', 'lightning4', 'lightning5'];
+    const lightningKeys = ['lightning1'];
     const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
 
 
@@ -20,9 +20,9 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
 
     if (enemies.length === 0) return;
     flashIcon(scene, iconID)
-    flashScreen(scene, 0x99ccff, 0.1)
+    // flashScreen(scene, 0x99ccff, 0.1)
     scene.lightningShootSfx.play();
-    // flashRandomClouds(scene, x)
+
     enemies.forEach(enemy => {
         // scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.9, 1.1));
 
@@ -31,7 +31,7 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
         const randomKey = Phaser.Utils.Array.GetRandom(lightningKeys);
 
         const lightning = lightningGroup.create(enemy.x, enemy.y, randomKey).setOrigin(0.5, 1);
-       
+
         shrinkSprite(scene, lightning)
         lightning.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
         lightning.body.allowGravity = false;
@@ -67,11 +67,11 @@ export function createCloudsParticles(scene, x) {
         lifespan: 520,
         // speed: 360,
         speed: { min: 120, max: 220 },
-        angle: { start: 0, end: 180, steps: 15 },
-        scale: { start: 0.4, end: 0.7 },
-        alpha: { start: 0.95, end: 0 },
-        // frequency: -1, // частота появления
-        quantity: 3,
+        angle: { start: 0, end: 180, steps: 8 },
+        scale: { start: 0.5, end: 0.7 },
+        alpha: { start: 0.9, end: 0 },
+        frequency: 10, // частота появления
+        quantity: 1,
         tint: 0x888888, // серый цвет (hex)
         // tint: [0xff6633, 0xff3322, 0xdd5522],
         // tint: [0xff6633, 0xff3322, 0xddee22],
@@ -101,45 +101,55 @@ export function createClouds(scene) {
 }
 export function flashRandomClouds(scene, skyX, skyY, enemyX, enemyY) {
 
-    scene.sparkCloudsTrail = scene.add.particles(0, 0, 'flares', {
-        frame: 'white',
-        lifespan: 220,
-        speed: { min: 120, max: 220 },
-        // speed: {min: 120, max: 220 },
-        angle: { start: 0, end: 180, steps: 15 },
-        // angle: { start: 0, end: 360, steps: 30 },
-        scale: { start: 0.7, end: 0.2 },
-        alpha: { start: 1, end: 0 },
-        frequency: -1, // частота появления
-        quantity: 16,
-        // tint: [0xff6633, 0xff3322, 0xdd5522],
-        // tint: [0xff6633, 0xff3322, 0xddee22],
-        // tint: [ 0xff0000],
-        // blendMode: 'SCREEN'
-        blendMode: 'ADD',
-    }).setDepth(2)
-    scene.sparkCloudsTrail.emitParticleAt(skyX, skyY, 20,);
+    if (!scene.sparkCloudsTrail) {
+        scene.sparkCloudsTrail = scene.add.particles(0, 0, 'flares', {
+            frame: 'blue',
+            lifespan: 220,
+            speed: { min: 220, max: 420 },
+            // speed: {min: 120, max: 220 },
+            angle: { start: 0, end: 180, steps: 15 },
+            // angle: { start: 0, end: 360, steps: 30 },
+            scale: { start: 0.7, end: 0.2 },
+            alpha: { start: 1, end: 0 },
+            frequency: -1, // частота появления
+            quantity: 1,
+            // tint: [0xff6633, 0xff3322, 0xdd5522],
+            tint: [0x886683, 0x888888, 0x885522],
+            // tint: [0xff6633, 0xff3322, 0xddee22],
+            // tint: [ 0xff0000],
+            // blendMode: 'SCREEN'
+            blendMode: 'ADD',
+        }).setDepth(2)
+    }
 
-    scene.contactLightningTrail = scene.add.particles(0, 0, 'flares', {
-        frame: 'white',
-        lifespan: 220,
-        speed: { min: 120, max: 160 },
-        // speed: {min: 120, max: 220 },
-        angle: { start: 0, end: 360, steps: 15 },
-        // angle: { start: 0, end: 360, steps: 30 },
-        scale: { start: 0.7, end: 0.2 },
-        alpha: { start: 1, end: 0.5 },
-        frequency: -1, // частота появления
-        quantity: 16,
-        tint: [0xff6633, 0xff3322, 0xdd5522],
-        // tint: [0xff6633, 0xff3322, 0xddee22],
-        // tint: [ 0xff0000],
-        // blendMode: 'SCREEN'
-        blendMode: 'ADD',
-    }).setDepth(4)
-    scene.contactLightningTrail.emitParticleAt(enemyX, enemyY, 20,);
-    scene.time.delayedCall(210, () => scene.sparkCloudsTrail.destroy());
-    scene.time.delayedCall(210, () => scene.contactLightningTrail.destroy());
+    // if (scene.sparkCloudsTrail && scene.sparkCloudsTrail.manager) {
+    //     scene.sparkCloudsTrail.emitParticleAt(skyX, skyY + 10, 15);
+    // }
+    scene.sparkCloudsTrail.emitParticleAt(skyX, skyY + 10, 15,);
+
+    if (!scene.contactLightningTrail) {
+        scene.contactLightningTrail = scene.add.particles(0, 0, 'flares', {
+            frame: 'white',
+            lifespan: 220,
+            speed: { min: 60, max: 220 },
+            // speed: {min: 120, max: 220 },
+            angle: { start: 0, end: 360, steps: 10 },
+            // angle: { start: 0, end: 360, steps: 30 },
+            scale: { start: 0.7, end: 0.2 },
+            alpha: { start: 1, end: 0.5 },
+            frequency: -1, // частота появления
+            quantity: 1,
+            tint: [0xff6633, 0xff3322, 0xdd5522],
+            // tint: [0xff6633, 0xff3322, 0xddee22],
+            // tint: [ 0xff0000],
+            // blendMode: 'SCREEN'
+            blendMode: 'ADD',
+        }).setDepth(4)
+    }
+    // if (scene.contactLightningTrail && scene.contactLightningTrail.manager) {
+    //     scene.contactLightningTrail.emitParticleAt(skyX, skyY + 10, 15);
+    // }
+    scene.contactLightningTrail.emitParticleAt(enemyX, enemyY, 10,);
 }
 function shrinkSprite(scene, sprite) {
     const randExtentionScaleX = Phaser.Math.FloatBetween(0.8, 1.15)

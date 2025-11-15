@@ -16,12 +16,12 @@ export default class Player {
             frame: 'red',
             lifespan: 720,
             // speed: 360,
-            speed: { min: 120, max: 220 },
-            angle: { start: 0, end: 360, steps: 30 },
-            scale: { start: 0.2, end: 0.7 },
-            alpha: { start: 0.15, end: 0 },
+            speed: { min: 60, max: 220 },
+            angle: { start: 0, end: 360, steps: 24 },
+            scale: { start: 0.3, end: 1 },
+            alpha: { start: 0.55, end: 0 },
             frequency: -1, // частота появления
-            quantity: 16,
+            // quantity: 30,
             tint: [0xff6633, 0xff3322, 0xdd5522],
             // tint: [0xff6633, 0xff3322, 0xddee22],
             // tint: [0xff66FF, 0x2200FF],
@@ -48,7 +48,7 @@ export default class Player {
             // speed: { min: 100, max: 260 },
             scale: { start: 0.25, end: 0.1 },
             alpha: { start: 0.6, end: 0 },
-            lifespan: 2500,
+            lifespan: 800,
             frequency: 100, // частота появления
             tint: [0xff33ff, 0xff8800],
             follow: this.sprite, // следят за игроком
@@ -164,9 +164,9 @@ export default class Player {
                 this.fireAuraBGActive = true;
                 this.fireAuraBGParticles.setParticleLifespan(playerSkills.fireAura.radius * 6)
                 this.fireAuraBGParticles.setPosition(this.sprite.x, this.sprite.y);
-                this.fireAuraBGParticles.explode(64);
+                this.fireAuraBGParticles.explode(6);
                 // console.log('explode');
-                this.scene.time.delayedCall(30, () => {
+                this.scene.time.delayedCall(25, () => {
                     this.fireAuraBGActive = false;
                 });
             }

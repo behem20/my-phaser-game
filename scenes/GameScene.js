@@ -43,6 +43,18 @@ export default class GameScene extends Phaser.Scene {
 
     }
     create() {
+        this.events.on('shutdown', () => {
+            console.log('shutdown');
+
+            if (this.sparkCloudsTrail) {
+                this.sparkCloudsTrail.destroy()
+                this.sparkCloudsTrail = null
+            }
+            if (this.contactLightningTrail) {
+                this.contactLightningTrail.destroy()
+                this.contactLightningTrail = null
+            }
+        });
         this.ui = new UIManager(this);
         this.scale.on('resize', this.ui.resize, this.ui);
         // this.visionTexture.setSize(gameSize.width + 100, gameSize.height + 100);
@@ -92,7 +104,7 @@ export default class GameScene extends Phaser.Scene {
 
         const background = this.levels[level].levelConfigs.backGround
         this.thunderClouds = []
-        this.thunderCloudsActive=false
+        this.thunderCloudsActive = false
         // console.log(background);
 
         // const background = 'TempBG_2';
@@ -214,6 +226,11 @@ export default class GameScene extends Phaser.Scene {
         });
         this.input.keyboard.on('keydown-M', () => {
             this.coins.activateMagnet(3500, 500);
+        });
+        this.input.keyboard.on('keydown-C', () => {
+            for (let index = 0; index < 100; index++) {
+                this.coins.spawnRandomly(200,300);
+            }
         });
 
         //inventory key
@@ -440,14 +457,10 @@ export default class GameScene extends Phaser.Scene {
 
         //thunder
         if (playerSkills.lightning.level > 1) {
-           
-          
+
             if (!this.thunderCloudsActive) {
-                this.thunderCloudsActive=true
-              
-
+                this.thunderCloudsActive = true
                 createClouds(this)
-
             }
         }
         //exp scene qqqq

@@ -80,8 +80,8 @@ export function handleHailHit(scene, hail, enemy) {
 
 
 export function handleTouchEnemy(scene, player, enemy) {
-    scene.hud.minusLives();
-    flashScreen(scene, 0x990000, 0.18, 200)
+    // scene.hud.minusLives();
+    // flashScreen(scene, 0xff0000, 0.18, 200)
     enemy.deactivateEnemy()
 
     if (scene.hud.lives <= 0) {

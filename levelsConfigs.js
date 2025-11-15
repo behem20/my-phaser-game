@@ -24,7 +24,7 @@ const originalLevels = [
                 radius: 32
             },
             bossType: {
-                hp: 26030,
+                hp: 260030,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 1,//45
@@ -82,12 +82,12 @@ const originalLevels = [
             speed: 250,//250
         },
         wavesConfigs: {
-            delayBetweenWaves:5000,
+            delayBetweenWaves:500000,
             waves: [
                 {
                     groups: [
-                        // { type: 'boss', count: 1, delayBetweenEnemies: 1 },
-                        { type: 'normal', count: 15, delayBetweenEnemies: 10 },
+                        { type: 'boss', count: 4, delayBetweenEnemies: 1 },
+                        // { type: 'normal', count: 1500000, delayBetweenEnemies: 10 },
                         // { type: 'midNormal', count: 5, delayBetweenEnemies: 50 },
                         // { type: 'fast', count: 500000, delayBetweenEnemies: 40 },
                         // { type: 'normal', count: 500000, delayBetweenEnemies: 2 },

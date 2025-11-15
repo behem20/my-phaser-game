@@ -485,7 +485,7 @@ export default class CoinSpawner {
         this.player = player;
         this.group = scene.physics.add.group({
             classType: Phaser.Physics.Arcade.Sprite,
-            maxSize: 200,
+            maxSize: 500,
             runChildUpdate: true
         });
 
@@ -512,6 +512,8 @@ export default class CoinSpawner {
     }
 
     spawnRandomly(minDistance = 1000, maxDistance = 2000) {
+        
+        
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
         const distance = Phaser.Math.Between(minDistance, maxDistance);
         const x = this.player.x + Math.cos(angle) * distance;

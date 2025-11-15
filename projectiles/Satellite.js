@@ -11,14 +11,14 @@ export class Satellites {
         });
 
         this.radius = 300;//200             // расстояние от героя
-        this.speed = 0.045;            // скорость вращения (радианы на тик)
+        this.speed = 0.085;            // скорость вращения (радианы на тик)//0.045
         this.count = 0;               // количество активных спутников
         this.rotationOffset = 0;      // текущий угол смещения
     }
 
     /** Создаём или обновляем количество спутников */
     setCount(newCount) {
-        this.count = newCount;
+        this.count = newCount+15;
 
         // Если не хватает спутников — добавляем
         const current = this.group.countActive(true);
@@ -34,7 +34,7 @@ export class Satellites {
                     alpha: { start: 0.6, end: 0.2 },
                     lifespan: 150,
                     angle: 0,
-                    frequency: 3, // частота появления
+                    frequency: 17, // частота появления
                     tint: [0xffff33, 0x0000ff],
                     follow: sat, // следят за игроком
                     blendMode: 'ADD'

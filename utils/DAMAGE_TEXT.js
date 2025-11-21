@@ -2,7 +2,7 @@ export function createDamageTextPool(scene, poolSize = 100) {
     scene.damageTextPool = [];
     for (let i = 0; i < poolSize; i++) {
         const txt = scene.add.text(-1000, -1000, '', {
-            fontSize: '16px',
+            fontSize: '72px',
             fontFamily: 'Arial',
             color: '#ff0000',
             stroke: '#000000',
@@ -41,7 +41,7 @@ export function showDamageText(enemy, scene, damage = 15) {
 
     txt.setText(`-${damage}`);
     txt.setStyle({
-        fontSize: Math.random() > 0.5 ? '16px' : '20px',
+        fontSize: Math.random() > 0.5 ? '24px' : '32px',
         color: Math.random() > 0.5 ? '#ff0000ff' : '#da0d0dff'
     });
 
@@ -52,7 +52,7 @@ export function showDamageText(enemy, scene, damage = 15) {
 
     txt.vx = Phaser.Math.Between(-10, 10);
     txt.vy = -Phaser.Math.Between(25, 40);
-    txt.life = 500; // миллисекунд
+    txt.life =600; // миллисекунд
     txt.alpha = 1;
     txt.setVisible(true);
 }

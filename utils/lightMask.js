@@ -62,7 +62,7 @@ export default class LightMask {
         const cw = this.scene.cameras.main.width
 
         const radius = ch > cw ? ch * 0.7 /2: cw * 0.7/2;
-        this.scene.LightMaskRadius = radius
+        // this.scene.LightMaskRadius = radius
      
         
         // console.log(radius);

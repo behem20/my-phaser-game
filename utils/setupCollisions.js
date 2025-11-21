@@ -106,5 +106,5 @@ export function setupCollisions(scene) {
         handleItemCollect(scene, player, item);
     }, null, scene);
     // enemy touch enemy
-    // scene.physics.add.collider(enemiesGroup, enemiesGroup);
+    scene.physics.add.collider(enemiesGroup, enemiesGroup);
 }

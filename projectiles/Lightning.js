@@ -14,7 +14,7 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
     const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
 
 
-    const enemies = getClosestEnemiesInRadius(scene, player.gameObject, enemiesGroup.getChildren(), finalCount, scene.LightMaskRadius + 50);
+    const enemies = getClosestEnemiesInRadius(scene, player.gameObject, enemiesGroup.getChildren(), finalCount, scene.LightMaskRadius ? scene.LightMaskRadius + 50:400);
     // const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), finalCount);
 
 

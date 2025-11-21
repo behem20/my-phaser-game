@@ -62,7 +62,7 @@ export default class EnemySpawner {
 
         this.group = scene.physics.add.group({
             classType: EnemyContainer,
-            maxSize: 1500,
+            maxSize: 500,
             runChildUpdate: false
         });
 

@@ -33,6 +33,7 @@ import { MagnetSkill } from "../entities/Magnet.js"
 import MagnetSpawner from "../entities/MagnetSpawner.js"
 import { createClouds } from "../projectiles/Lightning.js"
 import { createDamageTextPool, updateDamageTextPool } from "../utils/DAMAGE_TEXT.js"
+import { ChestArrowManager } from "../utils/chestArrowManager.js"
 
 
 
@@ -238,7 +239,7 @@ export default class GameScene extends Phaser.Scene {
             }
         });
         this.input.keyboard.on('keydown-E', () => {
-          
+
         });
 
         //inventory key
@@ -262,7 +263,7 @@ export default class GameScene extends Phaser.Scene {
         // this.hud.updateAll();
 
 
-        createDamageTextPool(this,2000)//damage text pool
+        createDamageTextPool(this, 2000)//damage text pool
         this.magicShots = this.physics.add.group({
             maxSize: 500,
             runChildUpdate: true
@@ -344,10 +345,12 @@ export default class GameScene extends Phaser.Scene {
         createPlayerSkillsFromRegistry(playerSkills)
 
 
+
         this.registry.set("skills", playerSkills.objectOfAllSkills);
         this.registry.set("activeSkills", []);
 
         this.skillsUI = new SkillsUI(this, this.registry.get('activeSkills'));
+        this.chestArrowManager = new ChestArrowManager(this, this.chests.getGroup(), 'chest');
         // fake magic on lelve start
         this.shootFakeMagicTimer = this.time.addEvent({
             delay: SkillRegistry.magic.getCurrentStats().delay,
@@ -381,7 +384,9 @@ export default class GameScene extends Phaser.Scene {
             this.mouseX = pointer.worldX;
             this.mouseY = pointer.worldY;
         });
-        
+
+        this.tpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
 
 
 
@@ -406,6 +411,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        if (Phaser.Input.Keyboard.JustDown(this.tpKey)) {
+            this.player.sprite.x =this.mouseX
+            this.player.sprite.y =this.mouseY
+        }
         // this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
         this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
         //  all ${this.children.list.length},
@@ -473,6 +482,9 @@ export default class GameScene extends Phaser.Scene {
         //хп игрока бар
         this.hpMark.update();
 
+        //chest arrow
+        this.chestArrowManager.update(time, delta)
+
         // Движение врагов к игроку
         if (time > this.enemiesRefocusTime) {
             this.enemies.update()
@@ -480,9 +492,9 @@ export default class GameScene extends Phaser.Scene {
 
             this.enemiesRefocusTime += 20
         }
-        
+
         //damage text 
-        updateDamageTextPool(this,delta)
+        updateDamageTextPool(this, delta)
 
 
         //satelittes
@@ -580,6 +592,6 @@ export default class GameScene extends Phaser.Scene {
         //debug x,y
         this.hud.updateDebug(this.player.x, this.player.y)
 
-        
+
     }
 }

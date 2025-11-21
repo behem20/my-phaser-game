@@ -5,6 +5,7 @@ import { playerSkills } from "./upgradesManager.js";
 
 
 export function applyDamageWithCooldown(scene, sourceKey, target, damage, cooldown = 500,source) {
+   
     
     const now = scene.time.now;
 
@@ -20,7 +21,7 @@ export function applyDamageWithCooldown(scene, sourceKey, target, damage, cooldo
         target.lastDamageBySource[key] = now;
 
         // урон берём из source (или из playerSkills[source.sourceKey], если тебе так удобнее)
-        damageEnemy(scene, target, playerSkills[sourceKey].damage, getHUD());
+        damageEnemy(scene, target, playerSkills[sourceKey].damage, getHUD(),sourceKey);
         addDamage(sourceKey, playerSkills[sourceKey].damage);
     }
 }

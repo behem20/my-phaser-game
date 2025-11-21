@@ -24,7 +24,7 @@ const originalLevels = [
                 radius: 32
             },
             bossType: {
-                hp: 260030,
+                hp: 2630,
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
                 speed: 1,//45
@@ -91,7 +91,7 @@ const originalLevels = [
                         // { type: 'normal', count: 1500000, delayBetweenEnemies: 1     },
                         // { type: 'midNormal', count: 5, delayBetweenEnemies: 50 },
                         // { type: 'fast', count: 500000, delayBetweenEnemies: 40 },
-                        { type: 'normal', count: 10, delayBetweenEnemies: 100 },
+                        { type: 'normal', count: 100, delayBetweenEnemies: 1 },
 
                     ]
                 },

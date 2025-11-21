@@ -41,8 +41,8 @@ export function handleTornadoHit(scene, tornado, enemy) {
 
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
-    // damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
-    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200, satellite)
+
+    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 1300, satellite)
 }
 
 export function handleMeteorHit(scene, meteor, enemy) {

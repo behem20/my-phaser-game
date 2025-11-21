@@ -30,11 +30,16 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         tornado.play(tornadoAnim)
 
         if (!tornado) return;
-        const MIN_DIST = scene.LightMaskRadius * 0.6
-        const MAX_DIST = scene.LightMaskRadius*0.8
+        if (scene.LightMaskRadius) {
+            tornado.MIN_DIST = scene.LightMaskRadius * 0.6
+            tornado.MAX_DIST = scene.LightMaskRadius * 0.8
+        } else {
+            tornado.MIN_DIST = 300
+            tornado.MAX_DIST = 400
+        }
         // resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
 
-        resetTornado(tornado,player, MIN_DIST,MAX_DIST, scene)
+        resetTornado(tornado, player, tornado.MIN_DIST, tornado.MAX_DIST, scene)
         // scene.lightShootSfx.play();
         tornado.setActive(true).setVisible(true);
         tornado.body.setAllowGravity(false);
@@ -114,7 +119,7 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
     }
 
 }
-function resetTornado(tornado,player, MIN_DIST, MAX_DIST, scene) {
+function resetTornado(tornado, player, MIN_DIST, MAX_DIST, scene) {
     let x, y;
     do {
         x = player.x + Phaser.Math.Between(-MAX_DIST, MAX_DIST);

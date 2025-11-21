@@ -23,13 +23,14 @@ export function setupCollisions(scene) {
     const coinsGroup = scene.coins.getGroup();
     const itemsGroup = scene.items.getGroup();
     const chestGroup = scene.chests.getGroup();
-     const magnetsGroup = scene.magnets.getGroup();
+    const magnetsGroup = scene.magnets.getGroup();
     const healthPacksGroup = scene.healthPack.getGroup()
     // Магия
-    scene.physics.add.overlap(scene.magicShots, enemiesGroup, (magic, enemy) => {
+    scene.magicCollider = scene.physics.add.overlap(scene.magicShots, enemiesGroup, (magic, enemy) => {
         handleMagicHit(scene, magic, enemy);
 
     }, null, scene);
+    // scene.physics.add.overlap(scene.lightShots, player, () => {});
 
     // Огонь
     scene.physics.add.overlap(scene.fireShots, enemiesGroup, (fire, enemy) => {
@@ -74,8 +75,8 @@ export function setupCollisions(scene) {
     );
 
 
-     // Враг касается врага
-   
+    // Враг касается врага
+
 
     // Враг касается игрока
     scene.physics.add.overlap(player, enemiesGroup, (player, enemy) => {
@@ -90,7 +91,7 @@ export function setupCollisions(scene) {
     scene.physics.add.overlap(player, chestGroup, (player, chest) => {
         handleChestCollect(scene, player, chest);
     }, null, scene);
-     // Игрок собирает магнит
+    // Игрок собирает магнит
     scene.physics.add.overlap(player, magnetsGroup, (player, magnet) => {
         handleMagnetCollect(scene, player, magnet);
     }, null, scene);
@@ -105,5 +106,5 @@ export function setupCollisions(scene) {
         handleItemCollect(scene, player, item);
     }, null, scene);
     // enemy touch enemy
-    scene.physics.add.collider(enemiesGroup, enemiesGroup);
+    // scene.physics.add.collider(enemiesGroup, enemiesGroup);
 }

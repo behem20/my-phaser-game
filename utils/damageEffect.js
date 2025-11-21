@@ -1,4 +1,4 @@
-
+// free to delete
 export function randomTintFill(minHex, maxHex) {
     const min = Phaser.Display.Color.HexStringToColor(minHex);
     const max = Phaser.Display.Color.HexStringToColor(maxHex);
@@ -15,7 +15,7 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     // Пример:
     if (!enemy || !enemy.scene || !enemy.active) return;
     // 🔥 Подсветка врага
-    enemy.sprite.setTintFill(randomTintFill('#a70000', '#460303ff'));
+    enemy.setTintFill(randomTintFill('#a70000', '#460303ff'));
     const textX = enemy.x + Phaser.Math.Between(-20, 20)
     const textY = enemy.y + Phaser.Math.Between(-20, 20)
     // 🔥 Отобразить число урона
@@ -48,8 +48,8 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     // 🔥 Доп таймер для очистки
     enemy.scene.time.delayedCall(150, () => {
         if (enemy.active) {
-            enemy.sprite.clearTint();
-            enemy.sprite.setAlpha(1);
+            enemy.clearTint();
+            // enemy.setAlpha(1);
         }
     });
     const rndScale = Phaser.Math.FloatBetween(0.2, 0.25)
@@ -58,28 +58,4 @@ export function playDamageEffect(enemy, scene, damage = 1) {
     const rndSpeed = Phaser.Math.Between(150, 320)
     const colors = ['yellow', 'white', 'red', 'blue', 'green']
 
-    // scene.REDparticles = scene.add.particles(0, 0, 'red-flares', {
-    //     frame: colors[Phaser.Math.Between(0, colors.length - 1)],
-    //     x: enemy.x,
-    //     y: enemy.y,
-    //     speed: { min: rndSpeed, max: rndSpeed * 1.5 },
-    //     // angle: { min: -90 - 10, max: -90 + 10 },
-    //     lifespan: 400,
-    //     gravityY: 0,
-    //     scale: { start: rndScale, end: rndScale * 1.5 },
-    //     alpha: { start: rndAlpha, end: 0 },
-    //     // frequency: 100,
-    //     quantity: 15
-
-    // });
-    // scene.tweens.add({
-    //     targets: scene.REDparticles,
-    //     alpha: { from: 1, to: 0 },
-    //     duration: 400,
-    //     ease: 'Cubic.easeOut',
-    //     onComplete: () => {
-
-    //     }
-    // });
-    // scene.time.delayedCall(400, () => scene.REDparticles.destroy());
 }

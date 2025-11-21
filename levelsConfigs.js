@@ -82,15 +82,16 @@ const originalLevels = [
             speed: 250,//250
         },
         wavesConfigs: {
-            delayBetweenWaves:500000,
+            // delayBetweenWaves:5000,
+                        delayBetweenWaves:5000,
             waves: [
                 {
                     groups: [
-                        { type: 'boss', count: 4, delayBetweenEnemies: 1 },
-                        // { type: 'normal', count: 1500000, delayBetweenEnemies: 10 },
+                        // { type: 'boss', count: 4, delayBetweenEnemies: 1 },
+                        // { type: 'normal', count: 1500000, delayBetweenEnemies: 1     },
                         // { type: 'midNormal', count: 5, delayBetweenEnemies: 50 },
                         // { type: 'fast', count: 500000, delayBetweenEnemies: 40 },
-                        // { type: 'normal', count: 500000, delayBetweenEnemies: 2 },
+                        { type: 'normal', count: 10, delayBetweenEnemies: 100 },
 
                     ]
                 },

@@ -13,33 +13,36 @@ import { playerSkills } from "../../utils/upgradesManager.js";
 export function handleMagicHit(scene, magic, enemy) {
     if (!enemy.active) return;
     magic.trail.stop()
-    scene.time.delayedCall(300, () => {
-        magic.trail.destroy();
-    });
-    magic.destroy();
+    scene.time.delayedCall(150, () => {
+        if (magic.trail) {
+            magic.trail.destroy();
+        }
+    })
+    magic.destroy()
+    // magic.disableBody(true, true);
 
     // damageEnemy(scene, enemy, playerSkills.magic.damage || 35, getHUD())
-    applyDamageWithCooldown(scene, 'magic', enemy, 10, 10,magic)
+    applyDamageWithCooldown(scene, 'magic', enemy, 10, 10, magic)
     // addDamage("magic", playerSkills.magic.damage || 35);
 }
 
 export function handleLightHit(scene, light, enemy) {
     if (!enemy.active) return;
-    applyDamageWithCooldown(scene, 'light', enemy, 10, 300,light)
+    applyDamageWithCooldown(scene, 'light', enemy, 10, 300, light)
     // damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
     // addDamage("light", playerSkills.light.damage);
 }
 export function handleTornadoHit(scene, tornado, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
-    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150,tornado)
+    applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150, tornado)
     // addDamage("tornado", playerSkills.tornado.damage);
 }
 
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
     // damageEnemy(scene, enemy, playerSkills.satellite.damage, getHUD())
-    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200,satellite)
+    applyDamageWithCooldown(scene, 'satellite', enemy, 10, 200, satellite)
 }
 
 export function handleMeteorHit(scene, meteor, enemy) {
@@ -71,7 +74,7 @@ export function handleHailHit(scene, hail, enemy) {
         const distance = Phaser.Math.Distance.Between(hail.x, hail.y, otherEnemy.x, otherEnemy.y);
         if (distance <= 1200) {
 
-            applyDamageWithCooldown(scene, 'hail', enemy, 10, 10,hail)
+            applyDamageWithCooldown(scene, 'hail', enemy, 10, 10, hail)
         }
     });
     hail.destroy();
@@ -80,14 +83,14 @@ export function handleHailHit(scene, hail, enemy) {
 
 
 export function handleTouchEnemy(scene, player, enemy) {
-    // scene.hud.minusLives();
+    scene.hud.minusLives();
     // flashScreen(scene, 0xff0000, 0.18, 200)
     enemy.deactivateEnemy()
 
     if (scene.hud.lives <= 0) {
         scene.scene.pause();
 
-        scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins(),score:scene.hud.score });
+        scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins(), score: scene.hud.score });
 
     }
 }
@@ -112,18 +115,18 @@ export function handleCoinCollect(scene, player, coin) {
     scene.hud.addExp(0.2 * coin.value)
 
 
-    const targetX = scene.player.x+Phaser.Math.Between(-40,40);
-    const targetY = scene.player.y-400;
-// console.log(targetX,targetY);
+    const targetX = scene.player.x + Phaser.Math.Between(-40, 40);
+    const targetY = scene.player.y - 400;
+    // console.log(targetX,targetY);
 
     scene.tweens.add({
         targets: coin,
         // x: targetX ,
         // y: targetY,
-        x:targetX,
-        y:targetY,
+        x: targetX,
+        y: targetY,
         scale: 2.4,
-        depth:5,
+        depth: 5,
         // alpha: 0.5,
         duration: 350,
         ease: 'Cubic.easeIn',
@@ -185,7 +188,7 @@ export function handleChestCollect(scene, player, chest) {
 
 export function handleMagnetCollect(scene, player, magnet) {
     scene.openChestSfx.play() //collect chest sound
-// console.log('magnet collected');
+    // console.log('magnet collected');
 
     magnet.setScale(1.1)
     magnet.disableBody(0, 0)
@@ -193,7 +196,7 @@ export function handleMagnetCollect(scene, player, magnet) {
         magnet.setScale(1);
         magnet.destroy()
         magnet.trail.destroy()
-        
+
     });
     scene.coins.activateMagnet(1500, 500);
 }

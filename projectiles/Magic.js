@@ -5,18 +5,23 @@ import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js
 
 export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targetCount = 1, iconID, level) {
 
-    
+    // console.log(1);
+
     // const enemies = getClosestEnemiesInRadius(scene,player.gameObject, enemiesGroup.getChildren(), targetCount,450);
-const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChildren(), targetCount);
+    const enemies = getClosestEnemies(scene, player.gameObject, enemiesGroup.getChildren(), targetCount);
+
 
 
     if (enemies.length === 0) return;
 
+
+
     if (scene.shootMagicTimer) {//flash icon
         // console.log(iconID);
-        
+
         flashIcon(scene, iconID)
     }
+
 
 
 
@@ -25,14 +30,23 @@ const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChild
 
         scene.time.delayedCall(i * 150, () => {
             enemies.forEach(enemy => {
+
                 scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.95, 1.05));
                 scene.magicShootSfx.play();
 
 
                 const offsetX = Phaser.Math.Between(-15, 15);
                 const offsetY = Phaser.Math.Between(-15, 15);
-                const magic = magicGroup.create(offsetX + player.x, offsetY + player.y, "magic");
+                const magic = magicGroup.get(offsetX + player.x, offsetY + player.y, "magic");
+                if (!magic) return;
 
+                magic.setActive(true);
+                magic.setVisible(true);
+                magic.enableBody(true, offsetX + player.x, offsetY + player.y, true, true);
+                magic.life = 1500
+                magic.body.setCollideWorldBounds(false);
+                magic.body.onWorldBounds = false;
+                magic.body.allowGravity = false;
 
                 if (level <= 4) {
                     magic.trail = scene.add.particles(0, 0, 'flares', {
@@ -81,37 +95,41 @@ const enemies = getClosestEnemies(scene,player.gameObject, enemiesGroup.getChild
                 }
 
 
-                magic.body.allowGravity = false;
 
+                // magic.body.checkCollision.none = false; // важно!
 
                 let angle = Phaser.Math.Angle.Between(player.x, player.y, enemy.x, enemy.y);
                 angle += Phaser.Math.DegToRad(Phaser.Math.Between(-3, 3)); // ±5°
+                // console.log(angle);
 
                 const speed = Phaser.Math.Between(680, 750);//480-520
                 scene.physics.velocityFromRotation(angle, speed, magic.body.velocity);
 
-                // const flash = scene.add.sprite(player.x, player.y-20, 'flares', 'green')
-                //     .setScale(0.2)
-                //     .setAlpha(0.8)
-                //     .setDepth(-2);
-                // scene.tweens.add({
-                //     targets: flash,
-                //     scale: 0.3,
-                //     alpha: 0,
-                //     duration: 100,
-                //     onComplete: () => flash.destroy()
-                // });
 
-                scene.time.delayedCall(2000, () => {
-                    if (magic.active) { // остановить эмиттер
-                        magic.trail.destroy()
-                        magic.destroy()
-                    }
-                });
+
+
+                // scene.time.delayedCall(2000, () => {
+                //     if (magic.active) { // остановить эмиттер
+                //         // magic.trail.destroy()
+                //         magic.destroy()
+                //     }
+                // });
             })
         });
     }
 
+    // for (let i = 0; i < 25; i++) {
+    //     console.log(2);
 
-    player.attackTextureOnce();
+    //     const magic = magicGroup.get(player.x, player.y, "magic");
+    //     magic.life = 1500
+    //     magic.body.allowGravity = false;
+    //     let angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
+    //     const speed = Phaser.Math.Between(680, 750);//480-520
+    //     scene.physics.velocityFromRotation(angle, speed, magic.body.velocity);
+    // }
+
+
+
+
 }

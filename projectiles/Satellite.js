@@ -11,14 +11,14 @@ export class Satellites {
         });
 
         this.radius = 300;//200             // расстояние от героя
-        this.speed = 0.085;            // скорость вращения (радианы на тик)//0.045
+        this.speed = 0.035;            // скорость вращения (радианы на тик)//0.045
         this.count = 0;               // количество активных спутников
         this.rotationOffset = 0;      // текущий угол смещения
     }
 
     /** Создаём или обновляем количество спутников */
     setCount(newCount) {
-        this.count = newCount+15;
+        this.count = newCount;
 
         // Если не хватает спутников — добавляем
         const current = this.group.countActive(true);

@@ -86,7 +86,7 @@ export default class Player {
 
 
         const speed = 
-        this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed  * this.scene.playerInitCfgs.moveSpeedBonus;
+        this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed  * this.scene.playerInitCfgs.moveSpeedBonus+200;
 
         let moveX = 0;
         let moveY = 0;

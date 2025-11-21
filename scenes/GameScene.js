@@ -32,6 +32,7 @@ import UIManager from "../ui/UIManager.js"
 import { MagnetSkill } from "../entities/Magnet.js"
 import MagnetSpawner from "../entities/MagnetSpawner.js"
 import { createClouds } from "../projectiles/Lightning.js"
+import { createDamageTextPool, updateDamageTextPool } from "../utils/DAMAGE_TEXT.js"
 
 
 
@@ -43,6 +44,7 @@ export default class GameScene extends Phaser.Scene {
 
     }
     create() {
+        this.enemiesRefocusTime = 200
         this.events.on('shutdown', () => {
             console.log('shutdown');
 
@@ -204,6 +206,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.input.keyboard.on("keydown-T", () => {
             console.log('objects:', this.children.list.length);
+            console.log('perf: ', performance.memory.usedJSHeapSize / 1000000);
             // console.log("graphics:", this.children.list.filter(obj => obj.type === "Graphics").length);
             // console.log("particles:", this.children.list.filter(obj => obj.type === "ParticleEmitter").length);
             // const particlesTTT = this.children.list.filter(obj => obj.type === "ParticleEmitter");
@@ -225,12 +228,17 @@ export default class GameScene extends Phaser.Scene {
             printStats(this.player.gAura);
         });
         this.input.keyboard.on('keydown-M', () => {
+            console.log(this.physics.world.bodies.entries);
+
             this.coins.activateMagnet(3500, 500);
         });
         this.input.keyboard.on('keydown-C', () => {
             for (let index = 0; index < 100; index++) {
-                this.coins.spawnRandomly(200,300);
+                this.coins.spawnRandomly(200, 300);
             }
+        });
+        this.input.keyboard.on('keydown-E', () => {
+          
         });
 
         //inventory key
@@ -253,7 +261,12 @@ export default class GameScene extends Phaser.Scene {
         setupPause(this)
         // this.hud.updateAll();
 
-        this.magicShots = this.physics.add.group()
+
+        createDamageTextPool(this,2000)//damage text pool
+        this.magicShots = this.physics.add.group({
+            maxSize: 500,
+            runChildUpdate: true
+        });
         this.lightShots = this.physics.add.group()
         this.lightningShots = this.physics.add.group()
         this.fireShots = this.physics.add.group()
@@ -301,7 +314,7 @@ export default class GameScene extends Phaser.Scene {
 
 
         //spawn coins on start close to player
-        for (let i = 0; i < 175; i++) {//175
+        for (let i = 0; i < 1; i++) {//175
 
             this.coins.spawnRandomly(100, 1400, this)
         }
@@ -368,6 +381,9 @@ export default class GameScene extends Phaser.Scene {
             this.mouseX = pointer.worldX;
             this.mouseY = pointer.worldY;
         });
+        
+
+
 
     }
     onShutdown() {
@@ -389,11 +405,21 @@ export default class GameScene extends Phaser.Scene {
         totalParticles = 0
     }
 
-    update() {
+    update(time, delta) {
         // this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
         this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
         //  all ${this.children.list.length},
-        //   active ${this.children.list.filter(obj => obj.active).length}`);
+        //   active ${this.children.list.filter(obj => obj.active).length},
+      //bodies ${this.physics.world.bodies.entries.length},
+      // 'active bodies:', ${this.physics.world.bodies.entries.filter(b => b.gameObject && b.gameObject.active).length}},
+      // 'tweens:', ${this.tweens.tweens.length},
+      // 'draw calls: ${this.game.renderer.drawCalls},
+      // 'texture binds ${this.game.renderer.textureFlushCount},
+      // timers ${this.time._active.length},
+      // "colliders:", ${this.physics.world.colliders._active.length},
+      // "overlaps:", ${this.physics.world.colliders._active
+                .filter(c => c.overlapOnly).length},
+                "active magic:", ${this.magicShots.countActive()}`)
 
         // this.fpsText.setText(`
         //     фпс: ${Math.floor(this.game.loop.actualFps)} 
@@ -446,8 +472,18 @@ export default class GameScene extends Phaser.Scene {
         // this.magnet.update();
         //хп игрока бар
         this.hpMark.update();
+
         // Движение врагов к игроку
-        this.enemies.update()
+        if (time > this.enemiesRefocusTime) {
+            this.enemies.update()
+
+
+            this.enemiesRefocusTime += 20
+        }
+        
+        //damage text 
+        updateDamageTextPool(this,delta)
+
 
         //satelittes
         this.satellites.update();
@@ -482,18 +518,33 @@ export default class GameScene extends Phaser.Scene {
             this.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel++;
 
         }
-        //chest scene rrrr
-        // if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
-        //     this.scene.pause();
-        //     this.scene.launch("InChestScene", {
-        //         scene: this,
-        //         items: playerItems.allItems,
-        //         onSelect: (item) => {
-        //             item.applyItem(this.playerInitCfgs, this)
-        //         }
-        //     });
 
-        // }
+        //magic destroy after 2000ms
+        this.magicShots.children.each(magic => {
+            if (!magic.active) return;
+            magic.life -= delta;
+            if (magic.life <= 0) {
+                magic.disableBody(true, true);
+                if (magic.trail) {
+                    magic.trail.stop()
+                    magic.trail.destroy();
+                    magic.trail = null;
+                }
+            }
+
+        });
+        //chest scene rrrr
+        if (Phaser.Input.Keyboard.JustDown(this.chestKey)) {
+            this.scene.pause();
+            this.scene.launch("InChestScene", {
+                scene: this,
+                items: playerItems.allItems,
+                onSelect: (item) => {
+                    item.applyItem(this.playerInitCfgs, this)
+                }
+            });
+
+        }
 
         //pause 
         // if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
@@ -528,5 +579,7 @@ export default class GameScene extends Phaser.Scene {
         }
         //debug x,y
         this.hud.updateDebug(this.player.x, this.player.y)
+
+        
     }
 }

@@ -5,7 +5,9 @@ export function shootLight(scene, player, lightGroup, count, enemiesGroup, iconI
     const level = spellLevel - 1
     let degList = []
     const n = 12;
-
+    
+    
+    
     if (count == 3) {
         degList = [-n, 0, n]
     } else if (count == 4) {

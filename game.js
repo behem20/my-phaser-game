@@ -20,13 +20,18 @@ export function startGame() {
         type: Phaser.AUTO,
         width: 800,
         height: 800,
-        backgroundColor: "#123",
+        backgroundColor: "rgba(23, 161, 65, 1)",
         physics: {
+
             default: "arcade",
             arcade: {
                 debug: 0
             }
         },
+        // fps: {
+        //     target: 60,  // ← Лимит FPS
+        //     forceSetTimeOut: true // ← Обязательно для стабильного лимита
+        // },
         scale: {
             mode: Phaser.Scale.RESIZE, // подстраиваемся под размер экрана
             autoCenter: Phaser.Scale.CENTER_BOTH,

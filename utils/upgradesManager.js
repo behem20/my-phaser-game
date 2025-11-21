@@ -1206,7 +1206,7 @@ export const playerSkills = {
                 this.fireAura,
                 this.satellite,
                 this.hail,
-                this.magnetRadius,
+                // this.magnetRadius,
                 this.intellect,
                 this.robe,
             ]
@@ -1524,7 +1524,7 @@ export const playerSkills = {
                     damage: getPlayerDamageBeforeSpread(scene, this.damage),
                     cooldown: `${this.finalDelay(scene) / 1000}c`,
                     description: this.description,
-                    count: this.count
+                    count: this.count //fix to this.count
                 }
                 if (!scene.shootLightTimer) {
                     scene.shootLightTimer = scene.time.addEvent({

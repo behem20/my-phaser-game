@@ -24,8 +24,8 @@ export default class HUD {
         // this.livesText = scene.add.text(10, 40, "", style).setScrollFactor(0).setDepth(13);
         this.headBGRect = this.scene.ui.createRectangle(
             { xPercent: 0, yPercent: 0, widthPercent: 1, heightPercent: 0.04 },
-             0x000000, 0.6)
-             .setScrollFactor(0).setOrigin(0, 0).setDepth(11)
+            0x000000, 0.6)
+            .setScrollFactor(0).setOrigin(0, 0).setDepth(11)
         this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(224, 231, 15, 1)" }).setScrollFactor(0).setDepth(13);
         this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
 
@@ -116,10 +116,15 @@ export default class HUD {
 
     }
     addExp(amount = 1) {
-
-
-        this.exp += amount;
-        this.updateExpProgress()
+        // this.exp += amount;
+        if (!this.expThrottled) {
+            this.expThrottled = true;
+            
+            this.scene.time.delayedCall(60, () => {
+                this.updateExpProgress();
+                this.expThrottled = false;
+            });
+        }
 
     }
     clearExp() {
@@ -143,7 +148,6 @@ export default class HUD {
 
 
         const width = this.scene.cameras.main.width * progress;
-        // console.log(ch);
 
         // Основной бар
         this.expProgressBarFill.clear();
@@ -151,20 +155,6 @@ export default class HUD {
         this.expProgressBarBg.fillRect(0, 0, cw, ch * 0.011).setScrollFactor(0)
         this.expProgressBarFill.fillRect(0, 0, width, ch * 0.011).setScrollFactor(0);
 
-        // // Эффект бегущей полосы
-        // const glow = this.scene.add.graphics().setScrollFactor(0).setDepth(100);
-        // glow.fillStyle(0xffffff, 0.8);
-        // glow.fillRect(0, 0, 30, 10); // ширина полоски 20 пикселей
 
-        // glow.x = 0;
-        // glow.y = 0;
-
-        // this.scene.tweens.add({
-        //     targets: glow,
-        //     x: width - 30,
-        //     duration: 300,
-        //     ease: 'Cubic.easeOut',
-        //     onComplete: () => glow.destroy()
-        // });
     }
 }   

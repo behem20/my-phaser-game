@@ -9,9 +9,23 @@ import { playerItems } from "../../utils/itemsManager.js";
 import { togglePause } from "../../utils/pauseManager.js";
 import { playerSkills } from "../../utils/upgradesManager.js";
 
-
+function knockBack(scene, target, source, power = 1) {
+    if (target.isKnocked) { 0 } else {
+        const distanceFromPlayerToTarget = Phaser.Math.Distance.Between(scene.player.sprite.x, scene.player.sprite.y, target.x, target.y)
+        const distanceFromPlayerToSource = Phaser.Math.Distance.Between(scene.player.sprite.x, scene.player.sprite.y, source.x, source.y)
+        if (distanceFromPlayerToTarget < distanceFromPlayerToSource) { return }
+        target.setVelocity((target.x - source.x) * power, (target.y - source.y) * power);
+        target.isKnocked = true
+        scene.time.delayedCall(10, () => {
+            target.isKnocked = false
+        })
+    }
+}
 export function handleMagicHit(scene, magic, enemy) {
     if (!enemy.active) return;
+
+    // knockBack(scene, enemy, magic)
+
     magic.trail.stop()
     scene.time.delayedCall(150, () => {
         if (magic.trail) {
@@ -22,13 +36,14 @@ export function handleMagicHit(scene, magic, enemy) {
     // magic.disableBody(true, true);
 
     // damageEnemy(scene, enemy, playerSkills.magic.damage || 35, getHUD())
-    applyDamageWithCooldown(scene, 'magic', enemy, 10, 10, magic)
+    applyDamageWithCooldown(scene, 'magic', enemy, 10, 1, magic)
     // addDamage("magic", playerSkills.magic.damage || 35);
 }
 
 export function handleLightHit(scene, light, enemy) {
     if (!enemy.active) return;
-    applyDamageWithCooldown(scene, 'light', enemy, 10, 300, light)
+    // knockBack(scene, enemy, light,2)
+    applyDamageWithCooldown(scene, 'light', enemy, 10, 500, light)
     // damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
     // addDamage("light", playerSkills.light.damage);
 }

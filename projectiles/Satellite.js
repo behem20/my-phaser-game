@@ -28,133 +28,18 @@ export class Satellites {
                 const sat = this.group.get(this.player.x, this.player.y, 'satellite').setAlpha(0.1);
 
                 // sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //    frame: 'white',
-                //     speed: 130,
-                //     scale: { start: 0.15, end: 0.5 },
+                //     frame: 'white',
+                //     // speed: 130,
+                //     scale: { start: 0.35, end: 0 },
+                //     // scale: 0.1,
                 //     // alpha: { start: 0.6, end: 0.2 },
-                //     lifespan: 70,
+                //     lifespan: 270,
                 //     // angle: 0,
-                //     frequency: 10, // частота появления
-                //     tint: [0xffffff, 0xff0000],
+                //     frequency: 120, // частота появления
+                //     tint: [0x888888, 0x8888ff],
                 //     follow: sat, // следят за игроком
                 //     blendMode: 'ADD'
                 // });
-                //   sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //    frame: 'blue',
-                //     speed: 1030,
-                //     scale: { start: 0.15, end: 0.5 },
-                //     // alpha: { start: 0.6, end: 0.2 },
-                //     lifespan: 140,
-                //     angle: 0,
-                //     frequency: 17, // частота появления
-                //     tint: [0xffff33, 0x0000ff],
-                //     follow: sat, // следят за игроком
-                //     blendMode: 'ADD'
-                // });
-
-                // if (this.count < 2) {
-                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //         frame: 'red',
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-                //         tint: [0xff2211,],
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-
-                // } else if (this.count < 3) {
-
-                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //         frame: 'red',
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-                //         tint: [0xffff11,],
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-                // } else if (this.count < 4) {
-                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //         frame: 'white',
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-                //         tint: [0xffff11,],
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-
-                // } else if (this.count < 5) {
-
-                //    sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //         frame: 'red',
-
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-
-                //         alpha: { start: 0.8, end: 0 },
-                //         tint: [0xff2211,],
-
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-
-                // } else if (this.count < 6) {
-
-                //      sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //         frame: 'red',
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-                //         tint: [0xffff11,],
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-                // } else if (this.count < 7) {
-
-                //      sat.trail = this.scene.add.particles(0, 0, 'flares', {
-
-                //         frame: 'white',
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-
-                //         tint: [0xffff11,],
-
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-                // } else {
-
-                //     sat.trail = this.scene.add.particles(0, 0, 'flares', {
-
-                //         frame: 'red',
-
-                //         lifespan: 200,
-                //         speed: 300,
-                //         angle: { min: 0, max: 360 },
-                //         scale: { start: 0.7, end: 0 },
-                //         alpha: { start: 0.8, end: 0 },
-
-                //         tint: [0xffff11,],
-
-                //         blendMode: 'SCREEN',
-                //         follow: sat
-                //     });
-                // }
 
 
 
@@ -162,13 +47,13 @@ export class Satellites {
                 sat.setSize(60, 60)
                 sat.setActive(true).setVisible(true);
                 sat.body.setAllowGravity(false);
-                sat.setDepth(6);
+                sat.setDepth(106);
                 sat.uniqueId = Phaser.Utils.String.UUID()
                 sat.body.setCircle(30);
                 sat.setAlpha(1)
                 const colors = [0xff00ff, 0xffff00, 0x0000ff, 0xff0000];
                 //  const colors = [0x00aaff, 0xffaaff, 0x0000ff, 0xffffff];
-                sat.setTint(...colors)
+                // sat.setTint(...colors)
                 // sat.setTint(0xff0000)
             }
         }
@@ -199,7 +84,7 @@ export class Satellites {
             const x = this.scene.cameras.main.midPoint.x + Math.cos(angle) * this.radius;
             const y = this.scene.cameras.main.midPoint.y + Math.sin(angle) * this.radius;
             sat.setPosition(x, y);
-            sat.rotation += 0.1
+            sat.rotation += 0.2
         });
     }
 

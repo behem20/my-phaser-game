@@ -16,11 +16,13 @@ export function startGame() {
         window.game.destroy(true); // true — удаляет canvas
         window.game = null;
     }
+    // console.log(Phaser.VERSION);
     const config = {
         type: Phaser.AUTO,
         width: 800,
         height: 800,
-        backgroundColor: "rgba(23, 161, 65, 1)",
+        backgroundColor: "rgba(0, 0, 0, 1)",
+       
         physics: {
 
             default: "arcade",
@@ -57,9 +59,12 @@ export function startGame() {
                 }
             ]
         }
+
     }
 
     // Создаём новую игру
     window.game = new Phaser.Game(config);
+
+
     window.game.ysdk = window.ysdk;
 }

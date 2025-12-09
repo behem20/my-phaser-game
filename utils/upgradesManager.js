@@ -36,35 +36,35 @@ export function createPlayerSkillsFromRegistry(arr) {
     arr.magic.upgrades = [
         {
             damage: SkillRegistry.magic.damage,
-            delay: SkillRegistry.magic.delay, targetCount: 1, count: 1, description: 'spellsUpgradeDescription.magic.1'
+            delay: SkillRegistry.magic.delay, targetCount: 1, count: 3, description: 'spellsUpgradeDescription.magic.1'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 15,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 5, targetCount: 1, count: 2, description: 'spellsUpgradeDescription.magic.2'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 5, targetCount: 1, count: 4, description: 'spellsUpgradeDescription.magic.2'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 30,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 10, targetCount: 2, count: 2, description: 'spellsUpgradeDescription.magic.3'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 10, targetCount: 2, count: 5, description: 'spellsUpgradeDescription.magic.3'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 45,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 15, targetCount: 3, count: 2, description: 'spellsUpgradeDescription.magic.4'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 15, targetCount: 3, count: 6, description: 'spellsUpgradeDescription.magic.4'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 60,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 20, targetCount: 4, count: 2, description: 'spellsUpgradeDescription.magic.5'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 20, targetCount: 4, count: 7, description: 'spellsUpgradeDescription.magic.5'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 75,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 25, targetCount: 4, count: 3, description: 'spellsUpgradeDescription.magic.6'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 25, targetCount: 4, count: 8, description: 'spellsUpgradeDescription.magic.6'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 90,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 30, targetCount: 5, count: 3, description: 'spellsUpgradeDescription.magic.7'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 30, targetCount: 5, count: 9, description: 'spellsUpgradeDescription.magic.7'
         },
         {
             damage: SkillRegistry.magic.damage + SkillRegistry.magic.damage / 100 * 105,
-            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 35, targetCount: 3, count: 3, description: 'spellsUpgradeDescription.magic.7'
+            delay: SkillRegistry.magic.delay - SkillRegistry.magic.delay / 100 * 35, targetCount: 3, count: 6, description: 'spellsUpgradeDescription.magic.7'
         },
     ];
     arr.fire.upgrades = [
@@ -100,31 +100,31 @@ export function createPlayerSkillsFromRegistry(arr) {
     arr.light.upgrades = [
         {
             damage: SkillRegistry.light.damage,
-            delay: SkillRegistry.light.delay, count: 3, description: 'spellsUpgradeDescription.light.1'
+            delay: SkillRegistry.light.delay, count: 1, description: 'spellsUpgradeDescription.light.1'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 15,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 5, count: 4, description: 'spellsUpgradeDescription.light.2'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 5, count: 2, description: 'spellsUpgradeDescription.light.2'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 30,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 10, count: 5, description: 'spellsUpgradeDescription.light.3'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 10, count: 3, description: 'spellsUpgradeDescription.light.3'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 45,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 15, count: 6, description: 'spellsUpgradeDescription.light.4'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 15, count: 4, description: 'spellsUpgradeDescription.light.4'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 60,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 20, count: 7, description: 'spellsUpgradeDescription.light.5'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 20, count: 4, description: 'spellsUpgradeDescription.light.5'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 75,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 25, count: 8, description: 'spellsUpgradeDescription.light.6'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 25, count: 4, description: 'spellsUpgradeDescription.light.6'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 95,
-            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 30, count: 9, description: 'spellsUpgradeDescription.light.7'
+            delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 30, count: 4, description: 'spellsUpgradeDescription.light.7'
         },
         {
             damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 105,
@@ -233,31 +233,31 @@ export function createPlayerSkillsFromRegistry(arr) {
     arr.hail.upgrades = [
         {
             damage: SkillRegistry.hail.damage,
-            delay: SkillRegistry.hail.delay, delayInterval: 100, count: 10, description: 'spellsUpgradeDescription.hail.1'
+            delay: SkillRegistry.hail.delay, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.1'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 15,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 5, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.2'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 5, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.2'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 30,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 10, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.3'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 10, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.3'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 45,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 15, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.4'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 15, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.4'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 60,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 20, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.5'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 20, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.5'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 75,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 25, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.6'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 25, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.6'
         },
         {
             damage: SkillRegistry.hail.damage + SkillRegistry.hail.damage / 100 * 90,
-            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 30, delayInterval: 100, count: 15, description: 'spellsUpgradeDescription.hail.7'
+            delay: SkillRegistry.hail.delay - SkillRegistry.hail.delay / 100 * 30, delayInterval: 20, count: 25, description: 'spellsUpgradeDescription.hail.7'
         },
     ];
     arr.armageddon.upgrades = [
@@ -490,19 +490,19 @@ export const playerSkills = {
         upgrades: [
             {
                 damage: SkillRegistry.light.damage,
-                delay: SkillRegistry.light.delay, count: 2, description: 'spellsUpgradeDescription.light.1'
+                delay: SkillRegistry.light.delay, count: 1, description: 'spellsUpgradeDescription.light.1'
             },
             {
                 damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 15,
-                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 5, count: 3, description: 'spellsUpgradeDescription.light.2'
+                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 5, count: 2, description: 'spellsUpgradeDescription.light.2'
             },
             {
                 damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 30,
-                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 10, count: 4, description: 'spellsUpgradeDescription.light.3'
+                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 10, count: 3, description: 'spellsUpgradeDescription.light.3'
             },
             {
                 damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 45,
-                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 15, count: 5, description: 'spellsUpgradeDescription.light.4'
+                delay: SkillRegistry.light.delay - SkillRegistry.light.delay / 100 * 15, count: 4, description: 'spellsUpgradeDescription.light.4'
             },
             {
                 damage: SkillRegistry.light.damage + SkillRegistry.light.damage / 100 * 60,
@@ -1204,10 +1204,10 @@ export const playerSkills = {
                 // this.armageddon,
                 // this.tornado,
                 // this.fireAura,
-                this.satellite,
+                // this.satellite,
                 // this.hail,
                 // this.magnetRadius,
-                // this.intellect,
+                this.intellect,
                 // this.robe,
             ]
         } else {
@@ -1215,12 +1215,12 @@ export const playerSkills = {
                 // this.meteor,
                 this.magic,
                 this.fire,
-                // this.light,
+                this.light,
                 // this.lightning,
                 // this.armageddon,
                 // this.tornado,
                 // this.fireAura,
-                this.satellite,
+                // this.satellite,
                 // this.hail,
 
             ]

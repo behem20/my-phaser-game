@@ -7,18 +7,22 @@ import { getHUD } from "../utils/hudManager.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 // Каст града (hail) с интервалом
-export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50, iconID) {
+export function shootHail(scene, player, enemiesGroup, count = 5, interval = 20, iconID) {
     const hailRadius = 135;
     const damage = playerSkills.hail?.damage || 20;
 
     // flashScreen(scene, 0x15ccff, 0.2, count * interval)
 
+ 
 
+
+    console.log(count);
+    
     flashIcon(scene, iconID)
-    for (let i = 0; i < count + 10; i++) {
-        scene.time.delayedCall(i * (interval * 0.5), () => {
+    for (let i = 0; i < count ; i++) {
+        scene.time.delayedCall(i * (interval), () => {
             // flashScreen(scene, 0x555cff, Phaser.Math.FloatBetween(0.01,0.1),  interval)
-            scene.hailShootSfx.play()
+            // scene.hailShootSfx.play()
             // const x = Phaser.Math.Between(player.x - 280 - interval*0.5, player.x + 280+interval*0.5);
             // const y = Phaser.Math.Between(player.y - 280 - interval*0.5, player.y + 280 + interval*0.5);
 
@@ -42,7 +46,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
             } while (Phaser.Math.Distance.Between(player.x, player.y, x, y) < MIN_DIST);
 
             const hailSprite = scene.add.sprite(x, y, "hailStartAnims");
-             hailSprite.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
+            hailSprite.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
             // const explosion = scene.add.circle(x, y, 45, 0xff0000, 1) //0x0066ff
             //     .setDepth(10)
             //     .setBlendMode('ADD');
@@ -53,18 +57,18 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                 // speed: 360,
                 speed: { min: 120, max: 220 },
                 angle: { start: 0, end: 360, steps: 30 },
-                scale: { start: 0.2, end: 0.7 },
+                scale: { start: 0.4, end: 0.7 },
                 alpha: { start: 0.65, end: 0 },
                 frequency: -1, // частота появления
                 quantity: 16,
-                tint: [0xff6633, 0xff3322, 0xdd5522],
-                // tint: [0xff6633, 0xff3322, 0xddee22],
+                // tint: [0xff0000, 0xff3322, 0xdd5522],
+                tint: [0xff6633, 0xff3322, 0xddee22],
                 // tint: [0xff66FF, 0x2200FF],
-                blendMode: 'SCREEN',
-                on: false // эмиттер не будет работать постоянно
-                // blendMode: 'ADD',
-            }).setDepth(-1);
-            hailSprite.trail.explode();
+                // blendMode: 'SCREEN',
+                on: false ,// эмиттер не будет работать постоянно
+                blendMode: 'ADD',
+            }).setDepth(2);
+            hailSprite.trail.explode(32);
             hailSprite.trail.once('complete', () => {
                 hailSprite.trail.destroy();
             });
@@ -72,7 +76,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
             hailSprite.setOrigin(0.5);
             hailSprite.setDepth(3);
             hailSprite.setAlpha(0.8);
-            hailSprite.setScale(Phaser.Math.FloatBetween(1.5, 2.3))
+            hailSprite.setScale(Phaser.Math.FloatBetween(1.1, 2.3))
             // при необходимости
 
             hailSprite.play('hailStartAnim')
@@ -85,7 +89,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                     if (!enemy.active) return;
                     const distance = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
                     if (distance <= hailRadius) {
-                        applyDamageWithCooldown(scene, 'hail', enemy, 10, 10,hailSprite)
+                        applyDamageWithCooldown(scene, 'hail', enemy, 10, 10, hailSprite)
                         // damageEnemy(scene, enemy, damage, getHUD());
                         addDamage("hail", damage);
                     }
@@ -93,7 +97,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 50,
                 hailSprite.once('animationcomplete-hailActiveAnim', () => {
                     hailSprite.trail.destroy()
                     // console.log('destroy');
-                    
+
                     hailSprite.destroy();
                     // explosion.destroy()
                 });

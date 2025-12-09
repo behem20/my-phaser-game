@@ -35,6 +35,8 @@ export default class PreloaderScene extends Phaser.Scene {
         // Загружаем ассеты (пример, укажи свои!)
         this.load.json('lang_ru', 'game/assets/lang/ru.json');
 
+        this.load.image('enemy-particle', 'game/assets/images/enemy-particle.png')
+        this.load.image('bomb', 'game/assets/images/spells/bomb.png')
         //magics pcts
         this.load.image("pictureMagic", "game/assets/images/lvlUpPictures/pictureMagic.png")
         this.load.image("pictureTornado", "game/assets/images/lvlUpPictures/pictureTornado.png")
@@ -78,6 +80,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('magics', './game/assets/images/menu/magics.png')
 
         this.load.image('hero', './game/assets/images/menu/heroMenu.png')
+        this.load.image('shadow', './game/assets/images/enemiesSheets/shadow.png')
 
         this.load.image('damageIcon', './game/assets/images/ui_icons/damage.png')
         this.load.image('cooldownIcon', './game/assets/images/ui_icons/cooldown.png')
@@ -102,6 +105,12 @@ export default class PreloaderScene extends Phaser.Scene {
             'game/assets/images/redFlares.png', // картинка
             'flaresInfo.json' // описание спрайтов
         );
+        // this.load.path = "assets/";
+        this.load.atlas(
+            'AtlasParticulas',
+            'trash/particulas.png',
+            'trash/particulas_atlas.json'
+        );
         this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.mp3');
         this.load.audio('rejectSound', 'game/assets/sounds/reject.mp3')
         this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.mp3');
@@ -113,7 +122,14 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("shadow", "game/assets/images/shadow.png")
 
         this.load.image("magic", "game/assets/images/spells/magic.png")
-        this.load.image("light", "game/assets/images/spells/light.png")
+        this.load.image("light1", "game/assets/images/spells/light/light1.png")
+        this.load.image("light2", "game/assets/images/spells/light/light2.png")
+        this.load.image("light3", "game/assets/images/spells/light/light3.png")
+        this.load.image("light4", "game/assets/images/spells/light/light4.png")
+        this.load.image("light5", "game/assets/images/spells/light/light5.png")
+        this.load.image("light6", "game/assets/images/spells/light/light6.png")
+        this.load.image("light7", "game/assets/images/spells/light/light7.png")
+
         this.load.image("lightning1", "game/assets/images/lightning/lightning1.png")
         this.load.image("lightning2", "game/assets/images/lightning/lightning2.png")
         this.load.image("lightning3", "game/assets/images/lightning/lightning3.png")
@@ -146,7 +162,8 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.audio('lightShootSound', 'game/assets/sounds/lightShootSound.mp3');
         this.load.audio('fireShootSound', 'game/assets/sounds/fireShootSound.mp3');
         this.load.audio('enemyHitSound', 'game/assets/sounds/enemyHitSound.mp3');
-        this.load.audio('enemySplatSound', 'game/assets/sounds/enemySplatSound.mp3');
+        this.load.audio('enemySplatSound', 'game/assets/sounds/sattelite/enemySplatSound.wav');
+
 
         this.load.audio('splashesSound', 'game/assets/sounds/splashesSound.mp3');
 
@@ -311,11 +328,11 @@ export default class PreloaderScene extends Phaser.Scene {
     create() {
 
 
-          if (window.game.ysdk && window.ysdk.features) {
+        if (window.game.ysdk && window.ysdk.features) {
 
-                window.game.ysdk.features.LoadingAPI?.ready();   // Game Ready
-                // window.ysdk.features.GameplayAPI?.start(); // Начало игрового процесса
-            }
+            window.game.ysdk.features.LoadingAPI?.ready();   // Game Ready
+            // window.ysdk.features.GameplayAPI?.start(); // Начало игрового процесса
+        }
         // После загрузки — переход в меню
         this.scene.start('MenuScene');
 

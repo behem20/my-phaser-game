@@ -45,7 +45,8 @@ export default class GameScene extends Phaser.Scene {
 
     }
     create() {
-        this.enemiesRefocusTime = 200
+
+        this.enemiesRefocusTime = 500
         this.events.on('shutdown', () => {
             console.log('shutdown');
 
@@ -83,6 +84,8 @@ export default class GameScene extends Phaser.Scene {
             stroke: '#1af307ff',
             strokeThickness: 1
         }).setScrollFactor(0).setDepth(1000);// FPS
+
+        this.profileText = this.add.text(this.cameras.main.width * 0.45, this.cameras.main.height * 0.05).setScrollFactor(0).setDepth(100)
         this.ParticlesText = this.add.text(330, -160, '', {//330,60
             font: '26px Arial',
             fill: '#00ffff',
@@ -166,13 +169,16 @@ export default class GameScene extends Phaser.Scene {
         this.lightShootSfx = this.sound.add('lightShootSound', { volume: 0.03 });
         this.fireShootSfx = this.sound.add('fireShootSound', { volume: 0.4 });
         this.hailShootSfx = this.sound.add('hailShootSound', { volume: 0.1 });
-        this.enemyHitSfx = this.sound.add('enemyHitSound', { volume: Phaser.Math.FloatBetween(0.01, 0.03) });
+        this.enemyHitSfx = this.sound.add('enemyHitSound', {
+            volume: Phaser.Math.FloatBetween(0.1, 0.2),
+            rate: Phaser.Math.FloatBetween(0.7, 1.1)
+        });
 
-        this.enemySplatSfx = this.sound.add('enemySplatSound', { volume: Phaser.Math.Between(1, 3) });
+        this.enemySplatSfx = this.sound.add('enemySplatSound', { volume: Phaser.Math.Between(1, 2), rate: Phaser.Math.FloatBetween(0.7, 1.1) });
         this.enemySplashesSfx = this.sound.add('splashesSound', { volume: Phaser.Math.Between(1, 3) });
 
         this.lastShootSoundTime = 0
-        this.lightningShootSfx = this.sound.add('lightningShootSound', { volume: Phaser.Math.FloatBetween(0.1, 0.5) });
+        this.lightningShootSfx = this.sound.add('lightningShootSound', { volume: Phaser.Math.FloatBetween(0.1, 0.3) });
         this.thunderLevelUpSfx = this.sound.add('thunderLevelUpSound', { volume: 0.35 })
         this.fireAuraSfx = this.sound.add('fireAuraHitSound', { volume: 0.2 });
         this.onTapSfx = this.sound.add('onTapSound', { volume: 0.1 });
@@ -190,7 +196,7 @@ export default class GameScene extends Phaser.Scene {
         this.lastTornadoSoundTime = 0;
         this.tornadoStartSoundSfx = this.sound.add('tornadoStartSound', { volume: 0.05 });
         this.coinCollectSoundSfx = this.sound.add('coinCollectSound', {
-            volume: Phaser.Math.FloatBetween(0.04, 0.1),
+            volume: Phaser.Math.FloatBetween(0.1, 0.2),
             rate: Phaser.Math.FloatBetween(0.9, 1.1)
         })
         this.HPCollectSoundSfx = this.sound.add('playerCollectHP', {
@@ -230,12 +236,12 @@ export default class GameScene extends Phaser.Scene {
         });
         this.input.keyboard.on('keydown-M', () => {
             console.log(this.physics.world.bodies.entries);
-
+           
             this.coins.activateMagnet(3500, 500);
         });
         this.input.keyboard.on('keydown-C', () => {
             for (let index = 0; index < 100; index++) {
-                this.coins.spawnRandomly(200, 300);
+                this.coins.spawnRandomly(100, 700);
             }
         });
         this.input.keyboard.on('keydown-E', () => {
@@ -286,18 +292,6 @@ export default class GameScene extends Phaser.Scene {
 
         // this.enemies.spawn()
         this.registry.set('enemySpawned', 0)
-        // if (this.enemies) {
-        //     this.enemies.group.children.each(container => {
-        //         if (container.sprite) {
-        //             container.particles.destroy()
-        //         }
-        //         if (container.shadow) {//если перезапустить волну то враги из прошлой не унчитожилсь - пытаюсь стереть их
-        //             container.shadow.destroy()
-        //         }
-        //         container.destroy({ children: true });
-        //     })
-        //     this.enemies.group.clear(true, true)
-        // }
         this.waveManager = new WaveManager(this, level)
 
         this.events.on('spawnEnemy', (type) => {
@@ -305,32 +299,58 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.waveManager.start();
-        // next level
-        // this.input.keyboard.on('keydown-N', () => {
-        //     const lvl = this.registry.get('currentLevel');
-        //     this.registry.set('currentLevel', lvl + 1);
-        //     this.scene.start('GameScene');
-        // });
 
 
 
         //spawn coins on start close to player
-        for (let i = 0; i < 1; i++) {//175
+        for (let i = 0; i < 40; i++) {//175
 
             this.coins.spawnRandomly(100, 1400, this)
         }
+        const particleAngles = [
+            { min: 0, max: 36 },
+            { min: 36, max: 72 },
+            { min: 72, max: 108 },
+            { min: 108, max: 144 },
+            { min: 144, max: 180 },
+            { min: 180, max: 216 },
+            { min: 216, max: 252 },
+            { min: 252, max: 288 },
+            { min: 288, max: 324 },
+            { min: 324, max: 360 },
+        ]
+        this.satelliteParticlesOnHit = this.add.particles(0, 0, 'enemy-particle', {
+            // frame: 'white',
+            speed: { min: 120, max: 260 },
+            scale: { start: Phaser.Math.FloatBetween(3, 4.5), end: 0 },
+            // scale: 1,
+            alpha: { start: 1, end: 0.5 },
+            lifespan: 570,
+            angle: particleAngles[() => { return Phaser.Math.Between(0, 9) }],
+            frequency: -1,
+            quentity: 1,
+            // tint: [0x888888, 0x8888ff],
+            // tint: [0x888888, 0xff0000],
+            // follow: sat, // следят за игроком
+            // blendMode: 'ADD'
+        }).setDepth(1);
+        this.blinkParticles = this.add.particles(0, 0, 'flares', {
+            frame: 'white',
+            speed: { min: 120, max: 260 },
+            scale: { start: 0.5, end: 0 },
+            // scale: 1,
+            alpha: { start: 1, end: 0.5 },
+            lifespan: 570,
+            angle: { min: 0, max: 360 },
+            frequency: -1,
+            quentity: 1,
+            gravityY: -2300,
+            tint: [0x2288ff, 0x8888ff],
+            // tint: [0x888888, 0xff0000],
+            // follow: sat, // следят за игроком
+            // blendMode: 'ADD'
+        }).setDepth(0);
 
-        // this.scene.pause();
-        // //    up choose upgrades
-        // this.scene.launch("UpgradeForExpScene", {
-        //     scene: this,
-        //     upgrades: playerSkills.allSkills,// allSkills// генерируешь 3 апгрейда
-        //     onSelect: (upgrade) => {
-        //         // playLevelUpEffect(this, this.player)
-        //         upgrade.applyUpgrade(this); // логика применения
-        //         this.scene.resume();
-        //     }
-        // });
 
         const music = this.sound.get("bgMusic");//bg music from menu scene off
         music.stop()
@@ -353,14 +373,14 @@ export default class GameScene extends Phaser.Scene {
         this.chestArrowManager = new ChestArrowManager(this, this.chests.getGroup(), 'chest');
         // fake magic on lelve start
         this.shootFakeMagicTimer = this.time.addEvent({
-            delay: SkillRegistry.magic.getCurrentStats().delay,
+            delay: SkillRegistry.magic.getCurrentStats().delay ,
             callback: () => shootMagic(
                 this,
                 this.player,
                 this.enemies.getGroup(),
                 this.magicShots,
-                1,
-                1,
+                3,
+                3,
                 '',
                 1
             ),
@@ -387,9 +407,28 @@ export default class GameScene extends Phaser.Scene {
 
         this.tpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        this.updateTimeText = this.add.text(100, 100, '').setScrollFactor(0).setDepth(100)
+        //profile 
+        this.prof = {};
+
+        this.profile = (tag, fn) => {
+            const t0 = performance.now();
+            fn();
+            const t1 = performance.now();
+            this.prof[tag] = (t1 - t0);
+        };
+        this.updateTimerCamulate = 0
+        console.log(this.game.renderer.drawCount);
 
 
+        //zoom
+        this.currentZoom = 1;
+        this.minZoom = 0.3;
+        this.maxZoom = 3;
 
+        this.keyZoomIn = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        this.keyZoomOut = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+        //zoom
     }
     onShutdown() {
         if (this.waveManager) this.waveManager.reset(); // только свои таймеры
@@ -411,24 +450,46 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        const t0 = performance.now()
+
+
         if (Phaser.Input.Keyboard.JustDown(this.tpKey)) {
-            this.player.sprite.x =this.mouseX
-            this.player.sprite.y =this.mouseY
+            this.blinkParticles.explode(16, this.mouseX, this.mouseY)
+            this.time.delayedCall(150, () => {
+                this.player.sprite.x = this.mouseX
+                this.player.sprite.y = this.mouseY
+            })
+            // this.blinkParticles.explode(16, this.player.sprite.x, this.player.sprite.y)
         }
+        this.fireShots.getChildren().forEach((bomb) => {
+            bomb.rotation += 0.08
+
+        })
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyZoomIn)) {
+            this.currentZoom += 0.1;
+            this.currentZoom = Phaser.Math.Clamp(this.currentZoom, this.minZoom, this.maxZoom);
+            this.cameras.main.setZoom(this.currentZoom);
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyZoomOut)) {
+            this.currentZoom -= 0.1;
+            this.currentZoom = Phaser.Math.Clamp(this.currentZoom, this.minZoom, this.maxZoom);
+            this.cameras.main.setZoom(this.currentZoom);
+        }
+
+
         // this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)} `);
         this.fpsText.setText(`${t('ui.fps')}: ${Math.floor(this.game.loop.actualFps)} ,
         //  all ${this.children.list.length},
         //   active ${this.children.list.filter(obj => obj.active).length},
       //bodies ${this.physics.world.bodies.entries.length},
       // 'active bodies:', ${this.physics.world.bodies.entries.filter(b => b.gameObject && b.gameObject.active).length}},
-      // 'tweens:', ${this.tweens.tweens.length},
-      // 'draw calls: ${this.game.renderer.drawCalls},
-      // 'texture binds ${this.game.renderer.textureFlushCount},
+      // 'tweens:', ${this.tweens.tweens.length},,
       // timers ${this.time._active.length},
-      // "colliders:", ${this.physics.world.colliders._active.length},
-      // "overlaps:", ${this.physics.world.colliders._active
-                .filter(c => c.overlapOnly).length},
-                "active magic:", ${this.magicShots.countActive()}`)
+      // buffer: ${Object.keys(this.textures.list).length}`);//getExtension("WEBGL_lose_context") //getParameter(this.game.renderer.gl.MAX_TEXTURE_SIZE)
+
+        this.profileText.setText(this.prof.lightMask?.toFixed(1))
 
         // this.fpsText.setText(`
         //     фпс: ${Math.floor(this.game.loop.actualFps)} 
@@ -474,8 +535,14 @@ export default class GameScene extends Phaser.Scene {
             this.background.tilePositionY = this.cameras.main.scrollY;
         }
 
+        // //fog
+        // this.lightMask.update(this.player);
+
         //fog
-        this.lightMask.update(this.player);
+        this.profile('lightMask', () => {
+            // this.lightMask.update(this.player);
+        })
+
 
         // //magnet
         // this.magnet.update();
@@ -488,8 +555,6 @@ export default class GameScene extends Phaser.Scene {
         // Движение врагов к игроку
         if (time > this.enemiesRefocusTime) {
             this.enemies.update()
-
-
             this.enemiesRefocusTime += 20
         }
 
@@ -591,6 +656,21 @@ export default class GameScene extends Phaser.Scene {
         }
         //debug x,y
         this.hud.updateDebug(this.player.x, this.player.y)
+
+        // Замер рендера
+
+
+        this.updateTime = performance.now() - t0;
+
+        this.updateTimerCamulate += delta
+        if (this.updateTimerCamulate > 100) {
+            this.updateTimeText.setText(`update: 
+            ${(this.updateTime.toFixed(1))},
+            
+        `)
+            this.updateTimerCamulate = 0
+        }
+
 
 
     }

@@ -34,8 +34,8 @@ export default class CoinSpawner {
     }
 
     spawnRandomly(minDistance = 1000, maxDistance = 2000) {
-        
-        
+
+
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
         const distance = Phaser.Math.Between(minDistance, maxDistance);
         const x = this.player.x + Math.cos(angle) * distance;
@@ -62,6 +62,8 @@ export default class CoinSpawner {
         coin.setCollideWorldBounds(true);
         coin.setBounce(1);
         coin.body.allowGravity = false;
+        
+
 
         coin.isMagnetized = false;
         coin.magnetSpeed = 0;

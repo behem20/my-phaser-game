@@ -85,15 +85,25 @@ const SkillRegistry = {//basic
         key: 'light',
         level: 1,
         icon: 'pictureLight',
+        // upgrades: [
+        //     { damage: 27, delay: 1200, targetCount: 1, count: 1, price: 600 },
+        //     { damage: 31, delay: 1170, targetCount: 1, count: 2, price: 1200 },
+        //     { damage: 36, delay: 1140, targetCount: 2, count: 2, price: 2400 },
+        //     { damage: 41, delay: 1110, targetCount: 2, count: 2, price: 4800 },
+        //     { damage: 47, delay: 1080, targetCount: 3, count: 2, price: 9600 },
+        //     { damage: 54, delay: 1050, targetCount: 3, count: 2, price: 19200 },
+        //     { damage: 62, delay: 1020, targetCount: 3, count: 3, price: 1000000 },
+        //     { damage: 1000, delay: 1020, targetCount: 3, count: 3, price: 1000000 }
+        // ],
         upgrades: [
-            { damage: 27, delay: 1200, targetCount: 1, count: 1, price: 600 },
-            { damage: 31, delay: 1170, targetCount: 1, count: 2, price: 1200 },
-            { damage: 36, delay: 1140, targetCount: 2, count: 2, price: 2400 },
-            { damage: 41, delay: 1110, targetCount: 2, count: 2, price: 4800 },
-            { damage: 47, delay: 1080, targetCount: 3, count: 2, price: 9600 },
-            { damage: 54, delay: 1050, targetCount: 3, count: 2, price: 19200 },
-            { damage: 62, delay: 1020, targetCount: 3, count: 3, price: 1000000 },
-            { damage: 1000, delay: 1020, targetCount: 3, count: 3, price: 1000000 }
+            { damage: 27, delay: 1200*2, targetCount: 1, count: 1, price: 600 },
+            { damage: 31, delay: 1170*2, targetCount: 1, count: 2, price: 1200 },
+            { damage: 36, delay: 1140*2, targetCount: 2, count: 2, price: 2400 },
+            { damage: 41, delay: 1110*2, targetCount: 2, count: 2, price: 4800 },
+            { damage: 47, delay: 1080*2, targetCount: 3, count: 2, price: 9600 },
+            { damage: 54, delay: 1050*2, targetCount: 3, count: 2, price: 19200 },
+            { damage: 62, delay: 1020*2, targetCount: 3, count: 3, price: 1000000 },
+            { damage: 1000, delay: 1020*2, targetCount: 3, count: 3, price: 1000000 }
         ],
         getCurrentStats() {
             return this.upgrades[this.level - 1] || this.upgrades[this.upgrades.length - 1];
@@ -281,7 +291,7 @@ const SkillRegistry = {//basic
         level: 1,
         icon: 'pictureHail',
         upgrades: [
-            { damage: 35, delay: 3000, targetCount: 1, count: 1, price: 600 },
+            { damage: 5, delay: 3000, targetCount: 1, count: 1, price: 600 },
             { damage: 40, delay: 2925, targetCount: 1, count: 2, price: 1200 },
             { damage: 47, delay: 2850, targetCount: 2, count: 2, price: 2400 },
             { damage: 54, delay: 2775, targetCount: 2, count: 2, price: 4800 },

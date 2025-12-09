@@ -6,7 +6,7 @@ export function createDamageTextPool(scene, poolSize = 100) {
             fontFamily: 'Arial',
             color: '#ff0000',
             stroke: '#000000',
-            strokeThickness: 1
+            strokeThickness: 12
         })
             .setOrigin(0.5)
             .setDepth(100)
@@ -39,10 +39,10 @@ export function showDamageText(enemy, scene, damage = 15) {
     const txt = getFreeDamageText(scene);
     if (!txt) return;
 
-    txt.setText(`-${damage}`);
+    txt.setText(`${damage}`);
     txt.setStyle({
         fontSize: Math.random() > 0.5 ? '24px' : '32px',
-        color: Math.random() > 0.5 ? '#ff0000ff' : '#da0d0dff'
+        color: Math.random() > 0.5 ? '#e2b3b3ff' : 'rgba(211, 172, 172, 1)'
     });
 
     txt.setPosition(

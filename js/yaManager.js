@@ -25,7 +25,7 @@ export const YaManager = {
         const SUPPORTED = ['ru'];
         this.gameLang = portalLang && SUPPORTED.includes(portalLang) ? portalLang : 'ru';
         window.gameLang = this.gameLang;
-        console.log('Язык игры:', this.gameLang);
+        // console.log('Язык игры:', this.gameLang);
     },
 
     saveGame: async function (data) {

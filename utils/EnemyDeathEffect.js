@@ -1,4 +1,4 @@
-export function playEnemyDeathEffect(scene, enemy) {
+export function playEnemyDeathEffect(scene, enemy, hitXY) {
 
 
     if (enemy.isSpecial) {
@@ -6,6 +6,7 @@ export function playEnemyDeathEffect(scene, enemy) {
     }
 
     scene.splashes.spawn(enemy.x, enemy.y, enemy.height, enemy.isSpecial);
+    scene.satelliteParticlesOnHit.explode(32, hitXY.x, hitXY.y)
 
     enemy.stop();
     // enemy.deactivateEnemy(); 

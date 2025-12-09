@@ -12,18 +12,21 @@ class EnemyContainer extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.setActive(false);
-        this.setVisible(false); 
-        // this.body.setSize(this.width, this.height);
-        // this.body.setOffset(-this.width / 2, -this.height / 2);
-        // this.body.setCircle(cfg.radius, enemy.width/2 - cfg.radius, enemy.height/2 - cfg.radius);
+        this.setVisible(false);
+
+       this.shadow = this.scene.add.image(x+1500,y,'shadow')
+        this.shadow.setVisible(false) 
+       
         
 
     }
     deactivateEnemy() {
+       
         this.setActive(false);
         this.setVisible(false);
         this.body.enable = false;
-    //  this.body.reset(-5000, -5000);
+
+        this.shadow.setVisible(false)
     }
 
     activate(x, y) {
@@ -34,25 +37,41 @@ class EnemyContainer extends Phaser.Physics.Arcade.Sprite {
         this.clearTint();
         this.setScale(1)
         this.setAlpha(1);
+
+        
     }
 }
 
 export function resetEnemy(scene,enemy, cfg) {
    enemy.setTexture(cfg.texture)
     enemy.play(cfg.animation);
-
-    const scale = 0.80
+enemy.setOrigin(0.5)
+    const scale = 0.8
     const w = enemy.width * scale;
     const h = enemy.height * scale;
-
+    // enemy.setScale(2)
     enemy.body.setSize(w, h);
-    enemy.body.setCircle(cfg.radius * scale,);
+
+    
+    enemy.setScale(2)
+    enemy.body.setCircle(w/2);
     
     enemy.speedType = cfg.speed;
     enemy.maxHP = IncreaseEnemyHPperTime(scene, cfg.hp);
     enemy.hp = IncreaseEnemyHPperTime(scene, cfg.hp);
     enemy.isBoss = cfg.animation == 'enemy_boss_1'
     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
+    enemy.inKnocked = false
+
+
+    //enemy shadow
+    enemy.shadowOffSet = Phaser.Math.FloatBetween(0.6,0.8)
+    enemy.shadow.setScale(enemy.isBoss?enemy.width/30:enemy.width/35)
+    enemy.shadow.setAlpha(Phaser.Math.FloatBetween(0.4,0.6))
+    enemy.shadow.setDepth(enemy.depth-1) 
+    enemy.shadow.setVisible(true)
+    
+    
 }
 
 export default class EnemySpawner {
@@ -80,7 +99,7 @@ export default class EnemySpawner {
     }
     spawn(scene, type = 'normal') {
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-        const distance = Phaser.Math.Between(550, 600);//550 600
+        const distance = Phaser.Math.Between(1000, 1600);//550 600 //1050 1200
         const x = this.player.x + Math.cos(angle) * distance;
         const y = this.player.y + Math.sin(angle) * distance;
 
@@ -96,10 +115,38 @@ export default class EnemySpawner {
 
     update() {
         this.group.getChildren().forEach(enemy => {
-            if (!enemy.active) return;
+            if (!enemy.active || enemy.isKnocked) return;
             const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y);
             const speed = enemy.speedType || 50;
             this.scene.physics.velocityFromRotation(angle, speed, enemy.body.velocity);
+
+
+            enemy.shadow.setPosition(enemy.x,enemy.y+enemy.height * enemy.shadowOffSet)
+            //alpha form distance
+            const dist = Phaser.Math.Distance.Between(enemy.x, enemy.y, this.player.x, this.player.y)
+            
+            const maxDist = this.scene.cameras.main.width>this.scene.cameras.main.height?this.scene.cameras.main.width*0.6:this.scene.cameras.main.height*0.6
+            const minDist = maxDist * 0.9
+            const diap = (maxDist-minDist)
+            // console.log(dist,minDist,maxDist);
+            
+            // let alpha =  (maxDist - minDist) /100
+            if(dist <= minDist){
+                    enemy.setAlpha(1);
+                    enemy.shadow.setAlpha(1)
+                }
+                else if(dist>=maxDist){
+                    enemy.setAlpha(0)
+                    enemy.shadow.setAlpha(0)
+                }
+                    else{
+                        const alpha = (maxDist-dist)/diap 
+                        enemy.setAlpha(alpha)
+                        enemy.shadow.setAlpha(alpha)
+                    }
+            // alpha = Phaser.Math.Clamp(alpha, 0, 1);
+            // enemy.shadow.setAlpha(alpha)
+            
         });
     }
 

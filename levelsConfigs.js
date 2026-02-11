@@ -3,7 +3,7 @@ const originalLevels = [
     {
         enemiesConfigs: {
             normalType: {
-                hp: 125,//75
+                hp: 75,//75
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,//50

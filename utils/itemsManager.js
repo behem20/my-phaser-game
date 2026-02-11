@@ -126,10 +126,10 @@ export const playerItems = {
 
     get allItems() {
         return [
-            this.broom,
-            this.harp,
+            // this.broom,
+            // this.harp,
             this.hourglass,
-            this.lightningRod,
+            // this.lightningRod,
             this.torch,
             this.ring,
             this.bagOfGold,

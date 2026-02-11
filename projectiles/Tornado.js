@@ -10,8 +10,8 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
     for (let i = 0; i < count; i++) {
 
         flashIcon(scene, iconID)
-        let tornadoAnim = 'tornadoAnims_2'
-        
+        let tornadoAnim = 'tornadoAnims'
+
         const tornado = tornadoGroup.get(player.x, player.y, tornadoAnim);
 
         if (!tornado) return;
@@ -22,13 +22,8 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         tornado.play(tornadoAnim)
 
 
-        if (scene.LightMaskRadius) {
-            tornado.MIN_DIST = scene.LightMaskRadius * 0.6
-            tornado.MAX_DIST = scene.LightMaskRadius * 0.8
-        } else {
-            tornado.MIN_DIST = 300
-            tornado.MAX_DIST = 400
-        }
+        tornado.MIN_DIST = scene.cameras.main.width * 0.3
+        tornado.MAX_DIST = scene.cameras.main.width * 0.4
         // resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
 
         resetTornado(tornado, player, tornado.MIN_DIST, tornado.MAX_DIST, scene)
@@ -39,58 +34,58 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         tornado.body.setBounce(1); // пусть отскакивает от границ
         // tornado.body.setCircle(tornado.width );
         tornado.body.setCircle(tornado.width, tornado.width / 2 - tornado.width, tornado.height / 2 - tornado.width);
-        if (level < 3) {
-            tornado.particles = scene.add.particles(0, 0, 'flares', {
-                frame: 'blue',
-                lifespan: 30 * level,
-                speed: 300,
-                angle: { min: 0, max: 360 },
-                scale: { start: 0.1, end: 0.7 },
-                alpha: { start: 0.8, end: 0 },
-                tint: [0x0000ff, 0x119955],
-                // tint: [0x00ff00, 0x993300], // on max level
-                blendMode: 'ADD',
-                follow: tornado
-            });
-        } else if (level < 7) {
-            {
-                tornado.particles = scene.add.particles(0, 0, 'flares', {
-                    frame: 'blue',
-                    lifespan: 30 * level,
-                    speed: 300,
-                    angle: { min: 0, max: 360 },
-                    scale: { start: 0.1, end: 0.7 },
-                    alpha: { start: 0.8, end: 0 },
-                    tint: [0x6600ff, 0xee9955],
-                    // tint: [0x00ff00, 0x993300], // on max level
-                    blendMode: 'ADD',
-                    follow: tornado
-                });
-            }
+        // if (level < 3) {
+        //     tornado.particles = scene.add.particles(0, 0, 'flares', {
+        //         frame: 'blue',
+        //         lifespan: 30 * level,
+        //         speed: 300,
+        //         angle: { min: 0, max: 360 },
+        //         scale: { start: 0.1, end: 0.7 },
+        //         alpha: { start: 0.8, end: 0 },
+        //         tint: [0x0000ff, 0x119955],
+        //         // tint: [0x00ff00, 0x993300], // on max level
+        //         blendMode: 'ADD',
+        //         follow: tornado
+        //     });
+        // } else if (level < 7) {
+        //     {
+        //         tornado.particles = scene.add.particles(0, 0, 'flares', {
+        //             frame: 'blue',
+        //             lifespan: 30 * level,
+        //             speed: 300,
+        //             angle: { min: 0, max: 360 },
+        //             scale: { start: 0.1, end: 0.7 },
+        //             alpha: { start: 0.8, end: 0 },
+        //             tint: [0x6600ff, 0xee9955],
+        //             // tint: [0x00ff00, 0x993300], // on max level
+        //             blendMode: 'ADD',
+        //             follow: tornado
+        //         });
+        //     }
 
-        } else {
-            tornado.particles = scene.add.particles(0, 0, 'flares', {
-                frame: 'blue',
-                lifespan: 20 * level,
-                speed: 350,
-                angle: { min: 0, max: 360 },
-                scale: { start: 0.3, end: 0.8 },
-                alpha: { start: 1, end: 0 },
-                tint: [0xff00ff, 0xff0000],
-                // tint: [0x00ff00, 0x993300], // on max level
-                blendMode: 'ADD',
-                follow: tornado
-            });
-        }
+        // } else {
+        //     tornado.particles = scene.add.particles(0, 0, 'flares', {
+        //         frame: 'blue',
+        //         lifespan: 20 * level,
+        //         speed: 350,
+        //         angle: { min: 0, max: 360 },
+        //         scale: { start: 0.3, end: 0.8 },
+        //         alpha: { start: 1, end: 0 },
+        //         tint: [0xff00ff, 0xff0000],
+        //         // tint: [0x00ff00, 0x993300], // on max level
+        //         blendMode: 'ADD',
+        //         follow: tornado
+        //     });
+        // }
 
 
         scene.physics.velocityFromRotation(
             Phaser.Math.FloatBetween(0, Math.PI * 2), // случайный угол
-            120,                                      // скорость
+            60,//120                                      // скорость
             tornado.body.velocity
         );
         const directionTimer = scene.time.addEvent({
-            delay: 400,
+            delay: 1000,
             loop: true,
             callback: () => {
                 if (!tornado.active) {
@@ -98,13 +93,13 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
                     return;
                 }
                 const newAngle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-                scene.physics.velocityFromRotation(newAngle, 120, tornado.body.velocity);
+                scene.physics.velocityFromRotation(newAngle, 60, tornado.body.velocity);//120
             }
         });
         scene.time.delayedCall(playerSkills.tornado.duration * scene.player.playerInitCfgs.magicsDurationBonus, () => {
             if (tornado.active) {
                 tornado.disableBody(true, true);
-                tornado.particles.destroy()
+                if (tornado.particles) { tornado.particles.destroy() }
             }
             directionTimer.remove();
         });
@@ -129,5 +124,5 @@ function resetTornado(tornado, player, MIN_DIST, MAX_DIST, scene) {
 
     // Задать стартовую скорость
     const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-    scene.physics.velocityFromRotation(angle, 120, tornado.body.velocity);
+    scene.physics.velocityFromRotation(angle, 60, tornado.body.velocity);//120
 }

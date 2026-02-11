@@ -117,13 +117,13 @@ export function loadAllAnimations(scene) {
         {   //tornado
             key: 'tornadoAnims',
             frames: scene.anims.generateFrameNumbers('tornadoAnims', { start: 0, end: 5 }),
-            frameRate: 24,
+            frameRate: 20,
             repeat: -1
         },
         {   //tornado_2
             key: 'tornadoAnims_2',
             frames: scene.anims.generateFrameNumbers('tornadoAnims_2', { start: 0, end: 5 }),
-            frameRate: 24,
+            frameRate: 20,
             repeat: -1
         },
 

@@ -47,8 +47,7 @@ export default class GameScene extends Phaser.Scene {
 
     }
     create() {
-        console.log(this.game.config.resolution);
-        console.log(this.game.renderer.resolution);
+        this.tempTime = 0
         this.anims.resumeAll()
         this.ui = new UIManager(this);
         this.audio = new AudioManager(this);
@@ -70,10 +69,11 @@ export default class GameScene extends Phaser.Scene {
 
 
 
-        this.debugText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.96, fontPercent: 0.03 },).setScrollFactor(0).setDepth(1000);
+        this.enemyUpdateTimeText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.96, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1000);
         this.fpsText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.98, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1000)
-        this.logicTime = this.ui.createText('', { xPercent: 0.15, yPercent: 0.93, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1001)
-        this.physicTime = this.ui.createText('phy', { xPercent: 0.15, yPercent: 0.91, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1002)
+        this.logicTime = this.ui.createText('', { xPercent: 0.15, yPercent: 0.94, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1001)
+        this.renderList = this.ui.createText('phy', { xPercent: 0.35, yPercent: 0.98, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1002)
+        this.diff = this.ui.createText('diff', { xPercent: 0.55, yPercent: 0.95, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1002)
         loadAllAnimations(this)
 
 
@@ -193,6 +193,7 @@ export default class GameScene extends Phaser.Scene {
             })
 
         this.acc = 0
+        this.acc1 = 0
     }
     onShutdown() {
         if (this.waveManager) this.waveManager.reset(); // только свои таймеры
@@ -200,6 +201,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        const start = performance.now()
         this.inputsController.update()
         this.fireShots.getChildren().forEach((bomb) => {
             bomb.rotation += 0.08
@@ -213,13 +215,9 @@ export default class GameScene extends Phaser.Scene {
         //     //  timers ${this.time._active.length},`);
 
 
-        this.debugText.setText(`dCalls: ${this.game.renderer.drawCount}`)
+
         // this.debugText.setText(`all: ${this.children.list.length}`)
-        if (this.acc >= 200) {
-            this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
-            this.acc = 0
-        }
-        this.acc += delta
+
 
         this.player.update()
         this.level.update()
@@ -228,7 +226,21 @@ export default class GameScene extends Phaser.Scene {
         // this.magnet.update();
         this.hpMark.update(); //хп игрока бар
         this.chestArrowManager.update(time, delta)
+
+        const t0 = performance.now()
         this.enemies.update()
+        const t1 = performance.now()
+
+        if (this.acc >= 200) {
+            this.renderList.setText(this.children.length)
+            this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
+            this.enemyUpdateTimeText.setText(`eU: ${(t1 - t0).toFixed(2)}`)
+
+            this.acc = 0
+        }
+
+
+
         updateDamageTextPool(this, delta)//damage text 
         this.satellites.update();
 
@@ -264,6 +276,27 @@ export default class GameScene extends Phaser.Scene {
 
         // this.hud.updateDebug(this.player.x, this.player.y) //debug x,y
 
+        const end = performance.now()
+        if (this.acc1 >= 200) {
+            this.diff.setText(`df: ${((end - start) - (t1 - t0)).toFixed(1)}`)
+            this.logicTime.setText(`lo: ${(end - start).toFixed(2)}`)
+            this.acc1 = 0
+        }
 
+        // if (this.acc1 >= 1000) {
+        //     console.log(`{
+        //         enemyUpdate:${(t1 - t0).toFixed(2)}
+        //         allUpdate:${(end - start).toFixed(2)}   
+        //         diff:${((end - start) - (t1 - t0)).toFixed(2)}
+        //     }`);
+        //     this.acc1 = 0
+
+        // } this.acc1 += delta
+
+
+
+
+        this.acc += delta
+        this.acc1 += delta
     }
 }

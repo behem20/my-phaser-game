@@ -112,7 +112,7 @@ export default class HUD {
     updateExp() {
     }
     addExp(amount = 1) {
-        this.exp += amount;
+        // this.exp += amount;
         if (!this.expThrottled) {
             this.expThrottled = true;
 

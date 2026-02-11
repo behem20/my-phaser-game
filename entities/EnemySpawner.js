@@ -84,7 +84,7 @@ export default class EnemySpawner {
 
         this.group = scene.physics.add.group({
             classType: EnemyContainer,
-            maxSize: 150,
+            maxSize: 450,
             runChildUpdate: false
         });
 
@@ -126,11 +126,11 @@ export default class EnemySpawner {
             enemy.shadow.setPosition(enemy.x, enemy.y + enemy.height * enemy.shadowOffSet)
 
         });
-        this.group.getChildren().forEach(enemy => {
-            if (!enemy.active) return;
+        // this.group.getChildren().forEach(enemy => {
+        //     if (!enemy.active) return;
 
-            enemy.hpBar.update(enemy.hp, enemy.maxHP)
-        })
+        //     enemy.hpBar.update(enemy.hp, enemy.maxHP)
+        // })
     }
 
     getEnemies() {

@@ -10,26 +10,18 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
     for (let i = 0; i < count; i++) {
 
         flashIcon(scene, iconID)
-        let tornadoAnim = ''
-        function getTornadoAnim() {
-            if (Math.random() > 0.5) {
-                tornadoAnim = "tornadoAnims"
-            }
-            else {
-                tornadoAnim = "tornadoAnims_2"
-            }
-        }
-        getTornadoAnim()
-        tornadoAnim = 'tornadoAnims_2'
+        let tornadoAnim = 'tornadoAnims_2'
+        
         const tornado = tornadoGroup.get(player.x, player.y, tornadoAnim);
 
+        if (!tornado) return;
         if (scene.time.now - scene.lastTornadoSoundTime > 1050) {
             scene.lastTornadoSoundTime = scene.time.now;
-            scene.tornadoStartSoundSfx.play()
+            scene.audio.play('tornadoStartSoundSfx')
         }
         tornado.play(tornadoAnim)
 
-        if (!tornado) return;
+
         if (scene.LightMaskRadius) {
             tornado.MIN_DIST = scene.LightMaskRadius * 0.6
             tornado.MAX_DIST = scene.LightMaskRadius * 0.8
@@ -40,7 +32,7 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
         // resetTornado(tornado, player.x + Phaser.Math.Between(-330, 300), player.y + Phaser.Math.Between(-330, 330), scene)
 
         resetTornado(tornado, player, tornado.MIN_DIST, tornado.MAX_DIST, scene)
-        // scene.lightShootSfx.play();
+
         tornado.setActive(true).setVisible(true);
         tornado.body.setAllowGravity(false);
         tornado.body.setCollideWorldBounds(true);
@@ -109,7 +101,7 @@ export function shootTornado(scene, player, tornadoGroup, count, iconID, spellLe
                 scene.physics.velocityFromRotation(newAngle, 120, tornado.body.velocity);
             }
         });
-        scene.time.delayedCall(playerSkills.tornado.duration * scene.playerInitCfgs.magicsDurationBonus, () => {
+        scene.time.delayedCall(playerSkills.tornado.duration * scene.player.playerInitCfgs.magicsDurationBonus, () => {
             if (tornado.active) {
                 tornado.disableBody(true, true);
                 tornado.particles.destroy()

@@ -3,7 +3,7 @@ const originalLevels = [
     {
         enemiesConfigs: {
             normalType: {
-                hp: 75,//75
+                hp: 125,//75
                 texture: 'enemy_normal_1',
                 animation: 'enemy_normal_1',
                 speed: 50,//50
@@ -13,7 +13,7 @@ const originalLevels = [
                 hp: 55,
                 texture: 'enemyFast_1',
                 animation: 'enemy_fast_1',
-                speed: 120,
+                speed: 120,//120
                 radius: 12
             },
             tankType: {
@@ -24,10 +24,10 @@ const originalLevels = [
                 radius: 32
             },
             bossType: {
-                hp: 2630,//2630
+                hp: 260030,//2630
                 texture: 'enemy_boss_1',
                 animation: 'enemy_boss_1',
-                speed: 45,//45
+                speed: 1,//45
                 radius: 120
             },
             midNormalType: {
@@ -74,7 +74,8 @@ const originalLevels = [
             levelUpPointsCount: 1,
             addExpAmountPerKillAmount: 1,
             addGoldAndGemsCoefficient: 0.5,
-        }, playerConfigs: {
+        },
+        playerConfigs: {
             dmg: 1,
             hp: 10,
             maxHP: 10,
@@ -82,16 +83,16 @@ const originalLevels = [
             speed: 250,//250
         },
         wavesConfigs: {
-            delayBetweenWaves:5000,
-                        // delayBetweenWaves:50000000,
+            delayBetweenWaves: 5000,
+            delayBetweenWaves:50000000,
             waves: [
                 {
                     groups: [
-                        // { type: 'boss', count: 1, delayBetweenEnemies: 1 },
-                        // { type: 'normal', count: 1500000, delayBetweenEnemies: 1     },
-                        // { type: 'midNormal', count: 5, delayBetweenEnemies: 50 },
-                        // { type: 'fast', count: 500000, delayBetweenEnemies: 40 },
-                        { type: 'normal', count: 10, delayBetweenEnemies: 10 },
+                        // { type: 'boss', count: 3, delayBetweenEnemies: 10 },
+                        { type: 'normal', count: 150000000, delayBetweenEnemies: 1     },
+                        // { type: 'midTank', count: 5, delayBetweenEnemies: 50 },
+                        // { type: 'fast', count: 50, delayBetweenEnemies: 40 },
+                        // { type: 'normal', count: 10, delayBetweenEnemies: 20 },
 
                     ]
                 },
@@ -2290,7 +2291,7 @@ const originalLevels = [
             enemiesProcentHPIncreasePer10sec: 70,
         },
         levelConfigs: {
-            levelDuration: 300,
+            levelDuration: 5,//300
             backGround: 'background_6',
             expToUpgrade: 10,
             coefficientToUpgradeLevel: 1.8,

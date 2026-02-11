@@ -1,6 +1,6 @@
 export function playLevelUpEffect(scene, player) {
     // 🔊 звук
-    scene.levelUpSfx.play();
+    scene.audio.play('levelUpSfx');
     //text
     // const levelUpText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY -35, 'lvl up', {
     //     fontSize: "10px",

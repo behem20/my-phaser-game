@@ -45,7 +45,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("pictureFire", "game/assets/images/lvlUpPictures/pictureFire.png")
         this.load.image("pictureFireAura", "game/assets/images/lvlUpPictures/pictureFireAura.png")
         this.load.image("pictureSatellite", "game/assets/images/lvlUpPictures/pictureSatellite.png")
-        this.load.image("pictureMeteor", "game/assets/images/lvlUpPictures/pictureMeteor.png")
+      
         this.load.image("pictureHail", "game/assets/images/lvlUpPictures/pictureHail.png")
         this.load.image("pictureArmageddon", "game/assets/images/lvlUpPictures/pictureArmageddon.png")
         this.load.image("pictureMagnet", "game/assets/images/lvlUpPictures/pictureMagnet.png")
@@ -60,7 +60,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("iconFire", "game/assets/images/skillsIcons/iconFire.png")
         this.load.image("iconFireAura", "game/assets/images/skillsIcons/iconFireAura.png")
         this.load.image("iconSatellite", "game/assets/images/skillsIcons/iconSatellite.png")
-        this.load.image("iconMeteor", "game/assets/images/skillsIcons/iconMeteor.png")
+      
         this.load.image("iconHail", "game/assets/images/skillsIcons/iconHail.png")
         this.load.image("iconArmageddon", "game/assets/images/skillsIcons/iconArmageddon.png")
         this.load.image("iconMagnet", "game/assets/images/skillsIcons/iconMagnet.png")
@@ -111,6 +111,7 @@ export default class PreloaderScene extends Phaser.Scene {
             'trash/particulas.png',
             'trash/particulas_atlas.json'
         );
+
         this.load.audio('onTapSound', 'game/assets/sounds/onTapSound.mp3');
         this.load.audio('rejectSound', 'game/assets/sounds/reject.mp3')
         this.load.audio('hoverSound', 'game/assets/sounds/hoverSomethingSound.mp3');
@@ -162,7 +163,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.audio('lightShootSound', 'game/assets/sounds/lightShootSound.mp3');
         this.load.audio('fireShootSound', 'game/assets/sounds/fireShootSound.mp3');
         this.load.audio('enemyHitSound', 'game/assets/sounds/enemyHitSound.mp3');
-        this.load.audio('enemySplatSound', 'game/assets/sounds/sattelite/enemySplatSound.wav');
+        // this.load.audio('enemySplatSound', 'game/assets/sounds/sattelite/enemySplatSound.wav');
 
 
         this.load.audio('splashesSound', 'game/assets/sounds/splashesSound.mp3');
@@ -171,7 +172,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.audio('fireAuraHitSound', 'game/assets/sounds/fireAuraHit_1.mp3');
         this.load.audio('fireShootCollisionSound', 'game/assets/sounds/fireShootCollisionSound.mp3')
         this.load.audio('satelliteStartSound', 'game/assets/sounds/satelliteSound.mp3')
-        this.load.audio('satelliteCollisionSound', 'game/assets/sounds/satelliteCollisionSound.mp3')
+        this.load.audio('satelliteCollisionSound', 'game/assets/sounds/satellite/hitSound_2.wav')
         this.load.audio('tornadoStartSound', 'game/assets/sounds/tornadoStartSound.mp3')
         this.load.audio('hailShootSound', 'game/assets/sounds/hailShootSound.mp3')
         this.load.audio('thunderLevelUpSound', 'game/assets/sounds/thunderLevelUp.mp3') //thunder levelup fix

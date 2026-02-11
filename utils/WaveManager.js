@@ -3,8 +3,8 @@
 export default class WaveManager {
     constructor(scene, levelIndex) {
         this.scene = scene;
-        this.waves = scene.levels[levelIndex].wavesConfigs.waves;
-        this.delayBetweenWaves = scene.levels[levelIndex].wavesConfigs.delayBetweenWaves;
+        this.waves = scene.level.currentLevel.wavesConfigs.waves;
+        this.delayBetweenWaves = scene.level.currentLevel.wavesConfigs.delayBetweenWaves;
 
         this.currentWaveIndex = 0;
         this.enemySpawnTimers = [];  // массив таймеров для групп врагов

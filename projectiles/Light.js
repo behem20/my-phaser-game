@@ -32,9 +32,9 @@ export function shootLight(scene, player, lightGroup, count, enemiesGroup, iconI
         for (let i = 0; i < count; i++) {
             scene.time.delayedCall(i * 250, () => {
 
-
-                scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.95, 1.05));
-                scene.magicShootSfx.play();
+                scene.audio.play('magicShootSfx', {
+                    rate: Phaser.Math.FloatBetween(0.95, 1.05)
+                })
 
                 const light = lightGroup.create(player.x, player.y, `light${level}`);
 
@@ -120,7 +120,7 @@ export function shootLight(scene, player, lightGroup, count, enemiesGroup, iconI
 
 
                 light.rotation = angle
-                
+
                 const spread = 0.1
 
                 angle += Phaser.Math.FloatBetween(-spread, spread)
@@ -136,163 +136,5 @@ export function shootLight(scene, player, lightGroup, count, enemiesGroup, iconI
 
             });
         }
-        // for (let i = 0; i < count; i++) {
-        //     const light = lightGroup.create(player.x, player.y, "light");
-        //     light.uniqueId = Phaser.Utils.String.UUID(); // уникальный id
-        //     if (!light) return;
-        //     light.setSize(70, 70)
-        //     let lightParticles = '';
-        //     if (level < 4) {
-        //         lightParticles = scene.add.particles(0, 0, 'flares', {
-        //             frame: 'white',
-        //             // speed: 30,
-        //             scale: { start: 0.5, end: 0.35 },
-        //             alpha: { start: 0.6, end: 0.6 },
-        //             lifespan: 10 + 10 * level,
-        //             angle: 0,
-        //             frequency: 10, // частота появления
-        //             tint: [0xffffff, 0xffff33],
-        //             follow: light, // следят за игроком
-        //             blendMode: 'ADD'
-        //         }).setDepth(1);
-        //     } else if (level < 6) {
-        //         lightParticles = scene.add.particles(0, 0, 'flares', {
-        //             frame: 'blue',
-        //             // speed: 30,
-        //             scale: { start: 0.45, end: 0.45 },
-        //             alpha: { start: 0.6, end: 0.6 },
-        //             lifespan: 10 * level,
-        //             angle: 0,
-        //             frequency: 10, // частота появления
-        //             tint: [0xffff33, 0x00ffff,0x0000ff],
-        //             follow: light, // следят за игроком
-        //             blendMode: 'ADD'
-        //         }).setDepth(1);
-        //     }else if (level < 7) {
-        //         lightParticles = scene.add.particles(0, 0, 'flares', {
-        //             frame: 'blue',
-        //             // speed: 30,
-        //             scale: { start: 0.5, end: 0.35 },
-        //             alpha: { start: 0.6, end: 0.6 },
-        //             lifespan: 10 * level,
-        //             angle: 0,
-        //             frequency: 10, // частота появления
-        //             tint: [0xffffff, 0x00ffff],
-        //             follow: light, // следят за игроком
-        //             blendMode: 'ADD'
-        //         }).setDepth(1);
-        //     } else {
-        //         lightParticles = scene.add.particles(0, 0, 'flares', {
-        //             frame: 'blue',
-        //             // speed: 30,
-        //             scale: { start: 0.5, end: 0.35 },
-        //             alpha: { start: 0.6, end: 0.6 },
-        //             lifespan: 10 * level,
-        //             angle: 0,
-        //             frequency: 10, // частота появления
-        //             tint: [0xffffff, 0x0000ff],
-        //             follow: light, // следят за игроком
-        //             blendMode: 'ADD'
-        //         }).setDepth(1);
-        //     }
-        //     let angle = Phaser.Math.Angle.Between(player.x, player.y, enemies[0].x, enemies[0].y);
-        //     // angle += Phaser.Math.DegToRad(Phaser.Math.Between(-count * 5, count * 5)); // ±5°
-
-        //     angle += Phaser.Math.DegToRad(degList[i]); // ±5°
-
-        //     scene.lightShootSfx.play();
-        //     light.body.allowGravity = false;
-
-        //     // const angle = Phaser.Math.FloatBetween(0, Math.PI * 2); // случайное направление
-        //     const speed = 1000;
-        //     light.rotation = angle
-        //     scene.physics.velocityFromRotation(angle, speed, light.body.velocity);
-        //     player.attackTextureOnce();
-
-        //     scene.time.delayedCall(1000, () => {
-        //         if (light.active) {
-        //             lightParticles.destroy()
-        //             light.destroy()
-        //         }
-        //     });
-        // }
     }
-
-
-
 }
-// export function shootLight(scene, player, lightGroup, count, enemies, iconID, spellLevel) {
-//     const level = spellLevel - 1
-
-
-//     if (enemies.group.getLength() === 0) {
-//         return
-//     } else {
-//         flashIcon(scene, iconID)
-//         for (let i = 0; i < count; i++) {
-//             const light = lightGroup.create(player.x, player.y, "light");
-
-//             if (!light) return;
-//             let lightParticles = '';
-//             if (level < 4) {
-//                  lightParticles = scene.add.particles(0, 0, 'flares', {
-//                     frame: 'white',
-//                     // speed: 30,
-//                     scale: { start: 0.5, end: 0.35 },
-//                     alpha: { start: 0.6, end: 0.6 },
-//                     lifespan: 10+10*level,
-//                     angle: 0,
-//                     frequency: 3, // частота появления
-//                     tint: [0xffffff, 0xffff33],
-//                     follow: light, // следят за игроком
-//                     blendMode: 'ADD'
-//                 }).setDepth(1);
-//             } else if (level < 7) {
-//                  lightParticles = scene.add.particles(0, 0, 'flares', {
-//                     frame: 'blue',
-//                     // speed: 30,
-//                     scale: { start: 0.5, end: 0.35 },
-//                     alpha: { start: 0.6, end: 0.6 },
-//                     lifespan: 10*level,
-//                     angle: 0,
-//                     frequency: 3, // частота появления
-//                     tint: [0xffffff, 0x00ffff],
-//                     follow: light, // следят за игроком
-//                     blendMode: 'ADD'
-//                 }).setDepth(1);
-//             } else {
-//                  lightParticles = scene.add.particles(0, 0, 'flares', {
-//                     frame: 'blue',
-//                     // speed: 30,
-//                     scale: { start: 0.5, end: 0.35 },
-//                     alpha: { start: 0.6, end: 0.6 },
-//                     lifespan: 10*level,
-//                     angle: 0,
-//                     frequency: 3, // частота появления
-//                     tint: [0xffffff, 0x0000ff],
-//                     follow: light, // следят за игроком
-//                     blendMode: 'ADD'
-//                 }).setDepth(1);
-//             }
-
-//             scene.lightShootSfx.play();
-//             light.body.allowGravity = false;
-
-//             const angle = Phaser.Math.FloatBetween(0, Math.PI * 2); // случайное направление
-//             const speed = 1100;
-
-//             scene.physics.velocityFromRotation(angle, speed, light.body.velocity);
-//             player.attackTextureOnce();
-
-//             scene.time.delayedCall(1000, () => {
-//                 if (light.active) {
-//                     lightParticles.destroy()
-//                     light.destroy()
-//                 }
-//             });
-//         }
-//     }
-
-
-
-// }

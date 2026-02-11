@@ -1,12 +1,12 @@
 import CompleteLevelScene from './scenes/CompleteLevelScene.js'
 import GameOverScene from './scenes/GameOverScene.js'
-import GameScene from './scenes/GameScene.js'
 import InChestScene from './scenes/InChestScene.js'
 import MenuScene from './scenes/MenuScene.js'
 import MusicScene from './scenes/MusicScene.js'
 import MetaUpgradesScene from './scenes/MetaUpgradesScene.js'
 import UpgradeForExpScene from './scenes/UpgradeForExpScene.js'
 import PreloaderScene from './scenes/PreloaderScene.js'
+import GameScene from './scenes/gameScene/GameScene.js'
 
 
 export function startGame() {
@@ -16,28 +16,27 @@ export function startGame() {
         window.game.destroy(true); // true — удаляет canvas
         window.game = null;
     }
-    // console.log(Phaser.VERSION);
     const config = {
         type: Phaser.AUTO,
         width: 800,
         height: 800,
+        resolution: 0.1,
         backgroundColor: "rgba(0, 0, 0, 1)",
-       
         physics: {
-
             default: "arcade",
             arcade: {
                 debug: 0
             }
         },
         // fps: {
-        //     target: 60,  // ← Лимит FPS
-        //     forceSetTimeOut: true // ← Обязательно для стабильного лимита
+        //     target: 60,
+        //     forceSetTimeOut: true
         // },
+        parent: 'game-container',
+        fullscreenTarget: 'game-container',
         scale: {
             mode: Phaser.Scale.RESIZE, // подстраиваемся под размер экрана
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            // resolution: 0.5 ,
         },
         scene: [
             PreloaderScene,
@@ -65,6 +64,8 @@ export function startGame() {
     // Создаём новую игру
     window.game = new Phaser.Game(config);
 
-
-    window.game.ysdk = window.ysdk;
 }
+
+
+startGame();
+

@@ -2,8 +2,6 @@ import SkillRegistry from "../SkillsRegistry.js";
 
 class SaveManager {
     save(scene) {
-       
-
         const data = {
             coins: scene.registry.get('goldCount') || 10,
             diamonds: scene.registry.get('gemCount') || 4,

@@ -1,13 +1,13 @@
 import { t } from "../LanguageManager.js";
 
 export function playLevelStartEffect(scene, player) {
-    // 🔊 звук
-    // scene.levelUpSfx.play();
+
     //text
     const isLastLevel = scene.registry.get('currentLevel') == 6
 
 
-    scene.levelStartSfx.play()
+
+    scene.audio.play('levelStartSfx')
     const levelStartText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY - 150,
         isLastLevel ? t('game.goal20') : t('game.goal'), {
         fontSize: "56px",

@@ -22,7 +22,7 @@ export class ChestArrowManager {
     _createArrowForChest(chest) {
         const arrow = this.scene.add.sprite(0, 0, this.arrowTexture);
         arrow.setOrigin(0.5);
-        arrow.setScale(0.5)
+        arrow.setScale(1)
         arrow.setDepth(1000);
         arrow.setScrollFactor(0); // фиксируем на экране (UI)
         arrow.setVisible(false);

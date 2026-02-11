@@ -1,12 +1,13 @@
 
 import { IncreaseEnemyHPperTime } from "../utils/EnemyIncreaseHP.js";
+import { HPBar } from "./HpBar.js";
 
 class EnemyContainer extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, textureKey, animationKey) {
         super(scene, x, y, textureKey);
-        this.scene =scene
+        this.scene = scene
 
-        if (animationKey) {this.play(animationKey)}
+        if (animationKey) { this.play(animationKey) }
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -14,19 +15,21 @@ class EnemyContainer extends Phaser.Physics.Arcade.Sprite {
         this.setActive(false);
         this.setVisible(false);
 
-       this.shadow = this.scene.add.image(x+1500,y,'shadow')
-        this.shadow.setVisible(false) 
-       
-        
+        this.shadow = this.scene.add.image(x + 1500, y, 'shadow')
+        this.shadow.setVisible(false)
+
+        this.hpBar = new HPBar(this.scene, this)
 
     }
     deactivateEnemy() {
-       
+        // this.hpBar.graphics.clear()
+
+        this.hpBar.graphics.setVisible(false)
         this.setActive(false);
         this.setVisible(false);
         this.body.enable = false;
-
         this.shadow.setVisible(false)
+
     }
 
     activate(x, y) {
@@ -37,25 +40,24 @@ class EnemyContainer extends Phaser.Physics.Arcade.Sprite {
         this.clearTint();
         this.setScale(1)
         this.setAlpha(1);
-
-        
     }
 }
 
-export function resetEnemy(scene,enemy, cfg) {
-   enemy.setTexture(cfg.texture)
+export function resetEnemy(scene, enemy, cfg) {
+
+    // console.log(enemyPercentWidth);
+
+    enemy.setTexture(cfg.texture)
     enemy.play(cfg.animation);
-enemy.setOrigin(0.5)
+    enemy.setOrigin(0.5)
     const scale = 0.8
     const w = enemy.width * scale;
     const h = enemy.height * scale;
-    // enemy.setScale(2)
     enemy.body.setSize(w, h);
 
-    
-    enemy.setScale(2)
-    enemy.body.setCircle(w/2);
-    
+    // enemy.setScale(2)
+    enemy.body.setCircle(w / 2);
+
     enemy.speedType = cfg.speed;
     enemy.maxHP = IncreaseEnemyHPperTime(scene, cfg.hp);
     enemy.hp = IncreaseEnemyHPperTime(scene, cfg.hp);
@@ -63,15 +65,16 @@ enemy.setOrigin(0.5)
     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
     enemy.inKnocked = false
 
-
     //enemy shadow
-    enemy.shadowOffSet = Phaser.Math.FloatBetween(0.6,0.8)
-    enemy.shadow.setScale(enemy.isBoss?enemy.width/30:enemy.width/35)
-    enemy.shadow.setAlpha(Phaser.Math.FloatBetween(0.4,0.6))
-    enemy.shadow.setDepth(enemy.depth-1) 
+    enemy.shadowOffSet = Phaser.Math.FloatBetween(0.25, 0.3)
+    // enemy.shadow.setScale(enemy.isBoss ? enemy.width / 30 : enemy.width / 35)
+
+    enemy.shadow.setScale(enemy.isBoss ? enemy.width / 50 : enemy.width / 45)
+    enemy.shadow.setAlpha(Phaser.Math.FloatBetween(0.4, 0.6))
+    enemy.shadow.setDepth(enemy.depth - 1)
     enemy.shadow.setVisible(true)
-    
-    
+
+
 }
 
 export default class EnemySpawner {
@@ -81,25 +84,26 @@ export default class EnemySpawner {
 
         this.group = scene.physics.add.group({
             classType: EnemyContainer,
-            maxSize: 500,
+            maxSize: 150,
             runChildUpdate: false
         });
 
         this.enemyConfigs = {
 
-            normal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.normalType,
-            fast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.fastType,
-            tank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.tankType,
-            boss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.bossType,
-            midNormal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midNormalType,
-            midFast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midFastType,
-            midTank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midTankType,
-            midBoss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midBossType,
+            normal: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.normalType,
+            fast: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.fastType,
+            tank: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.tankType,
+            boss: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.bossType,
+            midNormal: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midNormalType,
+            midFast: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midFastType,
+            midTank: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midTankType,
+            midBoss: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midBossType,
         };
     }
     spawn(scene, type = 'normal') {
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-        const distance = Phaser.Math.Between(1000, 1600);//550 600 //1050 1200
+        // const distance = Phaser.Math.Between(1000, 1500);//550 600 //1050 1200
+        const distance = Phaser.Math.Between(400, 500);
         const x = this.player.x + Math.cos(angle) * distance;
         const y = this.player.y + Math.sin(angle) * distance;
 
@@ -109,8 +113,8 @@ export default class EnemySpawner {
         const enemy = this.group.get()
         if (!enemy) return;
 
-        enemy.activate(x,y)
-        resetEnemy(scene,enemy,cfg);
+        enemy.activate(x, y)
+        resetEnemy(scene, enemy, cfg);
     }
 
     update() {
@@ -119,35 +123,14 @@ export default class EnemySpawner {
             const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y);
             const speed = enemy.speedType || 50;
             this.scene.physics.velocityFromRotation(angle, speed, enemy.body.velocity);
+            enemy.shadow.setPosition(enemy.x, enemy.y + enemy.height * enemy.shadowOffSet)
 
-
-            enemy.shadow.setPosition(enemy.x,enemy.y+enemy.height * enemy.shadowOffSet)
-            //alpha form distance
-            const dist = Phaser.Math.Distance.Between(enemy.x, enemy.y, this.player.x, this.player.y)
-            
-            const maxDist = this.scene.cameras.main.width>this.scene.cameras.main.height?this.scene.cameras.main.width*0.6:this.scene.cameras.main.height*0.6
-            const minDist = maxDist * 0.9
-            const diap = (maxDist-minDist)
-            // console.log(dist,minDist,maxDist);
-            
-            // let alpha =  (maxDist - minDist) /100
-            if(dist <= minDist){
-                    enemy.setAlpha(1);
-                    enemy.shadow.setAlpha(1)
-                }
-                else if(dist>=maxDist){
-                    enemy.setAlpha(0)
-                    enemy.shadow.setAlpha(0)
-                }
-                    else{
-                        const alpha = (maxDist-dist)/diap 
-                        enemy.setAlpha(alpha)
-                        enemy.shadow.setAlpha(alpha)
-                    }
-            // alpha = Phaser.Math.Clamp(alpha, 0, 1);
-            // enemy.shadow.setAlpha(alpha)
-            
         });
+        this.group.getChildren().forEach(enemy => {
+            if (!enemy.active) return;
+
+            enemy.hpBar.update(enemy.hp, enemy.maxHP)
+        })
     }
 
     getEnemies() {
@@ -162,164 +145,4 @@ export default class EnemySpawner {
         return this.scene.physics.closest(this.player.gameObject, this.getEnemies());
     }
 }
-
-// class EnemyContainer extends Phaser.GameObjects.Container {
-//     constructor(scene, x, y, textureKey, animationKey) {
-//         super(scene, x, y);
-
-//         // Сам враг
-//         this.sprite = scene.physics.add.sprite(0, 0, textureKey);
-
-//         if (animationKey) {
-//             this.sprite.play(animationKey);
-//         }
-
-//         // Добавляем в контейнер
-
-//         this.add(this.sprite);
-
-//         // Включаем физику для всего контейнера
-//         scene.add.existing(this);
-//         scene.physics.add.existing(this);
-
-//         this.body.setSize(this.sprite.width, this.sprite.height);
-//         this.body.setOffset(-this.sprite.width / 2, -this.sprite.height / 2);
-//         // this.body.setCircle(cfg.radius, enemy.width/2 - cfg.radius, enemy.height/2 - cfg.radius);
-//         this.body.setCollideWorldBounds(true);
-
-//     }
-//     deactivateEnemy() {
-//         this.setActive(false);
-//         this.setVisible(false);
-//         this.body.enable = false;
-
-//         if (this.sprite) this.sprite.setVisible(false);
-//         // if (this.shadow) this.shadow.setVisible(false); // скрываем тень
-//         if (this.shadow) this.shadow.destroy(); // скрываем тень
-//     }
-
-//     activate(x, y, textureKey, animationKey) {
-//         this.body.enable = true;
-//         this.setPosition(x, y);
-//         this.setActive(true);
-//         this.setVisible(true);
-
-//         if (this.sprite) {
-//             this.sprite.setTexture(textureKey);
-//             if (animationKey) this.sprite.play(animationKey);
-//             this.sprite.setVisible(true);
-//             this.sprite.clearTint();
-//             this.sprite.setAlpha(1);
-//         }
-
-//         if (this.shadow) {
-//             this.shadow.setTexture('shadow');
-//             this.shadow.setVisible(true);        // включаем тень
-//             this.shadow.setPosition(x, y + 10); // корректируем позицию
-//             this.shadow.setAlpha(0.3);
-//             this.shadow.setScale(this.sprite.width / this.shadow.width * 0.8);
-//             this.shadow.setDepth(this.sprite.depth - 1);
-
-//         }
-//     }
-// }
-
-// export function resetEnemy(enemy, x, y, scene, textureKey = 'enemy', animationKey = 'enemy_normal_1', textureRadius = 20) {
-//     enemy.hpBar = null;
-//     enemy.activate(x, y, textureKey, animationKey)
-
-//     const scale = 0.80
-//     const w = enemy.sprite.width * scale;
-//     const h = enemy.sprite.height * scale;
-
-//     enemy.body.setSize(w, h);
-//     enemy.body.setOffset(-w / 2, - h / 2);
-//     enemy.body.setCircle(textureRadius * scale,);
-//     enemy.setAlpha(1)
-
-//     enemy.isBoss = animationKey == 'enemy_boss_1'
-
-//     enemy.isSpecial = false;
-//     enemy.isSpecial = Math.random() > 0.9 ? true : false; //is special ??
-// }
-
-// export default class EnemySpawner {
-//     constructor(scene, player) {
-//         this.scene = scene;
-//         this.player = player;
-
-//         this.group = scene.physics.add.group({
-//             classType: EnemyContainer,
-//             maxSize: 500,
-//             runChildUpdate: false
-//         });
-
-//         this.enemyConfigs = {
-
-//             normal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.normalType,
-//             fast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.fastType,
-//             tank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.tankType,
-//             boss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.bossType,
-//             midNormal: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midNormalType,
-//             midFast: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midFastType,
-//             midTank: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midTankType,
-//             midBoss: scene.levels[scene.registry.get('currentLevel')].enemiesConfigs.midBossType,
-//         };
-//     }
-
-//     spawn(scene, type = 'normal') {
-
-//         // this.scene.tweens.killTweensOf(enemy);
-
-//         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
-//         const distance = Phaser.Math.Between(550, 600);//550 600
-//         const x = this.player.x + Math.cos(angle) * distance;
-//         const y = this.player.y + Math.sin(angle) * distance;
-
-//         // берем конфиг врага
-//         const cfg = this.enemyConfigs[type] || this.enemyConfigs.normal;
-
-//         const enemy = this.group.get()
-
-//         if (!enemy) return;
-//         // enemy.shadow = scene.add.image(x, y + 10, 'shadow');
-//         // передаем текстуру прямо сюда
-
-//         resetEnemy(enemy, x, y, this.scene, cfg.texture, cfg.animation, cfg.radius);
-
-//         // задаем параметры
-//         enemy.speedType = cfg.speed;
-//         enemy.hp = IncreaseEnemyHPperTime(scene, cfg.hp);
-//         enemy.maxHP = IncreaseEnemyHPperTime(scene, cfg.hp);
-
-//     }
-
-//     update() {
-//         this.group.getChildren().forEach(enemy => {
-            
-//             if (!enemy.active) return;
-//             const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y);
-//             const speed = enemy.speedType || 50;
-//             this.scene.physics.velocityFromRotation(angle, speed, enemy.body.velocity);
-//             if (enemy.shadow) {
-//                 enemy.shadow.setPosition(enemy.x, enemy.y + enemy.sprite.width * 0.35);
-//             }
-//         });
-
-//         // движение врагов
-
-//     }
-
-//     getEnemies() {
-//         return this.group.getChildren();
-//     }
-
-//     getGroup() {
-//         return this.group;
-//     }
-
-//     getClosest() {
-//         return this.scene.physics.closest(this.player.gameObject, this.getEnemies());
-//     }
-// }
 

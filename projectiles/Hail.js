@@ -13,32 +13,17 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 20,
 
     // flashScreen(scene, 0x15ccff, 0.2, count * interval)
 
- 
 
-
-    console.log(count);
     
     flashIcon(scene, iconID)
     for (let i = 0; i < count ; i++) {
         scene.time.delayedCall(i * (interval), () => {
-            // flashScreen(scene, 0x555cff, Phaser.Math.FloatBetween(0.01,0.1),  interval)
-            // scene.hailShootSfx.play()
-            // const x = Phaser.Math.Between(player.x - 280 - interval*0.5, player.x + 280+interval*0.5);
-            // const y = Phaser.Math.Between(player.y - 280 - interval*0.5, player.y + 280 + interval*0.5);
-
-            // const MIN_DIST = 200 * 0.6 + i*20
-            // const MAX_DIST = 200 * 0.8 + i * 20
-            // const MIN_DIST = (scene.LightMaskRadius * 0.7 - i * 40) / 2
-            // const MAX_DIST = (scene.LightMaskRadius - i * 40) / 2
+           
             const MIN_DIST = 20
             const MAX_DIST = 150
-            // console.log(MIN_DIST, MAX_DIST);
 
             let x, y;
-            // do {
-            //     x = player.x + Phaser.Math.Between(-MAX_DIST, MAX_DIST);
-            //     y = player.y + Phaser.Math.Between(-MAX_DIST, MAX_DIST);
-            // } while (Phaser.Math.Distance.Between(player.x, player.y, x, y) < MIN_DIST);
+       
 
             do {
                 x = scene.mouseX + Phaser.Math.Between(-MAX_DIST, MAX_DIST);
@@ -80,7 +65,7 @@ export function shootHail(scene, player, enemiesGroup, count = 5, interval = 20,
             // при необходимости
 
             hailSprite.play('hailStartAnim')
-            // scene.enemyHitSfx.play()
+            
 
             hailSprite.once('animationcomplete-hailStartAnim', () => {
                 hailSprite.play('hailActiveAnim');

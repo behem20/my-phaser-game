@@ -5,6 +5,7 @@ import { getClosestEnemies } from "../utils/getClosestEnemies.js";
 import { getClosestEnemiesInRadius } from "../utils/getClosestEnemiesInRadius.js";
 
 export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targetCount = 1, iconID, level) {
+
     let degList = []
     const n = 6;
     if (count == 3) {
@@ -37,11 +38,7 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targe
     for (let i = 0; i < count; i++) {
 
         const enemy = enemies[0]
-
-        scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.95, 1.05));
-        scene.magicShootSfx.play();
-
-
+        scene.audio.play('fireAuraSfx', { rate: Phaser.Math.FloatBetween(0.95, 1.05) })
 
         const magic = magicGroup.get(player.x, + player.y, "magic");
         if (!magic) return;
@@ -103,24 +100,24 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targe
 
 
         // magic.body.checkCollision.none = false; // важно!
-        magic.trail = scene.add.particles(0, 0, 'flares', {
-            frame: 'green',
-            lifespan: 25,
-            speed: { min: 1000, max: 1500 },
-            angle: { min: 0, max: 360 },
-            scale: { start: 0.35, end: 0.1 },
-            alpha: { start: 1, end: 0 },
-            frequency: 10,
-            rotate: 150,
-            tint: [0x0000ff, 0xff00ff],
-            blendMode: 'ADD',
-            follow: magic
-        });
+        // magic.trail = scene.add.particles(0, 0, 'flares', {
+        //     frame: 'green',
+        //     lifespan: 25,
+        //     speed: { min: 1000, max: 1500 },
+        //     angle: { min: 0, max: 360 },
+        //     scale: { start: 0.35, end: 0.1 },
+        //     alpha: { start: 1, end: 0 },
+        //     frequency: 10,
+        //     // rotate: 150,
+        //     tint: [0x0000ff, 0xff00ff],
+        //     // blendMode: 'ADD',
+        //     follow: magic
+        // });
 
         let angle = Phaser.Math.Angle.Between(player.x, player.y, enemy.x, enemy.y);
         angle += Phaser.Math.DegToRad(degList[i]); // ±5°
 
-        scene.physics.velocityFromRotation(angle, 1500, magic.body.velocity);
+        scene.physics.velocityFromRotation(angle, 750, magic.body.velocity);//1500
         magic.rotation = angle
 
 

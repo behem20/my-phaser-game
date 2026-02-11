@@ -25,7 +25,7 @@ export const playerItems = {
         isActive: false,
         applyItem(player, scene) {
             this.isActive = true
-            player.cooldownReductionBonus += 0.15//0.15//fix
+            player.cooldownReductionBonus += 0.75//0.15//fix
             updateCooldownTimers(scene, playerSkills.allSkillsForItems)
 
         }
@@ -103,8 +103,8 @@ export const playerItems = {
         applyItem(player, scene) {
             // this.isActive = true
 
-            scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmount +=
-                scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmountBonus //fix to procent *
+            scene.level.currentLevel.levelConfigs.dropCoinsAmount +=
+            scene.level.currentLevel.levelConfigs.dropCoinsAmountBonus //fix to procent *
 
 
 
@@ -118,7 +118,7 @@ export const playerItems = {
         isActive: false,
         applyItem(player, scene) {
             // this.isActive = true
-            scene.levels[scene.registry.get('currentLevel')].levelConfigs.addExpAmountPerKillAmount += 0.1
+            scene.level.currentLevel.levelConfigs.addExpAmountPerKillAmount += 0.1
 
 
         }

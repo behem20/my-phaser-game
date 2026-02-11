@@ -1,4 +1,5 @@
 
+import originalPlayerInitCfgs from "../PlayerConfigs.js";
 import { playerSkills } from "../utils/upgradesManager.js";
 
 export default class Player {
@@ -6,7 +7,10 @@ export default class Player {
         this.scene = scene;
         this.gAura = 0
         // Создаем физический спрайт
-        this.sprite = scene.physics.add.sprite(x, y, 'player_idle');
+        this.sprite = scene.ui.createPhysicSprite('player_idle', { xPercent: 0, yPercent: 0, scalePercent: 0.08 })
+        // this.sprite = scene.physics.add.sprite();
+        
+
         this.shadow = scene.add.sprite(this.sprite.x, this.sprite.y + 10, 'shadow').setScale(0.3).setAlpha(0.3);
         this.shadow.setDepth(-1);
         this.sprite.setCollideWorldBounds(true);
@@ -30,18 +34,6 @@ export default class Player {
 
         }).setDepth(-1);
 
-
-        // this.fireAuraCircle = this.scene.add.graphics();
-        // this.scene.tweens.add({
-        //     targets: this.fireAuraCircle,
-        //     alpha: { from: 0.3, to: 0.7 },
-        //     duration: 800, // скорость появления/затухания
-        //     yoyo: true,    // обратно
-        //     repeat: -1     // бесконечно
-        // });
-
-
-
         this.stepParticles = scene.add.particles(0, 0, 'flares', {
             frame: 'yellow',
             speed: 10,
@@ -63,30 +55,52 @@ export default class Player {
 
         // Клавиши
         this.cursors = scene.input.keyboard.createCursorKeys();
+
         this.wasd = scene.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D
         });
+
+        // this.joystick = scene.rexVirtualJoystick.add(scene, {
+        //     x: scene.cameras.main.width * 0.5,
+        //     y: scene.cameras.main.height * 0.85,
+        //     radius: scene.cameras.main.width * 0.3,
+        //     base: scene.add.circle(0, 0, scene.cameras.main.width * 0.2, 0x888888).setAlpha(0.5),
+        //     thumb: scene.add.circle(0, 0, scene.cameras.main.width * 0.1, 0x333333).setAlpha(0.5),
+        // });//joysick
+        // this.cursorKeys = this.joystick.createCursorKeys();
+
+        let controller = scene.rexVirtualJoystick.addVectorToCursorKeys({
+            dir: '8dir',
+            forceMin: 16
+        });
+        this.cursorKeys = controller.createCursorKeys();
+        this.scene.input
+            .on('pointerup', function () {
+                controller.clearVector();
+            })
+            .on('pointermove', function (pointer) {
+                if (!pointer.isDown) {
+                    controller.clearVector();
+                    return;
+                }
+                controller.setVector(pointer.downX, pointer.downY, pointer.x, pointer.y);
+            });
+
+
         // Текущее направление для оптимизации (чтобы не перезапускать анимацию каждый тик)
         this.currentAnim = null;
 
-        this.joystick = scene.rexVirtualJoystick.add(scene, {
-            x: this.scene.cameras.main.width*20,// за экраном '/2' норм
-            y: this.scene.cameras.main.height*20+this.scene.cameras.main.height/2*0.7,
-            radius: 120,
-            base: scene.add.circle(0, 0, 80, 0x888888).setAlpha(0.5),
-            thumb: scene.add.circle(0, 0, 40, 0xcccccc).setAlpha(0.5),
-        });
-        this.cursorKeys = this.joystick.createCursorKeys();
+
+        this.playerInitCfgs = JSON.parse(JSON.stringify(originalPlayerInitCfgs));
     }
 
     update() {
 
-
-        const speed = 
-        this.scene.levels[this.scene.registry.get('currentLevel')].playerConfigs.speed  * this.scene.playerInitCfgs.moveSpeedBonus;
+        const speed =
+            this.scene.level.currentLevel.playerConfigs.speed * this.playerInitCfgs.moveSpeedBonus * 1;//!
 
         let moveX = 0;
         let moveY = 0;
@@ -114,18 +128,18 @@ export default class Player {
         // 🎵 Логика звука ходьбы
         if (moveX !== 0 || moveY !== 0) {
             // игрок движется
-            if (!this.scene.playerMoveSfx.isPlaying) {
-                this.scene.playerMoveSfx.play({ loop: true, volume: Phaser.Math.FloatBetween(0.07, 0.1) });
+            if (!this.scene.audio.isPlaying('playerMoveSfx')) {
+                this.scene.audio.play('playerMoveSfx', { loop: true, volume: Phaser.Math.FloatBetween(0.07, 0.1) });
             }
             this.stepParticles.start()
 
         } else {
             // игрок стоит
-            if (this.scene.playerMoveSfx.isPlaying) {
-                this.scene.playerMoveSfx.stop();
+            if (this.scene.audio.isPlaying('playerMoveSfx')) {
+                this.scene.audio.stop('playerMoveSfx');
             }
             this.gAura++;
-            this.stepParticles.stop()
+            this.scene.audio.stop('stepParticles')
 
         }
 

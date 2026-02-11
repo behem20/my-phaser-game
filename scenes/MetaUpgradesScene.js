@@ -2,11 +2,10 @@ import { t } from "../LanguageManager.js";
 import SkillRegistry from "../SkillsRegistry.js";
 import Tooltip from "../ui/Tooltip.js";
 import UIManager from "../ui/UIManager.js";
-import { flashIcon } from "../utils/flashIcon.js";
+
 import { flashScreen } from "../utils/FlashScreen.js";
 import saveManager from "../utils/SaveManager.js";
-import { openSkillWindow } from "../utils/SpellWindows.js";
-import { playerSkills } from "../utils/upgradesManager.js";
+
 
 export default class MetaUpgradesScene extends Phaser.Scene {
     constructor(scene) {
@@ -22,7 +21,6 @@ export default class MetaUpgradesScene extends Phaser.Scene {
         this.scale.on('resize', this.ui.resize, this.ui);
 
 
-        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.start();
         const scene = this;
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
@@ -417,8 +415,6 @@ export default class MetaUpgradesScene extends Phaser.Scene {
             }).setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
-
-                if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.stop();
                 this.scene.start('MenuScene');
                 this.MenuScene.onHoverSfx.play()
             })

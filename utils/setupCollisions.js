@@ -6,7 +6,6 @@ import {
     handleItemCollect,
     handleTornadoHit,
     handleSatelliteHit,
-    handleMeteorHit,
     handleHealthPackCollect,
     handleHailHit,
     handleChestCollect,
@@ -30,6 +29,7 @@ export function setupCollisions(scene) {
         handleMagicHit(scene, magic, enemy);
 
     }, null, scene);
+
     // scene.physics.add.overlap(scene.lightShots, player, () => {});
 
     // Огонь
@@ -55,15 +55,7 @@ export function setupCollisions(scene) {
             handleSatelliteHit(scene, sat, enemy);
         }
     );
-    // meteor
-    scene.physics.add.collider(
-        scene.meteorShots,
-        enemiesGroup,
-        (meteor, enemy) => {
-            handleMeteorHit(scene, meteor, enemy);
-
-        }
-    );
+  
     // hail
     scene.physics.add.collider(
         scene.hailShots,

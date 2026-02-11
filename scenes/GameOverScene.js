@@ -15,7 +15,7 @@ export default class GameOverScene extends Phaser.Scene {
         const ch = this.cameras.main.height
         const cw = this.cameras.main.width
 
-        if (window.game.ysdk?.features?.GameplayAPI) window.game.ysdk.features.GameplayAPI.stop();
+
 
         const { coins = 0 } = data;
         const { score = 0 } = data;
@@ -28,10 +28,10 @@ export default class GameOverScene extends Phaser.Scene {
         const goldAmount = Math.trunc(coins);
         const gemAmount = Math.trunc(coins * Phaser.Math.FloatBetween(0.44, 0.55));
 
-        this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
-        data.scene.playerMoveSfx.stop()
-        data.scene.gameBGSoundSfx.stop()
-        data.scene.satelliteStartSoundSfx.stop()
+        // this.onHoverSfx = this.sound.add('hoverSound', { volume: 0.1 });
+        data.scene.audio.stop('playerMoveSfx')
+        data.scene.audio.stop('gameBGSoundSfx')
+        data.scene.audio.stop('satelliteStartSoundSfx')
 
         // Полупрозрачный фон
         this.ui.createRectangle
@@ -42,9 +42,9 @@ export default class GameOverScene extends Phaser.Scene {
 
         this.ui.createText(
             t('messages.gameOver'),
-            { xPercent: 0.5, yPercent: 0.19, fontPercent: 0.06 },
+            { xPercent: 0.5, yPercent: 0.19, fontPercent: 0.04},
             {
-                fontSize: "48px",
+                
                 fill: "#f80101ff"
             }).setOrigin(0.5);
 
@@ -57,13 +57,13 @@ export default class GameOverScene extends Phaser.Scene {
             fill: "#f57f10ff"
         }).setOrigin(0.5);
 
-        const goldTextBg = this.ui.createRectangle({ xPercent: 0.38, yPercent: 0.36, widthPercent: 0.093, heightPercent: 0.22 }, 0xffbb00, 0.05).setOrigin(0).setStrokeStyle(2, 0xeecc00);
+        const goldTextBg = this.ui.createRectangle({ xPercent: 0.16, yPercent: 0.36, widthPercent: 0.3, heightPercent: 0.22 }, 0xffbb00, 0.05).setOrigin(0).setStrokeStyle(2, 0xeecc00);
 
         const goldText = this.ui.createText(
             goldAmount,
-            { xPercent: 0.426, yPercent: 0.536, fontPercent: 0.028, },
+            { xPercent: 0.31, yPercent: 0.536, fontPercent: 0.028, },
             {
-                fontSize: "24px",
+
                 fill: "rgba(238, 194, 0, 1)"
             }).setOrigin(0.5);
 
@@ -72,23 +72,23 @@ export default class GameOverScene extends Phaser.Scene {
 
         const goldIcon = this.ui.createImage(
             'gold',
-            { xPercent: 0.426, yPercent: 0.415 }
-        ).setScale(0.35).setOrigin(0.5)
+            { xPercent: 0.31, yPercent: 0.415 }
+        ).setOrigin(0.5)
 
-        const gemsTextBg = this.ui.createRectangle({ xPercent: 0.5, yPercent: 0.36, widthPercent: 0.093, heightPercent: 0.22 }, 0x00bbff, 0.05).setOrigin(0).setStrokeStyle(2, 0x337799);
+        const gemsTextBg = this.ui.createRectangle({ xPercent: 0.54, yPercent: 0.36, widthPercent: 0.3, heightPercent: 0.22 }, 0x00bbff, 0.05).setOrigin(0).setStrokeStyle(2, 0x337799);
 
         const gemsText = this.ui.createText(
             gemAmount,
-            { xPercent: 0.545, yPercent: 0.536, fontPercent: 0.028, },
+            { xPercent: 0.69, yPercent: 0.536, fontPercent: 0.028, },
             {
-                fontSize: "24px",
+    
                 fill: "rgba(92, 192, 209, 1)"
             }).setOrigin(0.5);
 
         const gemsIcon = this.ui.createImage(
             'gem',
-            { xPercent: 0.545, yPercent: 0.415 },
-        ).setScale(0.35).setOrigin(0.5)
+            { xPercent: 0.69, yPercent: 0.415 },
+        ).setOrigin(0.5)
 
 
 
@@ -104,21 +104,21 @@ export default class GameOverScene extends Phaser.Scene {
             }).setInteractive().setOrigin(0.5);
 
         menuBtn.on("pointerdown", () => {
-            data.scene.onTapSfx.play()
+            data.scene.audio.play('onTapSfx')
             this.registry.set('goldCount', this.registry.get('goldCount') + goldAmount)
             this.registry.set('gemCount', this.registry.get('gemCount') + gemAmount)
             saveManager.save(this)
             // playerSkills.resetSkills()
             // resetLevels(levels)
-            data.scene.levels[this.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel = 1;
-            this.scene.stop();                  // Закрыть GameOver
+            data.scene.level.currentLevel.levelConfigs.coefficientToUpgradeLevel = 1;
             this.scene.stop("GameScene");      // Закрыть игру
+            this.scene.stop();                  // Закрыть GameOver
             this.scene.start("MenuScene");     // Перейти в меню
         });
         menuBtn.on("pointerover", () => {
 
 
-            this.onHoverSfx.play()
+            data.scene.audio.play('onHoverSfx')
             menuBtn.setScale(1.1)
         });
         menuBtn.on("pointerout", () => {

@@ -16,9 +16,19 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
 
-
         this.ui = new UIManager(this);
+
+
         this.scale.on('resize', this.ui.resize, this.ui);
+        this.scale.on('enterfullscreen', () => { this.ui.resize(); console.log('enterFS') });
+        this.scale.on('leavefullscreen', () => { this.ui.resize(); console.log('leaveFS') });
+
+
+
+        this.debugText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.96, fontPercent: 0.03 }, { fill: "rgb(21, 255, 0)" }).setScrollFactor(0).setDepth(1000);
+        this.fpsText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.98, fontPercent: 0.03 }, { fill: "rgb(21, 255, 0)" }).setScrollFactor(0).setDepth(1000)
+
+
         const centerX = this.cameras.main.width / 2
         const centerY = this.cameras.main.height / 2
         const cw = this.cameras.main.width
@@ -84,16 +94,18 @@ export default class MenuScene extends Phaser.Scene {
         // if (!this.registry.has('gemCount')) this.registry.set('gemCount', 20)
 
 
-        const menuBG = this.ui.createImage(
-            'bgPhotoMenu',
-            { xPercent: 0, yPercent: 0 }).setOrigin(0).setInteractive()
+        // const menuBG = this.ui.createImage(
+        //     'bgPhotoMenu',
+        //     { xPercent: 0, yPercent: 0 }).setOrigin(0).setInteractive()
+        const menuBG = this.ui.createRectangle(
+            { xPercent: 0, yPercent: 0, widthPercent: 1, heightPercent: 1 }, 0xaaaaaa).setOrigin(0)
 
         if (!this.registry.has('currentLevel')) this.registry.set('currentLevel', 0);
         let level = this.registry.get('currentLevel');
 
         const titleText = this.ui.createText(
             t('game.title'),
-            { xPercent: 0.5, yPercent: 0.1, fontPercent: 0.1 }, {
+            { xPercent: 0.5, yPercent: 0.15, fontPercent: 0.05 }, {
             fontSize: "64px",
             fill: "#000000ff"
         }).setOrigin(0.5, 0.5);
@@ -107,45 +119,49 @@ export default class MenuScene extends Phaser.Scene {
         });
 
         const goldTextBg_01 = this.ui.createRectangle(
-            { xPercent: 0, yPercent: 0.01, widthPercent: 0.105, heightPercent: 0.05 },
+            { xPercent: 0, yPercent: 0.01, widthPercent: 0.3, heightPercent: 0.05 },
             0x000000, 0.9).setOrigin(0)
 
         const goldTextBg = this.ui.createRectangle(
-            { xPercent: 0, yPercent: 0.01, widthPercent: 0.105, heightPercent: 0.05 },
+            { xPercent: 0, yPercent: 0.01, widthPercent: 0.3, heightPercent: 0.05 },
             0xffff00, 0.14).setOrigin(0).setStrokeStyle(2, 0xeeee00);
 
         const goldText = this.ui.createText(
             this.registry.get('goldCount'),
-            { xPercent: 0.1, yPercent: 0.025, fontPercent: 0.03 },
+            { xPercent: 0.285, yPercent: 0.025, fontPercent: 0.03 },
             {
                 fontSize: "24px",
                 fill: "rgba(238, 234, 0, 1)"
-            }).setOrigin(1, 0);
+            }).setOrigin(1, 0).setInteractive().on('pointerdown', () => {
+                console.log(1);
+                this.scale.startFullscreen();
+
+            })
         const goldIcon = this.ui.createImage(
             'gold',
-            { xPercent: 0.015, yPercent: 0.035 },
-            0.055
+            { xPercent: 0.045, yPercent: 0.035 },
+            0.1
         )
 
         const gemsTextBg_01 = this.ui.createRectangle(
-            { xPercent: 0, yPercent: 0.07, widthPercent: 0.105, heightPercent: 0.05 },
+            { xPercent: 0, yPercent: 0.07, widthPercent: 0.3, heightPercent: 0.05 },
             0x000000, 0.9).setOrigin(0)
 
         const gemsTextBg = this.ui.createRectangle(
-            { xPercent: 0, yPercent: 0.07, widthPercent: 0.105, heightPercent: 0.05 },
+            { xPercent: 0, yPercent: 0.07, widthPercent: 0.3, heightPercent: 0.05 },
             0x337799, 0.14).setOrigin(0).setStrokeStyle(2, 0x337799);
 
         const gemsText = this.ui.createText(
             this.registry.get('gemCount'),
-            { xPercent: 0.1, yPercent: 0.085, fontPercent: 0.03 },
+            { xPercent: 0.285, yPercent: 0.085, fontPercent: 0.03 },
             {
                 fontSize: "24px",
                 fill: "rgba(92, 192, 209, 1)"
             }).setOrigin(1, 0);
         const gemsIcon = this.ui.createImage(
             'gem',
-            { xPercent: 0.015, yPercent: 0.095 },
-            0.065
+            { xPercent: 0.045, yPercent: 0.095 },
+            0.15
         )
 
         // const gemsTextBg_01 = this.add.rectangle(0, 60, 160, 40, 0x000000,).setOrigin(0)
@@ -160,25 +176,25 @@ export default class MenuScene extends Phaser.Scene {
 
         const switchLevelButtonGroupData = [
             {
-                x: 0.32, y: 0.3, scene: 'GameScene', key: 'level_1', level: 0, isChosen: false,
+                x: 0.1, y: 0.3, scene: 'GameScene', key: 'level_1', level: 0, isChosen: false,
             },
             {
-                x: 0.380, y: 0.3, scene: 'GameScene', key: 'level_2', level: 1, isChosen: false,
+                x: 0.24, y: 0.3, scene: 'GameScene', key: 'level_2', level: 1, isChosen: false,
             },
             {
-                x: 0.44, y: 0.3, scene: 'GameScene', key: 'level_3', level: 2, isChosen: false,
+                x: 0.38, y: 0.3, scene: 'GameScene', key: 'level_3', level: 2, isChosen: false,
             },
             {
-                x: 0.5, y: 0.3, scene: 'GameScene', key: 'level_4', level: 3, isChosen: false,
+                x: 0.52, y: 0.3, scene: 'GameScene', key: 'level_4', level: 3, isChosen: false,
             },
             {
-                x: 0.560, y: 0.3, scene: 'GameScene', key: 'level_5', level: 4, isChosen: false,
+                x: 0.66, y: 0.3, scene: 'GameScene', key: 'level_5', level: 4, isChosen: false,
             },
             {
-                x: 0.620, y: 0.3, scene: 'GameScene', key: 'level_6', level: 5, isChosen: false,
+                x: 0.8, y: 0.3, scene: 'GameScene', key: 'level_6', level: 5, isChosen: false,
             },
             {
-                x: 0.68, y: 0.3, scene: 'GameScene', key: 'level_infinity', level: 6, isChosen: false,
+                x: 0.93, y: 0.3, scene: 'GameScene', key: 'level_infinity', level: 6, isChosen: false,
             },
         ]
         const completedList = this.registry.get('completedLevelsList')
@@ -187,15 +203,15 @@ export default class MenuScene extends Phaser.Scene {
                 const complete = this.ui.createImage(
                     'complete',
                     { xPercent: switchLevelButtonGroupData[index].x, yPercent: switchLevelButtonGroupData[index].y },
-                    0.07
+                    0.1
                 ).setDepth(2)
-            }
+            }// on down scale to tiny fix
         })
         this.switchLevelButtonGroup = this.add.group();
         switchLevelButtonGroupData.forEach(data => {
             const button = this.ui.createImage(
                 data.key,
-                { xPercent: data.x, yPercent: data.y }, 0.09).setInteractive()
+                { xPercent: data.x, yPercent: data.y }, 0.12).setInteractive()
             button.isChosen = 0;
 
             button.on('pointerdown', () => {
@@ -213,7 +229,7 @@ export default class MenuScene extends Phaser.Scene {
                     speed: { min: 50, max: 100 },
                     angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
                     gravityY: 0,             // без гравитации
-                    scale: { start: 0.5, end: 0 }, // уменьшаются
+                    scale: { start: 1, end: 0 }, // уменьшаются
                     alpha: { start: 1, end: 0.3 },   // исчезают
                     frequency: 100,
                     // tint: [0xffffff, 0xff11ff],
@@ -228,12 +244,12 @@ export default class MenuScene extends Phaser.Scene {
 
             })
             button.on('pointerover', () => {
-                this.onHoverSfx.play();
-                button.setScale(1.3)
+                // this.onHoverSfx.play();
+                // button.setScale(1.3)
             });
             button.on('pointerout', () => {
 
-                button.setScale(1)
+                // button.setScale(1)
             });
             this.switchLevelButtonGroup.add(button)
         })
@@ -252,7 +268,7 @@ export default class MenuScene extends Phaser.Scene {
             })
             .setOrigin(0.5, 0.5)
             .setInteractive();
-        const fx = startBtn.postFX.addShine(3, .5, 1);
+        // const fx = startBtn.postFX.addShine(3, .5, 1);
 
         this.time.addEvent({
             delay: 1000,
@@ -283,23 +299,17 @@ export default class MenuScene extends Phaser.Scene {
                 return
             } else {
                 this.onTapSfx.play();
-                // playerSkills.resetMagicSkill()
-                // playerSkills
-                if (window.game.ysdk?.features?.GameplayAPI) {
-                    // console.log(window.ysdk);
-
-                    window.game.ysdk.features.GameplayAPI.start()
-                };
-
                 this.scene.pause()
-                // this.scene.launch('GameScene')
+                this.sound.get("bgMusic").stop();//bg music from menu scene off
                 this.scene.start('GameScene')
+                this.scale.startFullscreen();
+
             }
         });
 
         const scoreText = this.ui.createText(
             this.registry.get('scoreCount'),
-            { xPercent: 1, yPercent: 0.5, fontPercent: 0.03 }, {
+            { xPercent: 1, yPercent: 0.4, fontPercent: 0.03 }, {
             fontSize: '28px',
             fill: '#040500ff',
             backgroundColor: "#84867459",
@@ -308,27 +318,17 @@ export default class MenuScene extends Phaser.Scene {
         const scoreIcon = this.ui.createImage(
             'scoreIcon',
             {
-                xPercent: 0.985, yPercent: 0.5
+                xPercent: 0.985, yPercent: 0.4
             }, 0.03
         )
-        menuBG.on('pointerdown', () => {
-            // this.switchLevelButtonGroup.getChildren().forEach(btn => { if (btn.trail) btn.trail.destroy(); btn.isChosen = false })
-        })
 
-        // //shop
-        // const shopButton = this.add.sprite(40, 400, "shop").setInteractive()
-        // shopButton.on('pointerdown', () => {
-        //     this.onTapSfx.play();
 
-        // })
-        // shopButton.on('pointerover', () => { this.onHoverSfx.play(); shopButton.setScale(1.1) });
-        // shopButton.on('pointerout', () => shopButton.setScale(1));
 
         //magics
         const magicsButton = this.ui.createImage(
             "magics",
             {
-                xPercent: 0.08, yPercent: 0.85
+                xPercent: 0.16, yPercent: 0.9
             }, 0.3,)
             .setInteractive()
             .setDepth(1)
@@ -351,7 +351,7 @@ export default class MenuScene extends Phaser.Scene {
         //settings
         const settingsButton = this.ui.createImage(
             "settings",
-            { xPercent: 0.98, yPercent: 0.04 }, 0.1
+            { xPercent: 0.94, yPercent: 0.05 }, 0.2
         ).setInteractive()
         settingsButton.on('pointerdown', () => {
             this.onTapSfx.play();
@@ -414,7 +414,7 @@ export default class MenuScene extends Phaser.Scene {
 
         const heroButton = this.ui.createImage(
             'hero',
-            { xPercent: 0.89, yPercent: 0.85 },0.3).setInteractive().setOrigin(0.2, 0.7)
+            { xPercent: 0.63, yPercent: 0.9 }, 0.5).setInteractive().setOrigin(0.2, 0.7)
 
         heroButton.on('pointerdown', () => {
             this.onTapSfx.play();
@@ -435,45 +435,45 @@ export default class MenuScene extends Phaser.Scene {
 
         const fire = this.add.image(heroButton.x, heroButton.y, 'fire')
         this.time.addEvent({
-            delay: 5,          // миллисекунды между вызовами
+            delay: 1000,          // миллисекунды между вызовами
             callback: () => {
 
                 fire.setPosition(heroButton.x, heroButton.y)
             },
             loop: true           // обязательно, чтобы событие повторялось
         });
-        fire.trail = this.add.particles(0, 0, 'red-flares', {
-            frame: 'red',
-            lifespan: 2800,
-            speed: { min: 50, max: 100 },
-            angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
-            gravityY: 0,             // без гравитации
-            scale: { start: 0.35, end: 0 }, // уменьшаются
-            alpha: { start: 0.3, end: 0 },   // исчезают
-            frequency: 100,
-            // tint: [0xffff00, 0x00ff00],
-            //  tint: [0x0000ff, 0x00ff00],   
-            // tint:0xff0000, 
-            // blendMode: 'ADD',
-            follow: fire,
-            // followOffset: { x: cw, y:  }
-        });
-        fire.trail_2 = this.add.particles(0, 0, 'flares', {
-            frame: 'white',
-            lifespan: 1800,
-            speed: { min: 50, max: 100 },
-            angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
-            gravityY: 0,             // без гравитации
-            scale: { start: 0.4, end: 0 }, // уменьшаются
-            alpha: { start: 1, end: 0 },   // исчезают
-            frequency: 100,
-            tint: [0xffaa33, 0xff7633],
-            //  tint: [0x0000ff, 0x00ff00],   
-            // tint:0xff0000, 
-            blendMode: 'ADD',
-            follow: fire,
-        });
-        
+        // fire.trail = this.add.particles(0, 0, 'red-flares', {
+        //     frame: 'red',
+        //     lifespan: 2800,
+        //     speed: { min: 50, max: 100 },
+        //     angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+        //     gravityY: 0,             // без гравитации
+        //     scale: { start: 0.35, end: 0 }, // уменьшаются
+        //     alpha: { start: 0.3, end: 0 },   // исчезают
+        //     frequency: 100,
+        //     // tint: [0xffff00, 0x00ff00],
+        //     //  tint: [0x0000ff, 0x00ff00],   
+        //     // tint:0xff0000, 
+        //     // blendMode: 'ADD',
+        //     follow: fire,
+        //     // followOffset: { x: cw, y:  }
+        // });
+        // fire.trail_2 = this.add.particles(0, 0, 'flares', {
+        //     frame: 'white',
+        //     lifespan: 1800,
+        //     speed: { min: 50, max: 100 },
+        //     angle: { min: -90 - 10, max: -90 + 10 }, // летят вверх, +-10°
+        //     gravityY: 0,             // без гравитации
+        //     scale: { start: 0.4, end: 0 }, // уменьшаются
+        //     alpha: { start: 1, end: 0 },   // исчезают
+        //     frequency: 100,
+        //     tint: [0xffaa33, 0xff7633],
+        //     //  tint: [0x0000ff, 0x00ff00],   
+        //     // tint:0xff0000, 
+        //     blendMode: 'ADD',
+        //     follow: fire,
+        // });
+
         // magicsButton.trail_1 = this.add.particles(55, 690, 'flares', {
         //     frame: 'blue',
         //     lifespan: 1120,
@@ -515,7 +515,7 @@ export default class MenuScene extends Phaser.Scene {
 
         const upgrdesText = this.ui.createText(
             t('ui.UPGRADES'),
-            { xPercent: 0.08, yPercent: 0.7, fontPercent: 0.035 },
+            { xPercent: 0.17, yPercent: 0.82, fontPercent: 0.025 },
             {
                 font: '26px Arial',
                 fill: '#cf241eff',
@@ -523,42 +523,58 @@ export default class MenuScene extends Phaser.Scene {
                 // backgroundColor: "#706b6bff",
             }).setOrigin(0.5, 0.5)
 
-        const fx2 = magicsButton.postFX.addGlow(0xffff25, 0, 0, false, 0.1, 4);
-        this.tweens.add({
-            targets: fx2,
-            outerStrength: 2,
-            yoyo: true,
-            loop: -1,
-            ease: 'sine.inout'
-        });
-        const fx1 = upgrdesText.postFX.addGlow(0xff0000, 0, 0, false, 0.1, 4);
-        this.tweens.add({
-            targets: fx1,
-            outerStrength: 2,
-            yoyo: true,
-            loop: -1,
-            ease: 'sine.inout'
-        });
-        // this.time.addEvent({
-        //     delay: 70, // каждые 50 мс
-        //     loop: true,
-        //     callback: () => {
-        //         let ctx = upgrdesText.canvas.getContext('2d');
-        //         let gradient = ctx.createLinearGradient(
-        //             offset, 0,
-        //             upgrdesText.width + offset, 0);
-        //         // gradient.addColorStop(0, '#cfb6b662');
-        //         gradient.addColorStop(0.01, '#f55757ff');
-
-        //         // gradient.addColorStop(0.25, '#ff0303ff');
-        //         gradient.addColorStop(0.21, '#cfb6b662');
-        //         gradient.addColorStop(0.51, '#c8ff00ff');
-        //         // gradient.addColorStop(0.71, '#f5000062');
-        //         // Применяем как заливку
-        //         upgrdesText.setFill(gradient);
-
-        //         offset = (offset + 10) % (Math.max(upgrdesText.width, 1));
-        //     }
+        // const fx2 = magicsButton.postFX.addGlow(0xffff25, 0, 0, false, 0.1, 4);
+        // this.tweens.add({
+        //     targets: fx2,
+        //     outerStrength: 2,
+        //     yoyo: true,
+        //     loop: -1,
+        //     ease: 'sine.inout'
         // });
+        // const fx1 = upgrdesText.postFX.addGlow(0xff0000, 0, 0, false, 0.1, 4);
+        // this.tweens.add({
+        //     targets: fx1,
+        //     outerStrength: 2,
+        //     yoyo: true,
+        //     loop: -1,
+        //     ease: 'sine.inout'
+        // });
+
+        // this.ui.resize()
+        // this.ui.resizeCam()
+
+
+        console.log(
+            this.scale.width,
+            this.scale.height,
+            this.game.canvas.width,
+            this.game.canvas.height,
+            this.cameras.main.width,
+            this.cameras.main.height
+        );
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // камера
+        const cam = this.cameras.main;
+        cam.setViewport(0, 0, width, height);
+        // cam.setSize(width * .9, height);
+        console.log(cam);
+
+        console.log(game);
+
+
+        this.acc = 0
+    }
+    update(time, delta) {
+        // this.debugText.setText(`all: ${this.children.list.length}`)
+
+        if (this.acc >= 200) {
+            this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
+            this.acc = 0
+        }
+        this.acc += delta
+        // this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
     }
 }

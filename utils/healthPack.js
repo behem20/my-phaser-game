@@ -6,7 +6,7 @@ export default class HealthPack {
         this.player = player;
         this.group = scene.physics.add.group();
     }
-    spawnRandomly(minDistance = 300, maxDistance = 3000, scene) {
+    spawnRandomly(minDistance = 300, maxDistance = 500, scene) {
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
         const distance = Phaser.Math.Between(minDistance, maxDistance);
         const x = this.player.x + Math.cos(angle) * distance;
@@ -15,7 +15,7 @@ export default class HealthPack {
         const healthPack = this.group.create(x, y, "healthPack");
         healthPack.setScale(1)
         // coin.setOrigin(0.5, 0.5);
-        const pickupRadius = healthPack.width * this.scene.playerInitCfgs.coinsMagnetRadiusBonus;
+        const pickupRadius = healthPack.width * this.scene.player.playerInitCfgs.coinsMagnetRadiusBonus;
         healthPack.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
         healthPack.setDepth(-2)
         healthPack.setCollideWorldBounds(true);

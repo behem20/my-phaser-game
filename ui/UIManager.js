@@ -46,6 +46,8 @@ export default class UIManager {
                 element.height = h * config.heightPercent;
                 if (element.setDisplaySize) element.setDisplaySize(element.width, element.height);
             }
+
+
         }
 
         // Масштаб по проценту (если задан)
@@ -53,17 +55,31 @@ export default class UIManager {
             const scale = Math.min(w, h) * config.scalePercent / element.width;
             element.setScale(scale);
         }
+
+
     }
 
     // Пересчёт всех элементов
     resize() {
+
+
         for (let i = 0; i < this.elements.length; i++) {
             this.updateElement(i);
         }
-        if(playerSkills.lightning.level>1){
+        if (playerSkills.lightning.level > 1) {
             createClouds(this.scene)
         }
+        this.scene.FXManager?.vignette?.setScale(
+            this.scene.cameras.main.width / this.scene.FXManager.vignette.width,
+            this.scene.cameras.main.height / this.scene.FXManager.vignette.height
+        );
+
+
+
     }
+   
+
+    
 
     // 🔹 Текст
     createText(text, options, style = {}) {
@@ -109,18 +125,12 @@ export default class UIManager {
         this.add(img, { ...options, scalePercent });
         return img;
     }
-    /* ui.createRectangle(
-                    { xPercent: x, yPercent: y, widthPercent: 0.15, heightPercent: 0.37 },0x222222, 1)
-    */
+    createPhysicSprite(key, options) {
+        const sprite = this.scene.physics.add.sprite(0, 0, key).setOrigin(0.5)
+        this.add(sprite, { ...options })
 
-    /*
-    ui.createText(
-                        t(upgrade.name),
-                        { xPercent: x, yPercent: 0.35, fontPercent: 0.028, },
-                        { fontSize: "20px", color: "#ffffffff" ,wordWrap: { width: cardWidth - 20 }})
-                       
-     */
-
+        return sprite
+    }
     // 🔹 Прямоугольник
     createRectangle(options, color = 0xffffff, alpha = 1) {
         const rect = this.scene.add.rectangle(0, 0, 10, 10, color, alpha).setOrigin(0.5);
@@ -134,4 +144,5 @@ export default class UIManager {
         this.elements.forEach(el => el.element.destroy());
         this.elements = [];
     }
+
 }

@@ -11,12 +11,14 @@ export default class UpgradeForExpScene extends Phaser.Scene {
     }
 
     init(data) {
+
         this.gameScene = data.scene
         this.onSelect = data.onSelect; // callback
         this.upgrades = data.upgrades; // массив из 3-х апгрейдов
     }
 
     create() {
+
         this.ui = new UIManager(this);
         this.scale.on('resize', this.ui.resize, this.ui);
         const cw = this.cameras.main.width
@@ -38,7 +40,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
 
         const cardWidth = cw * 0.12;
         const cardHeight = ch * 0.27;
-        const spacing = 0.20;
+        const spacing = 0.30;
 
         const stepSound = this.gameScene.sound.get("playerMoveSound");//steps sound off
         if (stepSound) { stepSound.stop(); }
@@ -59,7 +61,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
             // Карточка (фон)
 
 
-            if (upgrade.level >= this.gameScene.levels[this.registry.get('currentLevel')].levelConfigs.MaxUpgradeLevelSkills - 1) {
+            if (upgrade.level >= this.gameScene.level.currentLevel.levelConfigs.MaxUpgradeLevelSkills - 1) {
                 const card = this.ui.createRectangle(
                     { xPercent: x, yPercent: y, widthPercent: 0.19, heightPercent: 0.41 },
                     0x32222, 1)
@@ -130,7 +132,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 })
             } else {
                 const card = this.ui.createRectangle(
-                    { xPercent: x, yPercent: y, widthPercent: 0.15, heightPercent: 0.37 },
+                    { xPercent: x, yPercent: y, widthPercent: 0.27, heightPercent: 0.37 },
                     0x32222, 1)
                     .setStrokeStyle(2, 0xff6600)
                     .setInteractive();
@@ -138,28 +140,39 @@ export default class UpgradeForExpScene extends Phaser.Scene {
                 // Название
                 this.ui.createText(
                     t(upgrade.name),
-                    { xPercent: x, yPercent: 0.35, fontPercent: 0.028, },
-                    { fontSize: "20px", color: "#ffffffff", wordWrap: { width: cardWidth - 20 } })
+                    { xPercent: x, yPercent: 0.35, fontPercent: 0.02, },
+                    { fontSize: "20px", color: "#ffffffff", wordWrap: { width: card.width - 20 }, align: 'center' })
                     .setOrigin(0.5);
 
                 //Уровень
                 this.ui.createText(
                     upgrade.level !== 1 ? `${t('game.level')} ${upgrade.level}` : t('messages.getNewSkill'),
-                    { xPercent: x, yPercent: 0.55, fontPercent: 0.02, },
-                    { fontSize: "16px", color: "#ccc", wordWrap: { width: cardWidth - 5 } }).setOrigin(0.5);
+                    { xPercent: x, yPercent: 0.55, fontPercent: 0.016, },
+                    { fontSize: "16px", color: "#ccc", wordWrap: { width: card.width - 5, useAdvancedWrap: true } }).setOrigin(0.5);
                 // Картинка
                 this.ui.createImage(
                     upgrade.icon,
                     { xPercent: x, yPercent: 0.45, },
-                    0.1
+                    0.2
                 )
 
 
                 // Описание
                 this.ui.createText(
                     t(upgrade.description),
-                    { xPercent: x, yPercent: 0.6, fontPercent: 0.018, },
-                    { fontSize: "14px", color: "#aaa", wordWrap: { width: cardWidth - 20 } })
+                    { xPercent: x, yPercent: 0.75, fontPercent: 0.013, },
+                    {
+                        fontSize: "14px", color: "#aaa",
+
+                        fixedWidth: card.width,
+                        fixedHeight: card.height,
+                        wordWrap: { width: card.width - 20, useAdvancedWrap: true },
+                        align: 'center',
+                        boundsAlignH: 'center',
+                        boundsAlignV: 'middle',
+                        padding: 10,
+                        lineSpacing: 4
+                    })
                     .setOrigin(0.5);
 
                 // Клик
@@ -206,7 +219,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
 
 
         this.levelText = this.ui.createText(
-            `${t(`game.level`)} ${this.gameScene.levels[this.registry.get('currentLevel')].levelConfigs.levelUpPointsCount}`,
+            `${t(`game.level`)} ${this.gameScene.level.currentLevel.levelConfigs.levelUpPointsCount}`,
             { xPercent: 0.5, yPercent: 0.20, fontPercent: 0.04 },
             {
                 fontSize: "24px",
@@ -237,6 +250,7 @@ export default class UpgradeForExpScene extends Phaser.Scene {
             this.backText.setColor('#ff6600');
             this.backText.setDepth(3)
         })
+
     }
 }
 

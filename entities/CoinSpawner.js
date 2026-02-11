@@ -44,17 +44,23 @@ export default class CoinSpawner {
     }
 
     spawnCoin(x, y) {
+        const coinPercentWidth = Phaser.Math.FloatBetween(0.03, 0.04)
+
         const cfg = this.pickCoinType();
         const PLUS_X = Phaser.Math.Between(-55, 55);
         const PLUS_Y = Phaser.Math.Between(-55, 55);
         const coin = this.group.get(x + PLUS_X, y + PLUS_Y, cfg.key);
         if (!coin) return;
 
-        coin.setScale(Phaser.Math.FloatBetween(1, 1.79));
+        // coin.setScale(Phaser.Math.FloatBetween(2, 2.79));
+
+
+
+        coin.setScale(coinPercentWidth / (coin.width / this.scene.cameras.main.width));
         coin.setOrigin(0.5);
         coin.value = cfg.value;
 
-        const pickupRadius = coin.width * this.scene.playerInitCfgs.coinsMagnetRadiusBonus;
+        const pickupRadius = coin.width * this.scene.player.playerInitCfgs.coinsMagnetRadiusBonus;
         coin.setCircle(pickupRadius, -(pickupRadius - pickupRadius / 4), -(pickupRadius - pickupRadius / 4));
 
         coin.setDepth(-2);
@@ -62,7 +68,7 @@ export default class CoinSpawner {
         coin.setCollideWorldBounds(true);
         coin.setBounce(1);
         coin.body.allowGravity = false;
-        
+
 
 
         coin.isMagnetized = false;

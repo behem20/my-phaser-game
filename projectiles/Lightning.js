@@ -11,7 +11,7 @@ import { playerSkills } from "../utils/upgradesManager.js";
 
 export function shootLightning(scene, player, enemiesGroup, lightningGroup, targetCount = 1, iconID) {
     const lightningKeys = ['lightning1'];
-    const finalCount = targetCount + scene.playerInitCfgs.lightningCountBonus
+    const finalCount = targetCount + scene.player.playerInitCfgs.lightningCountBonus
 
 
     const enemies = getClosestEnemiesInRadius(scene, player.gameObject, enemiesGroup.getChildren(), finalCount, scene.LightMaskRadius ? scene.LightMaskRadius + 50:400);
@@ -20,16 +20,10 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
 
     if (enemies.length === 0) return;
     flashIcon(scene, iconID)
-    // flashScreen(scene, 0x99ccff, 0.1)
-    scene.lightningShootSfx.play();
+    scene.audio.play('lightningShootSfx')
 
     enemies.forEach(enemy => {
-        // scene.magicShootSfx.setRate(Phaser.Math.FloatBetween(0.9, 1.1));
-
-        // scene.magicShootSfx.play();
-
         const randomKey = Phaser.Utils.Array.GetRandom(lightningKeys);
-
         const lightning = lightningGroup.create(enemy.x, enemy.y, randomKey).setOrigin(0.5, 1);
 
         shrinkSprite(scene, lightning)
@@ -39,21 +33,6 @@ export function shootLightning(scene, player, enemiesGroup, lightningGroup, targ
         if (!enemy.active) return;
         flashRandomClouds(scene, enemy.x, scene.cameras.main.scrollY, enemy.x, enemy.y)
         applyDamageWithCooldown(scene, 'lightning', enemy, 10, 10, lightning)
-
-
-
-        // scene.tweens.add({
-        //     targets: lightning,
-        //     alpha: 0,
-        //     yoyo: true,        // вернуться обратно к alpha=1
-        //     repeat: 1,         // сколько раз повторить (1 = один цикл туда-обратно)
-        //     duration: 70,      // скорость мигания
-        //     onComplete: () => {
-        //         lightning.destroy(); // удаляем после анимации
-        //     }
-        // });
-        // scene.time.delayedCall(150, () => lightning.destroy())
-
 
 
     })

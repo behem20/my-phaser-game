@@ -1,13 +1,6 @@
 
 import { applyDamageWithCooldown } from "../../utils/applyDamageWithCooldown.js";
-import { randomTintFill } from "../../utils/damageEffect.js";
-import { damageEnemy } from "../../utils/damageEnemy.js";
-import { addDamage } from "../../utils/damageStats.js";
-import { flashScreen } from "../../utils/FlashScreen.js";
-import { getHUD } from "../../utils/hudManager.js";
 import { playerItems } from "../../utils/itemsManager.js";
-import { togglePause } from "../../utils/pauseManager.js";
-import { playerSkills } from "../../utils/upgradesManager.js";
 
 function knockBack(scene, target, source, power = 1) {
     if (target.isKnocked) { 0 } else {
@@ -26,57 +19,51 @@ export function handleMagicHit(scene, magic, enemy) {
 
     // knockBack(scene, enemy, magic)
 
-    magic.trail.stop()
-    scene.time.delayedCall(150, () => {
-        if (magic.trail) {
-            magic.trail.destroy();
-        }
-    })
+    // magic.trail.stop()
+
+    // scene.time.delayedCall(150, () => {
+    //     if (magic.trail) {
+    //         magic.trail.destroy();
+    //     }
+    // })
+    if (magic.trail) {
+        magic.trail.destroy();
+    }
+    // magic.trail.destroy();
     magic.destroy()
+
     // magic.disableBody(true, true);
 
-    // damageEnemy(scene, enemy, playerSkills.magic.damage || 35, getHUD())
     applyDamageWithCooldown(scene, 'magic', enemy, 10, 1, magic)
-    // addDamage("magic", playerSkills.magic.damage || 35);
 }
 
 export function handleLightHit(scene, light, enemy) {
     if (!enemy.active) return;
     // knockBack(scene, enemy, light,2)
     applyDamageWithCooldown(scene, 'light', enemy, 10, 500, light)
-    // damageEnemy(scene, enemy, playerSkills.light.damage, getHUD())
-    // addDamage("light", playerSkills.light.damage);
 }
 export function handleTornadoHit(scene, tornado, enemy) {
     if (!enemy.active) return;
-    // damageEnemy(scene, enemy, playerSkills.tornado.damage, getHUD())
     applyDamageWithCooldown(scene, 'tornado', enemy, 10, 150, tornado)
-    // addDamage("tornado", playerSkills.tornado.damage);
 }
 
 export function handleSatelliteHit(scene, satellite, enemy) {
     if (!enemy.active) return;
 
+    if (scene.time.now - scene.audio.sfx.lastSatelliteHitTime > Phaser.Math.Between(100, 250)) {
+        scene.audio.sfx.lastSatelliteHitTime = scene.time.now;
+        scene.audio.play('satelliteHitSoundsSfx', {
+            volume: Phaser.Math.FloatBetween(0.9, 1),
+            rate: Phaser.Math.FloatBetween(0.5, 1.15)
+        })
+    }
+    console.log();
+
+    console.log();
     applyDamageWithCooldown(scene, 'satellite', enemy, 10, 1300, satellite)
 }
 
-export function handleMeteorHit(scene, meteor, enemy) {
-    if (!enemy.active) return;
-    const explosion = scene.add.circle(meteor.x, meteor.y, 200, 0xff6600, 0.3)
-        .setDepth(10)
-        .setBlendMode('ADD');
-    scene.time.delayedCall(400, () => explosion.destroy());
 
-
-    scene.enemies.getGroup().getChildren().forEach(otherEnemy => {
-        if (!otherEnemy.active) return;
-        const distance = Phaser.Math.Distance.Between(meteor.x, meteor.y, otherEnemy.x, otherEnemy.y);
-        if (distance <= 1200) {
-            damageEnemy(scene, enemy, playerSkills.meteor.damage, getHUD())
-        }
-    });
-    meteor.destroy();
-}
 
 export function handleHailHit(scene, hail, enemy) {
     if (!enemy.active) return;
@@ -98,7 +85,7 @@ export function handleHailHit(scene, hail, enemy) {
 
 
 export function handleTouchEnemy(scene, player, enemy) {
-    scene.hud.minusLives();
+    // scene.hud.minusLives();
     // flashScreen(scene, 0xff0000, 0.18, 200)
     enemy.deactivateEnemy()
 
@@ -111,13 +98,12 @@ export function handleTouchEnemy(scene, player, enemy) {
 }
 
 export function handleCoinCollect(scene, player, coin) {
-    scene.coinCollectSoundSfx.play()
-
+    scene.audio.play('coinCollectSoundSfx')
     // coin.trail.destroy()
     coin.disableBody(true, false)
 
 
-    const amount = scene.levels[scene.registry.get('currentLevel')].levelConfigs.dropCoinsAmount * coin.value;
+    const amount = scene.level.currentLevel.levelConfigs.dropCoinsAmount * coin.value;
     function getRandomAmount(amountBeforeSpread, spread = 2) {
         const min = amountBeforeSpread - spread;
         const max = amountBeforeSpread + spread;
@@ -182,7 +168,7 @@ export function handleCoinCollect(scene, player, coin) {
 
 }
 export function handleChestCollect(scene, player, chest) {
-    scene.openChestSfx.play() //collect chest sound
+    scene.audio.play('openChestSfx') //collect chest sound
 
     chest.setScale(1.1)
     chest.disableBody(0, 0)
@@ -195,15 +181,14 @@ export function handleChestCollect(scene, player, chest) {
             scene: scene,
             items: playerItems.allItems,
             onSelect: (item) => {
-                item.applyItem(scene.playerInitCfgs, scene)
+                item.applyItem(scene.player.playerInitCfgs, scene)
             }
         })
     });
 }
 
 export function handleMagnetCollect(scene, player, magnet) {
-    scene.openChestSfx.play() //collect chest sound
-    // console.log('magnet collected');
+    scene.audio.play('openChestSfx')
 
     magnet.setScale(1.1)
     magnet.disableBody(0, 0)
@@ -219,7 +204,7 @@ export function handleMagnetCollect(scene, player, magnet) {
 export function handleHealthPackCollect(scene, player, hp) {
 
     hp.disableBody(1, 0);
-    scene.HPCollectSoundSfx.play()
+    scene.audio.play('HPCollectSoundSfx')
     scene.hud.addLives(6)
 
     scene.tweens.add({

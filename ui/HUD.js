@@ -26,20 +26,20 @@ export default class HUD {
             { xPercent: 0, yPercent: 0, widthPercent: 1, heightPercent: 0.04 },
             0x000000, 0.6)
             .setScrollFactor(0).setOrigin(0, 0).setDepth(11)
-        this.coinsText = scene.add.text(40, 15, "", { fontSize: "20px", fill: "rgba(224, 231, 15, 1)" }).setScrollFactor(0).setDepth(13);
-        this.coinsImage = scene.add.image(20, 23, 'coin').setScrollFactor(0).setDepth(13).setScale(0.7);
+        this.coinsText = scene.ui.createText("",
+            { xPercent: 0.09, yPercent: 0.035, fontPercent: 0.025 },
+            { fontSize: '20px', color: "rgba(224, 231, 15, 1)" }).setScrollFactor(0).setDepth(13).setOrigin(0, 1);
+        this.coinsImage = scene.ui.createImage('coin', { xPercent: 0.04, yPercent: 0.025 }, 0.065).setScrollFactor(0).setDepth(13).setScale(0.7);
 
         this.timeText = scene.ui.createText("",
             { xPercent: 0.5, yPercent: 0.025, fontPercent: 0.025 },
             { fontSize: '20px', color: '#fff' },).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
-        this.debugText = scene.add.text(10, 40, "", { fontSize: "10px", fill: "#fff" }).setScrollFactor(0).setDepth(13);
+        this.debugText = scene.ui.createText("", { xPercent: 0.6, yPercent: 0.95 ,fontPercent:0.02},{ fill: "#fff" }).setScrollFactor(0).setDepth(13);
         this.expProgressBarBg = scene.add.graphics();
         this.expProgressBarFill = scene.add.graphics().setDepth(13);
         this.expProgressBarBg.fillStyle(0x000000, 0.8).setDepth(12);              //0x115577
 
         this.updateExpProgress();
-
-
         this.updateAll();
     }
     pause() {
@@ -75,8 +75,6 @@ export default class HUD {
             this.lives += amount;
             this.updateLives()
         }
-
-
     }
     updateLives() {
         // this.livesText.setText("Lives: " + this.lives);
@@ -97,7 +95,6 @@ export default class HUD {
     }
     addCoins(amount = 1) {
         this.coins += amount;
-
         this.updateCoins();
     }
     tintCoins() {
@@ -113,42 +110,35 @@ export default class HUD {
         });
     }
     updateExp() {
-
     }
     addExp(amount = 1) {
         this.exp += amount;
         if (!this.expThrottled) {
             this.expThrottled = true;
-            
+
             this.scene.time.delayedCall(60, () => {
                 this.updateExpProgress();
                 this.expThrottled = false;
             });
         }
-
     }
     clearExp() {
         this.exp = 0;
         this.updateExpProgress()
     }
-
-
-
     updateExpProgress() {
         const ch = this.scene.cameras.main.height;
         const cw = this.scene.cameras.main.width;
+
         const progress = Phaser.Math.Clamp(
             this.exp / (
-                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.expToUpgrade *
-                this.scene.levels[this.scene.registry.get('currentLevel')].levelConfigs.coefficientToUpgradeLevel
+                this.scene.level.currentLevel.levelConfigs.expToUpgrade *
+                this.scene.level.currentLevel.levelConfigs.coefficientToUpgradeLevel
             ),
             0,
             1
         );
-
-
         const width = this.scene.cameras.main.width * progress;
-
         // Основной бар
         this.expProgressBarFill.clear();
         this.expProgressBarFill.fillStyle(0x00A2E8, 1); //0xff3477

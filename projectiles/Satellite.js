@@ -10,8 +10,8 @@ export class Satellites {
             runChildUpdate: false
         });
 
-        this.radius = 300;//200             // расстояние от героя
-        this.speed = 0.02;            // скорость вращения (радианы на тик)//0.045
+        this.radius = 120;//200             // расстояние от героя
+        this.speed = 0.045;            // скорость вращения (радианы на тик)//0.045
         this.count = 0;               // количество активных спутников
         this.rotationOffset = 0;      // текущий угол смещения
     }
@@ -27,19 +27,20 @@ export class Satellites {
             for (let i = 0; i < toAdd; i++) {
                 const sat = this.group.get(this.player.x, this.player.y, 'satellite').setAlpha(0.1);
 
-                // sat.trail = this.scene.add.particles(0, 0, 'flares', {
-                //     frame: 'white',
-                //     // speed: 130,
-                //     scale: { start: 0.35, end: 0 },
-                //     // scale: 0.1,
-                //     // alpha: { start: 0.6, end: 0.2 },
-                //     lifespan: 270,
-                //     // angle: 0,
-                //     frequency: 120, // частота появления
-                //     tint: [0x888888, 0x8888ff],
-                //     follow: sat, // следят за игроком
-                //     blendMode: 'ADD'
-                // });
+                sat.trail = this.scene.add.particles(0, 0, 'flares', {
+                    frame: 'white',
+                    // speed: 130,
+                    scale: { start: 0.35, end: 0 },
+                    // scale: 0.1,
+                    // alpha: { start: 0.6, end: 0.2 },
+                    lifespan: 270,
+                    // angle: 0,
+                    frequency: 60, // частота появления
+                    tint: [0x888888, 0x8888ff],
+                    // tint: [0xff0000, 0x8888ff],
+                    follow: sat, // следят за игроком
+                    blendMode: 'ADD'
+                });
 
 
 

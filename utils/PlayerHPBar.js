@@ -16,7 +16,7 @@ export default class PlayerHPMark {
         this.hpBarBg.setScrollFactor(0);
         this.hpBar.setScrollFactor(0);
         this.border.setScrollFactor(0);
-        
+
         // // сначала скрыт
         // this.hpBarBg.setVisible(false);
         // this.hpBar.setVisible(false);
@@ -25,21 +25,22 @@ export default class PlayerHPMark {
     update() {
         const hud = getHUD();
         const hp = hud.lives;
-        const max = this.scene.levels[this.scene.registry.get("currentLevel")].playerConfigs.maxHP;
+        const max = this.scene.level.currentLevel.playerConfigs.maxHP;
 
-        // if (hp >= max) {
-        //     this.hpBarBg.setVisible(false);
-        //     this.hpBar.setVisible(false);
-        //     return;
-        // }
+        if (hp >= max) {
+            this.hpBarBg.setVisible(false);
+            this.hpBar.setVisible(false);
+            this.border.setVisible(false)
+            return;
+        }
 
         const hpPercent = Phaser.Math.Clamp(hp / max, 0, 1);
 
         const width = 40;
         const height = 3;
 
-        const x = this.scene.cameras.main.width/2;
-        const y = this.scene.cameras.main.height/2 + this.scene.cameras.main.height/2/100*6;
+        const x = this.scene.cameras.main.width / 2;
+        const y = this.scene.cameras.main.height / 2 + this.scene.cameras.main.height / 2 / 100 * 6;
 
         // очистка старого
         this.hpBarBg.clear();
@@ -49,7 +50,7 @@ export default class PlayerHPMark {
 
 
         this.border.lineStyle(1, 0x000000, 1); // белая рамка толщиной 2
-        this.border.strokeRect(x-20, y, width, height);
+        this.border.strokeRect(x - 20, y, width, height);
 
         // фон (чёрный)
         this.hpBarBg.fillStyle(0x000000, 0.7);
@@ -70,9 +71,9 @@ export default class PlayerHPMark {
 
         this.hpBarBg.setVisible(true);
         this.hpBar.setVisible(true);
-
+        this.border.setVisible(true)
         // vignette
         let intensity = 1 - hpPercent;
-        this.scene.vignette.setAlpha(intensity * 0.5);
+        this.scene.FXManager.vignette.setAlpha(intensity * 0.5);
     }
 }

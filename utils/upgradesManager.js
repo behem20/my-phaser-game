@@ -7,7 +7,6 @@ import { shootHail } from "../projectiles/Hail.js";
 import { shootLight } from "../projectiles/Light.js";
 import { shootLightning } from "../projectiles/Lightning.js";
 import { shootMagic } from "../projectiles/Magic.js";
-import { shootMeteor } from "../projectiles/Meteor.js";
 import { shootTornado } from "../projectiles/Tornado.js";
 import SkillRegistry from "../SkillsRegistry.js";
 import { getModifiedCooldown } from "./cooldownUtils.js";
@@ -31,7 +30,7 @@ export function createPlayerSkillsFromRegistry(arr) {
     // arr.fireAura.damage = SkillRegistry.fireAura.damage;
     // arr.tornado.damage = SkillRegistry.tornado.damage;
     // arr.satellite.damage = SkillRegistry.satellite.damage;
-    
+
 
     arr.magic.upgrades = [
         {
@@ -437,7 +436,7 @@ export const playerSkills = {
             return getModifiedCooldown(scene, this.baseDelay);
         },
         finalDamage(scene) {
-            return this.damage * scene.playerInitCfgs.fireDamageBonus;
+            return this.damage * scene.player.playerInitCfgs.fireDamageBonus;
         },
         applyUpgrade(scene) {
             const upgrade = this.upgrades[this.level - 1];
@@ -621,7 +620,7 @@ export const playerSkills = {
                 description: this.description,
 
             }
-            scene.thunderLevelUpSfx.play()
+            scene.audio.play('thunderLevelUpSfx')
             if (!scene.shootLightningTimer) {
                 scene.shootLightningTimer = scene.time.addEvent({
                     delay: this.finalDelay(scene),
@@ -802,7 +801,7 @@ export const playerSkills = {
     },
     satellite: {
         name: 'spellsNames.satellite',
-        description: 'Спутники вращаются вокруг героя и наносят урон врагам.',
+        description: 'spellsDescription.satellite',
         level: 1,
         icon: 'pictureSatellite',
         iconUI: 'iconSatellite',
@@ -834,39 +833,8 @@ export const playerSkills = {
             this.description = upgrade.description
 
             scene.satellites.setCount(this.count);
-            scene.satelliteStartSoundSfx.play()
+            scene.audio.play('satelliteStartSoundSfx')
 
-        }
-    },
-    meteor: {
-        name: 'spellsNames.meteor',
-        description: 'meteoritus !',
-        level: 1,
-        icon: 'pictureMeteor',
-        damage: 25,
-        delayDamage: 100, // раз в 500 мс наносить урон
-        delay: 4000,
-        count: 1,
-        delayInterval: 100,
-        applyUpgrade(scene) {
-            this.level++;
-            this.count += 1;
-
-            if (!scene.shootMeteorTimer) {
-                scene.shootMeteorTimer = scene.time.addEvent({
-                    delay: this.delay,
-                    callback: () => shootMeteor(
-                        scene,
-                        scene.player,
-                        scene.enemies.getGroup(),
-                        this.count,
-                        this.delayInterval,
-                    ),
-                    loop: true
-                });
-            } else {
-                scene.shootMeteorTimer.delay = this.delay;
-            }
         }
     },
     hail: {
@@ -1057,7 +1025,7 @@ export const playerSkills = {
 
             }
             this.level++;
-            scene.playerInitCfgs.damageBonus += this.plusDamage * scene.levels[0].playerConfigs.dmg;
+            scene.player.playerInitCfgs.damageBonus += this.plusDamage * scene.level.currentLevel.playerConfigs.dmg;
             if (scene.shootMagicTimer && playerSkills.magic) {
                 playerSkills.magic.skillInfo.damage = getPlayerDamageBeforeSpread(scene, playerSkills.magic.damage)
             }
@@ -1117,7 +1085,7 @@ export const playerSkills = {
             this.description = upgrade.description;
             this.level++;
 
-            scene.playerInitCfgs.cooldownReductionBonus += upgrade.cooldwonReduce
+            scene.player.playerInitCfgs.cooldownReductionBonus += upgrade.cooldwonReduce
 
             // Если таймер магии уже есть — обнови его delay
             if (scene.shootMagicTimer && playerSkills.magic) {
@@ -1144,9 +1112,6 @@ export const playerSkills = {
                 scene.shootTornadoTimer.delay = playerSkills.tornado.finalDelay(scene);
                 playerSkills.tornado.skillInfo.cooldown = `${scene.shootTornadoTimer.delay / 1000}c`
             }
-            // if (scene.shootMeteorTimer && playerSkills.meteor) {
-            //     scene.shootMeteorTimer.delay = playerSkills.meteor.finalDelay;
-            // }
             if (scene.shootHailTimer && playerSkills.hail) {
                 scene.shootHailTimer.delay = playerSkills.hail.finalDelay(scene);
                 playerSkills.hail.skillInfo.cooldown = `${scene.shootHailTimer.delay / 1000}c`
@@ -1187,7 +1152,7 @@ export const playerSkills = {
             this.level++;
             this.description = upgrade.description;
 
-            scene.playerInitCfgs.coinsMagnetRadiusBonus = upgrade.radius;
+            scene.player.playerInitCfgs.coinsMagnetRadiusBonus = upgrade.radius;
 
         }
     },
@@ -1195,32 +1160,29 @@ export const playerSkills = {
     get allSkills() {
         if (this.upgradePointsCount > 3) {
             return [
-
-                // this.meteor,
                 this.magic,
                 this.fire,
                 this.light,
-                // this.lightning,
+                this.lightning,
                 // this.armageddon,
-                // this.tornado,
-                // this.fireAura,
-                // this.satellite,
+                this.tornado,
+                this.fireAura,
+                this.satellite,
                 // this.hail,
                 // this.magnetRadius,
                 this.intellect,
-                // this.robe,
+                this.robe,
             ]
         } else {
             return [
-                // this.meteor,
                 this.magic,
                 this.fire,
                 this.light,
-                // this.lightning,
+                this.lightning,
                 // this.armageddon,
-                // this.tornado,
-                // this.fireAura,
-                // this.satellite,
+                this.tornado,
+                this.fireAura,
+                this.satellite,
                 // this.hail,
 
             ]
@@ -1244,7 +1206,7 @@ export const playerSkills = {
     },
     get objectOfAllSkills() {
 
-        return { // this.meteor,
+        return {
             robe: this.robe,
             intellect: this.intellect,
             magic: this.magic,
@@ -1261,7 +1223,7 @@ export const playerSkills = {
     },
     get allSkillsForItems() {
 
-        return { // this.meteor,
+        return {
             magic: this.magic,
             armageddon: this.armageddon,
             tornado: this.tornado,
@@ -1423,7 +1385,7 @@ export const playerSkills = {
                 return getModifiedCooldown(scene, this.baseDelay);
             },
             finalDamage(scene) {
-                return this.damage * scene.playerInitCfgs.fireDamageBonus;
+                return this.damage * scene.player.playerInitCfgs.fireDamageBonus;
             },
             applyUpgrade(scene) {
                 const upgrade = this.upgrades[this.level - 1];
@@ -1607,7 +1569,7 @@ export const playerSkills = {
                     description: this.description,
 
                 }
-                scene.thunderLevelUpSfx.play()
+                scene.audio.play('thunderLevelUpSfx')
                 if (!scene.shootLightningTimer) {
                     scene.shootLightningTimer = scene.time.addEvent({
                         delay: this.finalDelay(scene),
@@ -1820,39 +1782,8 @@ export const playerSkills = {
                 this.description = upgrade.description
 
                 scene.satellites.setCount(this.count);
-                scene.satelliteStartSoundSfx.play()
+                scene.audio.play('satelliteStartSoundSfx')
 
-            }
-        };
-        this.meteor = {
-            name: 'spellsNames.meteor',
-            description: 'meteoritus !',
-            level: 1,
-            icon: 'pictureMeteor',
-            damage: 25,
-            delayDamage: 100, // раз в 500 мс наносить урон
-            delay: 4000,
-            count: 1,
-            delayInterval: 100,
-            applyUpgrade(scene) {
-                this.level++;
-                this.count += 1;
-
-                if (!scene.shootMeteorTimer) {
-                    scene.shootMeteorTimer = scene.time.addEvent({
-                        delay: this.delay,
-                        callback: () => shootMeteor(
-                            scene,
-                            scene.player,
-                            scene.enemies.getGroup(),
-                            this.count,
-                            this.delayInterval,
-                        ),
-                        loop: true
-                    });
-                } else {
-                    scene.shootMeteorTimer.delay = this.delay;
-                }
             }
         };
         this.hail = {
@@ -2042,7 +1973,7 @@ export const playerSkills = {
                     description: this.description,
 
                 }
-                scene.playerInitCfgs.damageBonus += this.plusDamage * scene.levels[0].playerConfigs.dmg;
+                scene.player.playerInitCfgs.damageBonus += this.plusDamage * scene.level.currentLevel.playerConfigs.dmg;
                 if (scene.shootMagicTimer && playerSkills.magic) {
                     playerSkills.magic.skillInfo.damage = getPlayerDamageBeforeSpread(scene, playerSkills.magic.damage)
                 }
@@ -2102,7 +2033,7 @@ export const playerSkills = {
                 this.description = upgrade.description;
                 this.level++;
 
-                scene.playerInitCfgs.cooldownReductionBonus += upgrade.cooldwonReduce
+                scene.player.playerInitCfgs.cooldownReductionBonus += upgrade.cooldwonReduce
 
                 // Если таймер магии уже есть — обнови его delay
                 if (scene.shootMagicTimer && playerSkills.magic) {
@@ -2129,9 +2060,6 @@ export const playerSkills = {
                     scene.shootTornadoTimer.delay = playerSkills.tornado.finalDelay(scene);
                     playerSkills.tornado.skillInfo.cooldown = `${scene.shootTornadoTimer.delay / 1000}c`
                 }
-                // if (scene.shootMeteorTimer && playerSkills.meteor) {
-                //     scene.shootMeteorTimer.delay = playerSkills.meteor.finalDelay;
-                // }
                 if (scene.shootHailTimer && playerSkills.hail) {
                     scene.shootHailTimer.delay = playerSkills.hail.finalDelay(scene);
                     playerSkills.hail.skillInfo.cooldown = `${scene.shootHailTimer.delay / 1000}c`
@@ -2172,7 +2100,7 @@ export const playerSkills = {
                 this.level++;
                 this.description = upgrade.description;
 
-                scene.playerInitCfgs.coinsMagnetRadiusBonus = upgrade.radius;
+                scene.player.playerInitCfgs.coinsMagnetRadiusBonus = upgrade.radius;
 
             }
         };

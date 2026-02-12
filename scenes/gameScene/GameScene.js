@@ -156,7 +156,7 @@ export default class GameScene extends Phaser.Scene {
 
         // fake magic on lelve start
         this.shootFakeMagicTimer = this.time.addEvent({
-            delay: SkillRegistry.magic.getCurrentStats().delay * 100,
+            delay: SkillRegistry.magic.getCurrentStats().delay ,
             callback: () => shootMagic(
                 this,
                 this.player,

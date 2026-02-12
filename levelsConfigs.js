@@ -72,7 +72,7 @@ const originalLevels = [
             dropCoinsAmountBonus: 0.15,
 
             levelUpPointsCount: 1,
-            addExpAmountPerKillAmount: 1,
+            addExpAmountPerKillAmount: 2,//1
             addGoldAndGemsCoefficient: 0.5,
         },
         playerConfigs: {
@@ -92,7 +92,7 @@ const originalLevels = [
                         // { type: 'normal', count: 150000000, delayBetweenEnemies: 1     },
                         // { type: 'midTank', count: 5, delayBetweenEnemies: 50 },
                         // { type: 'fast', count: 50, delayBetweenEnemies: 40 },
-                        // { type: 'normal', count: 10, delayBetweenEnemies: 20 },
+                        { type: 'normal', count: 10, delayBetweenEnemies: 20 },
 
                     ]
                 },

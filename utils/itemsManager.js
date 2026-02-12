@@ -25,7 +25,7 @@ export const playerItems = {
         isActive: false,
         applyItem(player, scene) {
             this.isActive = true
-            player.cooldownReductionBonus += 0.75//0.15//fix
+            player.cooldownReductionBonus += 0.15//0.15//fix
             updateCooldownTimers(scene, playerSkills.allSkillsForItems)
 
         }

@@ -38,7 +38,7 @@ export function shootMagic(scene, player, enemiesGroup, magicGroup, count, targe
     for (let i = 0; i < count; i++) {
 
         const enemy = enemies[0]
-        scene.audio.play('fireAuraSfx', { rate: Phaser.Math.FloatBetween(0.95, 1.05) })
+        // scene.audio.play('fireAuraSfx', { rate: Phaser.Math.FloatBetween(0.95, 1.05) })
 
         const magic = magicGroup.get(player.x, + player.y, "magic");
         if (!magic) return;

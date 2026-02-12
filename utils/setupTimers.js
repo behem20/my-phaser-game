@@ -24,6 +24,7 @@ export function setupTimers(scene) {
     });
      //chests
      const spawnChestsTimerDelay = Phaser.Math.Between(35000,65000)
+    //  const spawnChestsTimerDelay = Phaser.Math.Between(350,650)
     scene.spawnChestsTimer = scene.time.addEvent({
         delay:spawnChestsTimerDelay,
         callback: () => scene.chests.spawnChest(350, 2400, scene),

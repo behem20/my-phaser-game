@@ -1,12 +1,11 @@
 export function createDamageTextPool(scene, poolSize = 100) {
     scene.damageTextPool = [];
     for (let i = 0; i < poolSize; i++) {
-        const txt = scene.add.text(-1000, -1000, '', {
-            fontSize: '72px',
+        const txt = scene.ui.createText('', { xPercent: -1, yPercent: -1, fontPercent: 0.02 }, {
             fontFamily: 'Arial',
-            color: '#ff0000',
-            stroke: '#000000',
-            strokeThickness: 12
+            // color: '#ff0000',
+            // stroke: '#000000',
+            // strokeThickness: 12
         })
             .setOrigin(0.5)
             .setDepth(100)
@@ -20,9 +19,6 @@ export function createDamageTextPool(scene, poolSize = 100) {
     }
 }
 
-// -----------------------------
-// 2. Взять свободный текст из пула
-// -----------------------------
 function getFreeDamageText(scene) {
     for (const txt of scene.damageTextPool) {
         if (!txt.visible) return txt;
@@ -30,9 +26,6 @@ function getFreeDamageText(scene) {
     return null; // если все заняты
 }
 
-// -----------------------------
-// 3. Показать текст урона
-// -----------------------------
 export function showDamageText(enemy, scene, damage = 15) {
     if (!enemy || !enemy.active) return;
 
@@ -41,8 +34,9 @@ export function showDamageText(enemy, scene, damage = 15) {
 
     txt.setText(`${damage}`);
     txt.setStyle({
-        fontSize: Math.random() > 0.5 ? '24px' : '32px',
-        color: Math.random() > 0.5 ? '#e2b3b3ff' : 'rgba(211, 172, 172, 1)'
+        fontSize: Math.random() > 0.5 ? '14px' : '18px',
+        color: Math.random() > 0.5 ? 'rgb(90, 178, 250)' : 'rgb(172, 241, 230)'
+        // color:'rgb(204, 1, 255)'
     });
 
     txt.setPosition(
@@ -52,7 +46,7 @@ export function showDamageText(enemy, scene, damage = 15) {
 
     txt.vx = Phaser.Math.Between(-10, 10);
     txt.vy = -Phaser.Math.Between(25, 40);
-    txt.life =600; // миллисекунд
+    txt.life = 300; // миллисекунд
     txt.alpha = 1;
     txt.setVisible(true);
 }
@@ -73,7 +67,7 @@ export function updateDamageTextPool(scene, delta) {
 
         txt.x += txt.vx * (delta / 1000); // скорость px/сек
         txt.y += txt.vy * (delta / 1000);
-        txt.alpha = txt.life / 500; // плавное исчезновение
+        txt.alpha = txt.life / 300; // плавное исчезновение
 
     }
 }

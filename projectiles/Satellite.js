@@ -6,7 +6,7 @@ export class Satellites {
 
         this.group = scene.physics.add.group({
             classType: Phaser.Physics.Arcade.Sprite,
-            maxSize: 25,
+            maxSize: 10,
             runChildUpdate: false
         });
 

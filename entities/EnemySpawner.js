@@ -99,6 +99,7 @@ export default class EnemySpawner {
             midTank: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midTankType,
             midBoss: scene.level.levels[scene.registry.get('currentLevel')].enemiesConfigs.midBossType,
         };
+        this.updateDirectionTime = 0
     }
     spawn(scene, type = 'normal') {
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
@@ -117,20 +118,44 @@ export default class EnemySpawner {
         resetEnemy(scene, enemy, cfg);
     }
 
-    update() {
+    update(delta) {
         this.group.getChildren().forEach(enemy => {
             if (!enemy.active || enemy.isKnocked) return;
-            const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y);
-            const speed = enemy.speedType || 50;
-            this.scene.physics.velocityFromRotation(angle, speed, enemy.body.velocity);
             enemy.shadow.setPosition(enemy.x, enemy.y + enemy.height * enemy.shadowOffSet)
-
         });
+
+        if (this.updateDirectionTime >= 250) {
+            this.group.getChildren().forEach(enemy => {
+                if (!enemy.active || enemy.isKnocked) return;
+                this.updateDirection(enemy)
+            })
+            this.updateDirectionTime = 0
+        }
+        this.updateDirectionTime += delta
         // this.group.getChildren().forEach(enemy => {
         //     if (!enemy.active) return;
 
         //     enemy.hpBar.update(enemy.hp, enemy.maxHP)
         // })
+
+    }
+    updateDirection(enemy) {
+        const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y);
+        const speed = enemy.speedType || 50;
+        this.scene.physics.velocityFromRotation(angle, speed, enemy.body.velocity);
+    }
+    updatePosition(enemy) {
+
+        const angle = Phaser.Math.FloatBetween(0, Math.PI * 2);
+        // const distance = Phaser.Math.Between(1000, 1500);//550 600 //1050 1200
+        const distance = Phaser.Math.Between(600, 700);
+        const x = this.player.x + Math.cos(angle) * distance;
+        const y = this.player.y + Math.sin(angle) * distance;
+
+        const distanceToPlayer = Phaser.Math.Distance.Between(this, this.player.x, this.player.y, enemy.x, enemy.y)
+        if (distance > 1200) {
+            enemy.x = Phaser.Math.Between(700)
+        }
     }
 
     getEnemies() {

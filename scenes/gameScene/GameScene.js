@@ -68,7 +68,7 @@ export default class GameScene extends Phaser.Scene {
         this.scale.on('resize', this.ui.resize, this.ui);
 
 
-
+        this.perfText = this.ui.createText('mamm', { xPercent: 0.55, yPercent: 0.965, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1002);
         this.enemyUpdateTimeText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.96, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1000);
         this.fpsText = this.ui.createText('mamm', { xPercent: 0.15, yPercent: 0.98, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1000)
         this.logicTime = this.ui.createText('', { xPercent: 0.15, yPercent: 0.94, fontPercent: 0.02 },).setScrollFactor(0).setDepth(1001)
@@ -116,7 +116,7 @@ export default class GameScene extends Phaser.Scene {
         setHUD(this.hud)
         setupTimers(this);
         setupPause(this)
-        createDamageTextPool(this, 200)//damage text pool
+        createDamageTextPool(this, 10)//damage text pool
         initGroups(this)
         setupCollisions(this);
 
@@ -180,17 +180,17 @@ export default class GameScene extends Phaser.Scene {
 
         this.ui.resize()
 
-        this.openChestButton = this.ui.createText('chest', { xPercent: 0.75, yPercent: 0.9, fontPercent: 0.05 },
-            { color: '#08aadb', backgroundColor: '#000000' }).setScrollFactor(0).setDepth(100).setInteractive().setOrigin(0.5)
-            .on('pointerdown', () => {
-                this.events.emit('openChest-request')
-            })
+        // this.openChestButton = this.ui.createText('chest', { xPercent: 0.75, yPercent: 0.9, fontPercent: 0.05 },
+        //     { color: '#08aadb', backgroundColor: '#000000' }).setScrollFactor(0).setDepth(100).setInteractive().setOrigin(0.5)
+        //     .on('pointerdown', () => {
+        //         this.events.emit('openChest-request')
+        //     })
 
-        this.levelUpButton = this.ui.createText('skill', { xPercent: 0.25, yPercent: 0.9, fontPercent: 0.05 },
-            { color: '#08aadb', backgroundColor: '#000000' }).setScrollFactor(0).setDepth(100).setInteractive().setOrigin(0.5)
-            .on('pointerdown', () => {
-                this.events.emit('levelUp-request')
-            })
+        // this.levelUpButton = this.ui.createText('skill', { xPercent: 0.25, yPercent: 0.9, fontPercent: 0.05 },
+        //     { color: '#08aadb', backgroundColor: '#000000' }).setScrollFactor(0).setDepth(100).setInteractive().setOrigin(0.5)
+        //     .on('pointerdown', () => {
+        //         this.events.emit('levelUp-request')
+        //     })
 
         this.acc = 0
         this.acc1 = 0
@@ -202,10 +202,13 @@ export default class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         const start = performance.now()
-        this.inputsController.update()
-        this.fireShots.getChildren().forEach((bomb) => {
+
+        this.inputsController.update()//0.00ms
+
+        this.fireShots.getChildren().forEach((bomb) => {//0.00
             bomb.rotation += 0.08
         })
+
         // this.debugText.setText(`
         //      all: ${this.children.list.length},
         //       active ${this.children.list.filter(obj => obj.active).length},
@@ -219,30 +222,30 @@ export default class GameScene extends Phaser.Scene {
         // this.debugText.setText(`all: ${this.children.list.length}`)
 
 
-        this.player.update()
-        this.level.update()
+
+        this.player.update()//0.00
+        this.level.update()//0.00
+
 
         // this.lightMask.update(this.player);//fog
         // this.magnet.update();
-        this.hpMark.update(); //хп игрока бар
-        this.chestArrowManager.update(time, delta)
+
+        this.hpMark.update(); //хп игрока бар //0.00 when hf is full but when no then 0.3
+        this.chestArrowManager.update(time, delta)//0.00 (if 100+ then ms++ to 0.5+/ its unreachable)
+
 
         const t0 = performance.now()
-        this.enemies.update()
+        this.enemies.update(delta)
         const t1 = performance.now()
 
-        if (this.acc >= 200) {
-            this.renderList.setText(this.children.length)
-            this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
-            this.enemyUpdateTimeText.setText(`eU: ${(t1 - t0).toFixed(2)}`)
-
-            this.acc = 0
-        }
 
 
+        this.satellites.update();//0.00
 
-        updateDamageTextPool(this, delta)//damage text 
-        this.satellites.update();
+        const t2 = performance.now()
+        updateDamageTextPool(this, delta)//damage text //        
+        const t3 = performance.now()
+
 
         if (playerSkills.lightning.level > 1) {
             if (!this.thunderCloudsActive) {
@@ -269,10 +272,17 @@ export default class GameScene extends Phaser.Scene {
             this.level.currentLevel.levelConfigs.expToUpgrade *
             this.level.currentLevel.levelConfigs.coefficientToUpgradeLevel) {
             this.events.emit('levelUp-request')
-
-
-
         }//upgrades for exp
+
+
+        if (this.acc >= 200) {
+            this.renderList.setText(this.children.length)
+            this.fpsText.setText(`fps: ${Math.floor(this.game.loop.actualFps)}`)
+            this.enemyUpdateTimeText.setText(`eU: ${(t1 - t0).toFixed(2)}`)
+            this.perfText.setText(`perf:${(t3 - t2).toFixed(2)}`)
+
+            this.acc = 0
+        }
 
         // this.hud.updateDebug(this.player.x, this.player.y) //debug x,y
 

@@ -9,7 +9,7 @@ export default class Player {
         // Создаем физический спрайт
         this.sprite = scene.ui.createPhysicSprite('player_idle', { xPercent: 0, yPercent: 0, scalePercent: 0.08 })
         // this.sprite = scene.physics.add.sprite();
-        
+
 
         this.shadow = scene.add.sprite(this.sprite.x, this.sprite.y + 10, 'shadow').setScale(0.3).setAlpha(0.3);
         this.shadow.setDepth(-1);
@@ -100,7 +100,7 @@ export default class Player {
     update() {
 
         const speed =
-            this.scene.level.currentLevel.playerConfigs.speed * this.playerInitCfgs.moveSpeedBonus * 1;//!
+            this.scene.level.currentLevel.playerConfigs.speed * this.playerInitCfgs.moveSpeedBonus * 1;
 
         let moveX = 0;
         let moveY = 0;
@@ -140,6 +140,7 @@ export default class Player {
             }
             this.gAura++;
             this.scene.audio.stop('stepParticles')
+            this.stepParticles.stop()
 
         }
 

@@ -34,7 +34,7 @@ export default class HUD {
         this.timeText = scene.ui.createText("",
             { xPercent: 0.5, yPercent: 0.025, fontPercent: 0.025 },
             { fontSize: '20px', color: '#fff' },).setScrollFactor(0).setDepth(1300).setOrigin(0.5);;
-        this.debugText = scene.ui.createText("", { xPercent: 0.6, yPercent: 0.95 ,fontPercent:0.02},{ fill: "#fff" }).setScrollFactor(0).setDepth(13);
+        this.debugText = scene.ui.createText("", { xPercent: 0.6, yPercent: 0.95, fontPercent: 0.02 }, { fill: "#fff" }).setScrollFactor(0).setDepth(13);
         this.expProgressBarBg = scene.add.graphics();
         this.expProgressBarFill = scene.add.graphics().setDepth(13);
         this.expProgressBarBg.fillStyle(0x000000, 0.8).setDepth(12);              //0x115577
@@ -71,9 +71,11 @@ export default class HUD {
         } else if (this.lives + amount > 9) {
             this.lives = 10;
             this.updateLives()
+            this.scene.FXManager.vignette.setAlpha(0);
         } else {
             this.lives += amount;
             this.updateLives()
+            this.scene.FXManager.vignette.setAlpha(0);
         }
     }
     updateLives() {
@@ -112,7 +114,7 @@ export default class HUD {
     updateExp() {
     }
     addExp(amount = 1) {
-        // this.exp += amount;
+        this.exp += amount;
         if (!this.expThrottled) {
             this.expThrottled = true;
 

@@ -28,10 +28,10 @@ export function startGame() {
                 debug: 0
             }
         },
-        fps: {
-            target: 60,
-            forceSetTimeOut: true
-        },
+        // fps: {
+        //     target: 60,
+        //     forceSetTimeOut: true
+        // },
         parent: 'game-container',
         fullscreenTarget: 'game-container',
         scale: {

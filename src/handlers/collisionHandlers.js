@@ -1,5 +1,6 @@
 
 import { applyDamageWithCooldown } from "../../utils/applyDamageWithCooldown.js";
+import { flashScreen } from "../../utils/FlashScreen.js";
 import { playerItems } from "../../utils/itemsManager.js";
 
 function knockBack(scene, target, source, power = 1) {
@@ -84,16 +85,14 @@ export function handleHailHit(scene, hail, enemy) {
 
 
 
-export function handleTouchEnemy(scene, player, enemy) {
-    // scene.hud.minusLives();
-    // flashScreen(scene, 0xff0000, 0.18, 200)
+export function  handleTouchEnemy(scene, player, enemy) {
+    scene.hud.minusLives();
+    flashScreen(scene, 0xff0000, 0.18, 200)
     enemy.deactivateEnemy()
 
     if (scene.hud.lives <= 0) {
         scene.scene.pause();
-
         scene.scene.launch("GameOverScene", { scene: scene, coins: scene.hud.onFinishCoins(), score: scene.hud.score });
-
     }
 }
 

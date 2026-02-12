@@ -19,8 +19,7 @@ export function damageEnemy(scene, enemy, damage = 1, hud, source) {
     const hitDamage = getPlayerDamage(scene, damage)
 
     enemy.hp -= hitDamage;
-    enemy.hpBar.update(enemy.hp, enemy.maxHP)
-    enemy.hpBar.show()
+    
 
     // playDamageEffect(enemy, source); //old version
     if (scene.damageToggleUI.hideDamageText) {
